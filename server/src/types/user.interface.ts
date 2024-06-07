@@ -7,4 +7,6 @@ export interface User {
     createdAt: Date;
 }
 
-export interface UserDocument extends User, Document {}
+export interface UserDocument extends User, Document {
+    validatePassword(param1: string): string;
+}
