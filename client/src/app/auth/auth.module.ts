@@ -1,8 +1,7 @@
-import { NgModule } from "@angular/core";
-import { AuthService } from "./services/auth.service";
+import {NgModule} from "@angular/core";
+import {AuthService} from "./services/auth.service";
 
 @NgModule({
-    providers: [AuthService]
+  providers: [AuthService]
 })
-
 export class AuthModule {}
