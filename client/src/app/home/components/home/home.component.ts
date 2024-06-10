@@ -12,14 +12,17 @@ export class HomeComponent implements OnInit, OnDestroy{
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.isLoggedInSubscription = this.authService.isLogged$.subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        this.router.navigateByUrl('/profile')
-      }
-    });
+    // this.isLoggedInSubscription = this.authService.isLogged$.subscribe(isLoggedIn => {
+    //   if (isLoggedIn) {
+    //     this.router.navigateByUrl('/profile')
+    //   }
+    //});
   }
 
   ngOnDestroy(): void {
-    this.isLoggedInSubscription?.unsubscribe();
+    //this.isLoggedInSubscription?.unsubscribe();
   }
 } 
+
+
+// uncomment the following to stop a logged in user from seeing the home page

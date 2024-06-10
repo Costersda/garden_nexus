@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
+
 
 
 const routes: Routes = [
@@ -12,7 +14,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-    imports: [CommonModule, RouterModule.forChild(routes)],
+    imports: [CommonModule, RouterModule.forChild(routes), ToolbarComponent],
     declarations: [HomeComponent],
 })
 

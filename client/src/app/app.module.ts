@@ -1,14 +1,14 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthInterceptor } from './auth/services/authinterceptor.service';
 import { HomeModule } from './home/home.module';
 import { ProfileModule } from './profile/profile.module';
-
+import { AuthInterceptor } from './auth/services/authinterceptor.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +18,8 @@ import { ProfileModule } from './profile/profile.module';
     AuthModule,
     HttpClientModule,
     HomeModule,
-    ProfileModule
+    ProfileModule,
+    ToolbarComponent,  // Import the standalone component
   ],
   providers: [
     {
@@ -26,6 +27,7 @@ import { ProfileModule } from './profile/profile.module';
       useClass: AuthInterceptor,
       multi: true,
     },
+    provideAnimationsAsync('noop'),
   ],
   bootstrap: [AppComponent],
 })
