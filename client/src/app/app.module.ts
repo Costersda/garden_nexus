@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/services/authinterceptor.service';
 import { HomeModule } from './home/home.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { HomeModule } from './home/home.module';
     AuthModule,
     HttpClientModule,
     HomeModule,
+    ProfileModule
   ],
   providers: [
     {

@@ -23,18 +23,22 @@ export class RegisterComponent {
   ) {}
 
   onSubmit(): void {
-    this.authService.register(this.form.getRawValue()).subscribe({
-      next: (currentUser) => {
-        console.log('currentUser', currentUser);
-        this.authService.setToken(currentUser);
-        this.authService.setCurrentUser(currentUser);
-        this.errorMessage = null;
-        this.router.navigateByUrl('/');
-      },
-      error: (err: HttpErrorResponse) => {
-        console.log('err', err.error);
-        this.errorMessage = err.error.join(', ');
-      },
-    });
+    if (this.form.valid) {
+      this.authService.register(this.form.getRawValue()).subscribe({
+        next: (currentUser) => {
+          console.log('currentUser', currentUser);
+          this.authService.setToken(currentUser);
+          this.authService.setCurrentUser(currentUser);
+          this.errorMessage = null;
+          this.router.navigateByUrl('/');
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log('err', err.error);
+          this.errorMessage = err.error.join(', ');
+        },
+      });
+    } else {
+      this.errorMessage = 'Please fill out the form correctly.';
+    }
   }
 }
