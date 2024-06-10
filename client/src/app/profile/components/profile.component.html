@@ -1,0 +1,13 @@
+<div class="profile-container" *ngIf="profile">
+    <h2>{{ profile.username }}'s Profile</h2>
+    <p><strong>Email:</strong> {{ profile.email }}</p>
+    <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio || 'Not specified' }}</p>
+    <div *ngIf="profile.imageFile">
+      <strong>Profile Image:</strong>
+      <img [src]="'data:image/jpeg;base64,' + profile.imageFile" alt="Profile Image" />
+    </div>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>

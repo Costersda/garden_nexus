@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 app.post("/api/users", usersController.register);
 app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser)
+app.get('/api/profile/:username', authMiddleware, usersController.getProfile)
 
 io.on("connection", () => {
   console.log("connect");
