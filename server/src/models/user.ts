@@ -8,17 +8,30 @@ const userSchema = new Schema<UserDocument>(
     email: {
       type: String,
       required: [true, "Email is required"],
-      validate: [validator.isEmail, "invalid email"],
-      createIndexes: { unique: true },
+      validate: [validator.isEmail, "Invalid email"],
+      unique: true, // Ensure the email is unique
     },
     username: {
       type: String,
       required: [true, "Username is required"],
+      unique: true, // Ensure the username is unique
     },
     password: {
       type: String,
       required: [true, "Password is required"],
       select: false,
+    },
+    country: {
+      type: String,
+      required: false,
+    },
+    bio: {
+      type: String,
+      required: false,
+    },
+    imageFile: {
+      type: Buffer,
+      required: false,
     },
   },
   {
@@ -41,7 +54,6 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.validatePassword = function (password: string) {
-  console.log("validatePassword", password, this);
   return bcryptjs.compare(password, this.password);
 };
 

@@ -28,7 +28,7 @@ export class LoginComponent {
         this.authService.setToken(currentUser);
         this.authService.setCurrentUser(currentUser);
         this.errorMessage = null;
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/profile/'+currentUser.username);
       },
       error: (err: HttpErrorResponse) => {
         console.log('err', err.error);

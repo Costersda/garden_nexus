@@ -72,3 +72,30 @@ export const currentUser = (req: ExpressRequestInterface, res: Response) => {
   }
   res.send(normalizeUser(req.user));
 };
+
+
+export const getProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { username } = req.params;
+    const user = await UserModel.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { email, country, bio, imageFile } = user;
+    res.status(200).json({
+      email,
+      username,
+      country,
+      bio,
+      imageFile: imageFile ? imageFile.toString('base64') : null, // Convert image buffer to base64 string
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching profile', error });
+  }
+};
