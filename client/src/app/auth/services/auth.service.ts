@@ -42,4 +42,13 @@ export class AuthService {
   setCurrentUser(currentUser: CurrentUserInterface | null): void {
     this.currentUser$.next(currentUser);
   }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.isLogged$;
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.currentUser$.next(null);
+  }
 }

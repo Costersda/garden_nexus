@@ -9,6 +9,7 @@ import { AuthInterceptor } from './auth/services/authinterceptor.service';
 import { HomeModule } from './home/home.module';
 import { ProfileModule } from './profile/profile.module';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
