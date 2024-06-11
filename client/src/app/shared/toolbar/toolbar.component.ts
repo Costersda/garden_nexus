@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,7 +9,6 @@ import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  //styleUrls: ['./toolbar.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -18,8 +17,9 @@ import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
     MatButtonModule
   ]
 })
-export class ToolbarComponent {
+export class ToolbarComponent implements OnInit {
   authButtonLabel: string = 'Login';
+  currentUser: CurrentUserInterface | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -32,6 +32,7 @@ export class ToolbarComponent {
     if (token) {
       this.authService.getCurrentUser().subscribe((currentUser: CurrentUserInterface) => {
         this.authService.setCurrentUser(currentUser);
+        this.currentUser = currentUser;
       });
     }
   }
@@ -41,6 +42,7 @@ export class ToolbarComponent {
       this.router.navigate(['/login']);
     } else {
       this.authService.logout();
+      this.currentUser = null;
       this.router.navigate(['/']);
     }
   }

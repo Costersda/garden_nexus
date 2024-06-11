@@ -1,9 +1,12 @@
-<mat-toolbar color="primary">
-    <span>
-      <a routerLink="/">
-        <img src="assets/garden-nexus-logo.webp" alt="Garden Nexus Logo" height="40">
-      </a>
-    </span>
-    <span class="spacer"></span>
-    <button mat-button (click)="onAuthAction()">{{ authButtonLabel }}</button>
-  </mat-toolbar>
+<mat-toolbar>
+  <span>
+    <a routerLink="/" class="toolbar-logo">
+      Garden Nexus
+    </a>
+  </span>
+  <span class="spacer"></span>
+  <div class="toolbar-logged-in-text" *ngIf="currentUser">
+    Logged in as {{ currentUser.username }}
+  </div>
+  <button mat-button class="toolbar-login-btn" (click)="onAuthAction()">{{ authButtonLabel }}</button>
+</mat-toolbar>

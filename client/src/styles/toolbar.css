@@ -1,0 +1,59 @@
+/* src/styles/toolbar-styles.css */
+
+mat-toolbar.mat-toolbar {
+    background-color: #ADC178 !important;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px; 
+  }
+  
+  /* Style for the Title text */
+  .toolbar-logo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px; 
+    font-weight: 700; 
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  /* Spacer to push elements to the right */
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  /* Style for the logged in as text */
+  mat-toolbar .toolbar-logged-in-text {
+    margin-right: 20px;
+    font-weight: 700; 
+    font-size: 16px;
+  }
+  
+  /* Style for the login/logout button */
+  mat-toolbar .toolbar-login-btn {
+    background-color: #DDE5B6;
+    padding: 20px;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 600px) {
+    mat-toolbar.mat-toolbar {
+      padding: 0 8px;
+    }
+  
+    .toolbar-logo {
+      font-size: 25px;
+    }
+  
+    mat-toolbar .toolbar-logged-in-text {
+      margin-right: 20px;
+      font-size: 14px;
+    }
+  
+    mat-toolbar .toolbar-login-btn {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  
