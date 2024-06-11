@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
+@import '@angular/material/prebuilt-themes/azure-blue.css';
 @import './styles/reset.css';
 @import './styles/global.css';
 @import './styles/login.css';
 @import './styles/home.css';
 @import './styles/toolbar.css';
+@import './styles/navbar.css';
 
 
 html, body { height: 100%; }

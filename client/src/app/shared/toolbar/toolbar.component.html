@@ -6,7 +6,7 @@
   </span>
   <span class="spacer"></span>
   <div class="toolbar-logged-in-text" *ngIf="currentUser">
-    Logged in as {{ currentUser.username }}
+    "{{ currentUser.username | titlecase }}" Logged in
   </div>
   <button mat-button class="toolbar-login-btn" (click)="onAuthAction()">{{ authButtonLabel }}</button>
 </mat-toolbar>

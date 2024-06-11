@@ -9,6 +9,7 @@ import { ProfileModule } from './profile/profile.module';
 import { AuthInterceptor } from './auth/services/authinterceptor.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +20,8 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
     HttpClientModule,
     HomeModule,
     ProfileModule,
-    ToolbarComponent,  // Import the standalone component
+    ToolbarComponent,
+    NavbarComponent
   ],
   providers: [
     {

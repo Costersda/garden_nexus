@@ -1,0 +1,84 @@
+/* src/app/shared/navbar/navbar.component.css */
+
+/* Custom styles for the navbar */
+.navbar-container {
+  background-color: #DDE5B6;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #DDE5B6;
+  padding: 0;
+}
+
+.nav-item {
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  padding: 8px 16px;
+  text-align: center;
+  background-color: #DDE5B6; /* Apply the background color to each nav item */
+  border-left: 2.5px solid black; /* Add black border on all sides */
+  border-right: 2.5px solid black;
+  flex: 1; /* Ensures that each nav-item takes equal space */
+  margin: 0 -1px; /* To avoid double border effect */
+  font-size: 1.3em; /* Slightly larger text */
+}
+
+.left-end {
+  border-left: none
+}
+.right-end {
+  border-right: none
+}
+
+.nav-item:hover {
+  background-color: #c1c8a6;
+}
+
+.nav-item.active {
+  background-color: #b1b893;
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.navbar-toggler {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.container-fluid {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+@media (max-width: 992px) {
+  .navbar-collapse {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .navbar-toggler {
+    order: -1; /* Ensure the hamburger icon stays at the top */
+    margin-left: auto;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .nav-item {
+    width: 100%;
+    text-align: right;
+    border: none; /* Remove borders in the hamburger menu */
+    margin: 0;
+    background-color: #A98467;
+  }
+}
