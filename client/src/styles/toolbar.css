@@ -34,6 +34,7 @@ mat-toolbar.mat-toolbar {
   mat-toolbar .toolbar-login-btn {
     background-color: #DDE5B6;
     padding: 20px;
+    border-radius: 8px;
   }
   
   /* Media queries for responsiveness */

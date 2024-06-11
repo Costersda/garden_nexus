@@ -1,6 +1,5 @@
 /* src/app/shared/navbar/navbar.component.css */
 
-/* Custom styles for the navbar */
 .navbar-container {
   background-color: #DDE5B6;
   padding: 0;
@@ -17,12 +16,11 @@
   cursor: pointer;
   padding: 8px 16px;
   text-align: center;
-  background-color: #DDE5B6; /* Apply the background color to each nav item */
-  border-left: 2.5px solid black; /* Add black border on all sides */
-  border-right: 2.5px solid black;
-  flex: 1; /* Ensures that each nav-item takes equal space */
-  margin: 0 -1px; /* To avoid double border effect */
-  font-size: 1.3em; /* Slightly larger text */
+  background-color: #DDE5B6;
+  border-left: 2.5px solid black;
+  flex: 1;
+  margin: 0 -1px;
+  font-size: 1.3em;
 }
 
 .left-end {
@@ -64,7 +62,7 @@
   }
 
   .navbar-toggler {
-    order: -1; /* Ensure the hamburger icon stays at the top */
+    order: -1;
     margin-left: auto;
   }
 
@@ -77,7 +75,7 @@
   .nav-item {
     width: 100%;
     text-align: right;
-    border: none; /* Remove borders in the hamburger menu */
+    border: none;
     margin: 0;
     background-color: #A98467;
   }
