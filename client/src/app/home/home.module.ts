@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
+import { ImageSliderModule } from '../shared/imageSlider/imageSlider.module';
 
 
 
@@ -16,7 +17,14 @@ const routes: Routes = [
 ]
 
 @NgModule({
-    imports: [CommonModule, RouterModule.forChild(routes), ToolbarComponent, NavbarComponent, FooterComponent],
+    imports: [
+        CommonModule, 
+        RouterModule.forChild(routes), 
+        ToolbarComponent, 
+        NavbarComponent, 
+        FooterComponent,
+        ImageSliderModule,
+    ],
     declarations: [HomeComponent],
 })
 

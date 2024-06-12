@@ -1,84 +1,28 @@
-.home-hero {
-  background: linear-gradient(135deg, #0079bf, #5067c5);
-}
+/* src/app/home/home.component.css */
 
-.home-container {
-  max-width: 1140px;
-  color: #fff;
-  display: flex;
+.image-slider-container {
+  width: 100%; /* Make the container span the entire width of the screen */
+  height: 325px;
   margin: 0 auto;
-  align-items: center;
-  padding-bottom: 80px;
-  padding-top: 80px;
-  justify-content: space-between;
+  overflow: hidden; /* Ensures that the content inside does not overflow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for better appearance */
 }
 
-.home-title {
-  font-size: 48px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.home-description {
-  font-size: 25px;
-  font-weight: 300;
-}
-
-.home-header {
-  position: fixed;
-  height: 72px;
-  z-index: 1;
+.image-slider-container img {
   width: 100%;
-  background-color: #0079bf;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the entire container without distorting */
 }
 
-.home-header-home-link img {
-  height: 40px;
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .image-slider-container {
+    height: 250px; /* Adjust height for tablets and smaller screens */
+  }
 }
 
-.home-header-login {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 17px;
-  margin-right: 20px;
-}
-
-.home-header-register {
-  color: #5067c5;
-  background: #fff;
-  font-weight: 700;
-  font-size: 17px;
-  padding: 6px 10px;
-  text-decoration: none;
-  border-radius: 3px;
-  line-height: 26px;
-}
-
-.team-container {
-  color: #2c3e50;
-}
-
-.information-container {
-  color: #2c3e50;
-}
-
-.workflow-container {
-  color: #2c3e50;
-}
-
-.team-image {
-  max-width: 700px;
-}
-
-.workflow-image {
-  max-width: 450px;
-}
-
-.workflow-left-part {
-  margin-right: 40px;
+@media (max-width: 480px) {
+  .image-slider-container {
+    height: 200px; /* Adjust height for mobile devices */
+  }
 }
