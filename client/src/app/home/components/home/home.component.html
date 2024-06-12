@@ -3,8 +3,12 @@
 <app-navbar></app-navbar>
 
 <div class="home-content-container">
+
   <div class="home-content">
     <h1 class="home-heading">Garden Nexus</h1>
+  </div>
+  <div class="home-content">
+
     <div class="home-text-container">
       <p class="home-text">
         The hub for connecting gardeners, sharing knowledge, and discovering new ideas.
@@ -20,6 +24,65 @@
 
 <div class="image-slider-container">
   <image-slider [slides]="slides"></image-slider>
+</div>
+
+<div class="home-content-container-green">
+  <div class="home-content">
+    <div class="half-content">
+      <h2 class="content-subheading">Profile</h2>
+      <hr class="styled-hr-left">
+      <p class="content-text">
+        Your Profile page is a personalized space where you can showcase your gardening journey. 
+        Share your interests, achievements, and goals while connecting with other like-minded users. 
+        Customize your profile with a unique bio and photo, and keep track of your posts, comments, and interactions to stay actively engaged in the Garden Nexus community.
+      </p>
+    </div>
+    <div class="half-content">
+      <img class="content-image" src="https://via.placeholder.com/300" alt="Placeholder Image">
+    </div>
+  </div>
+</div>
+
+<div class="img-spacer">
+  <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
+</div>
+
+<div class="home-content-container">
+  <div class="home-content">
+    <div class="half-content">
+      <h2 class="content-subheading">Blogs</h2>
+      <hr class="styled-hr-left">
+      <p class="content-text">
+        This is where you can share your gardening insights, stories, and tips with the world. Write articles that inspire others, 
+        and read posts from fellow gardeners to discover new ideas and methods. Whether you're documenting your progress or 
+        providing advice, the Blog is a rich source of knowledge for the community!
+      </p>
+    </div>
+    <div class="half-content">
+      <img class="content-image" src="https://via.placeholder.com/300" alt="Placeholder Image">
+    </div>
+  </div>
+</div>
+
+<div class="home-content-container spacer">
+  <hr class="styled-hr">
+</div>
+
+<div class="home-content-container">
+  <div class="home-content forum-reversed">
+    <div class="half-content">
+      <img class="content-image" src="https://via.placeholder.com/300" alt="Placeholder Image">
+    </div>
+    <div class="half-content">
+      <h2 class="content-subheading">Forum</h2>
+      <hr class="styled-hr-left">
+      <p class="content-text">
+        The Forum is the heart of community discussions. Ask questions, share advice, or join in on conversations 
+        about a variety of gardening topics. From troubleshooting plant issues to brainstorming creative gardening solutions, 
+        the Forum is your go-to place for lively discussions and valuable insights.
+      </p>
+    </div>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

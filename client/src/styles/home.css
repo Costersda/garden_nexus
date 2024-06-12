@@ -2,9 +2,9 @@
 
 .image-slider-container {
   width: 100%;
-  height: 350px;
+  height: 500px;
   margin: 0 auto;
-  overflow: hidden; 
+  overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -20,39 +20,105 @@
   padding: 20px;
 }
 
+.spacer {
+  padding: 0;
+}
+
+.home-content-container-green {
+  width: 100%;
+  background-color: #ADC178;
+  padding: 20px;
+}
+
 .home-content {
   text-align: center;
   margin: 0 auto;
-  max-width: 800px; 
-  background-color: #F0EAD2;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
 }
 
 .home-heading {
-  font-size: 4.0em !important; 
-  margin-bottom: 30px !important;
-  color: #6C584C; 
-  font-family: 'Montserrat', sans-serif !important; 
-  font-weight: 500 !important;
-  font-style: italic !important;
+  font-size: 4em;
+  margin-bottom: 0 !important;
+  color: #6C584C;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-style: italic;
+  width: 100%;
+}
+
+.home-text {
+  margin: 20px !important;
 }
 
 .home-text-container {
   font-size: 1.5em;
-  color: #6C584C; 
-  font-weight: 400 !important;
+  color: #6C584C;
+  font-weight: 400;
 }
 
 .styled-hr {
   width: 80%;
-  margin: 20px auto;
+  margin: 0 auto;
   border: 0;
-  border-top: 3px solid #000000;
+  border-top: 3px solid #000;
+}
+
+.styled-hr-left {
+  width: 80%;
+  margin: 20px 0;
+  border: 0;
+  border-top: 3px solid #000;
+  text-align: left; /* Ensure the HR is aligned left */
+}
+
+.half-content {
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  text-align: left; /* Align text to the left in the content sections */
+}
+
+.content-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.content-subheading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 2em;
+  font-style: italic; /* Match the home-heading style */
+  margin-top: 0; /* Remove the default margin-top */
+}
+
+.img-spacer {
+  padding: 0;
+  margin: 0;
+}
+
+.img-spacer-image {
+  width: 100%;
+  height: 100px;
+  display: block;
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
 }
 
 /* Media query for smaller screens */
 @media (max-width: 768px) {
   .image-slider-container {
     height: 250px;
+  }
+
+  .home-content {
+    flex-direction: column; /* Stack items vertically */
   }
 
   .home-heading {
@@ -62,6 +128,15 @@
   .home-text {
     font-size: 1em;
   }
+
+  .half-content {
+    width: 100%; /* Stack the content sections */
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+
+  .forum-reversed .half-content:nth-child(1) {
+    order: 2; /* Move the image to the second position */
+  }
 }
 
 @media (max-width: 480px) {
@@ -70,11 +145,19 @@
   }
 
   .home-heading {
-    font-size: 2.7em !important;
-    margin-bottom: 20px !important;
+    font-size: 2.7em;
+    margin-bottom: 20px;
   }
 
   .home-text-container {
-    font-size: 1.0em !important; 
+    font-size: 1em;
+  }
+
+  .content-subheading {
+    font-size: 1.5em; /* Adjust subheading size for mobile devices */
+  }
+
+  .content-text {
+    font-size: 1em; /* Adjust content text size for mobile devices */
   }
 }
