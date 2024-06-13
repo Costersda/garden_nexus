@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
 
@@ -16,7 +16,7 @@ import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
 export class NavbarComponent implements OnInit {
   currentUser: CurrentUserInterface | null | undefined = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -26,7 +26,10 @@ export class NavbarComponent implements OnInit {
 
   goToProfile(): void {
     if (this.currentUser) {
-      this.router.navigate(['/profile', this.currentUser.username]);
+      const currentUsername = this.route.snapshot.paramMap.get('username');
+      if (currentUsername !== this.currentUser.username) {
+        this.router.navigate(['/profile', this.currentUser.username]);
+      }
     } else {
       this.router.navigate(['/login']);
     }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
+import { Subscription } from 'rxjs';
 
 interface Profile {
   email: string;
@@ -17,11 +17,12 @@ interface Profile {
   selector: 'app-profile',
   templateUrl: './profile.component.html',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   profile: Profile | null = null;
   errorMessage: string | null = null;
   isOwner: boolean = false;
   isModalOpen: boolean = false; // Define the isModalOpen property
+  routeSubscription: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,10 +32,18 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const username = this.route.snapshot.paramMap.get('username');
-    if (username) {
-      this.fetchProfile(username);
-      this.checkOwnership(username);
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      const username = params.get('username');
+      if (username) {
+        this.fetchProfile(username);
+        this.checkOwnership(username);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
     }
   }
 
