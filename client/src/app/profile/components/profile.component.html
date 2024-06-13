@@ -13,19 +13,19 @@
 
 <div class="profile-container" *ngIf="profile">
   <h2>{{ profile.username }}'s Profile</h2>
-  <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
-  <p><strong>Bio:</strong> {{ profile.bio || 'Not specified' }}</p>
-  <div *ngIf="profile.imageFile">
+  <p><strong>Country:</strong> {{ profile?.country || 'Not specified' }}</p>
+  <p><strong>Bio:</strong> {{ profile?.bio || 'Not specified' }}</p>
+  <div *ngIf="profile?.imageFile">
     <strong>Profile Image:</strong>
     <img [src]="'data:image/jpeg;base64,' + profile.imageFile" alt="Profile Image" />
   </div>
-  <button (click)="openEditProfileModal()" class="edit-profile-btn">Edit Profile</button>
+  <button *ngIf="isOwner" (click)="openEditProfileModal()">Edit Profile</button>
 </div>
+
 <div *ngIf="errorMessage" class="error-message">
   {{ errorMessage }}
 </div>
 
 <app-footer></app-footer>
 
-<!-- Include the edit profile modal -->
 <app-edit-profile-modal [profile]="profile" (profileUpdated)="fetchProfile(profile?.username!)" *ngIf="isModalOpen" (close)="isModalOpen = false"></app-edit-profile-modal>

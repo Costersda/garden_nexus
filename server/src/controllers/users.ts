@@ -100,11 +100,15 @@ export const getProfile = async (
   }
 };
 
-// New updateProfile function
-export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const updateProfile = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
   try {
     const { username } = req.params;
     const { country, bio, imageFile } = req.body;
+
+    // Check if the authenticated user is the owner of the profile
+    if (req.user?.username !== username) {
+      return res.status(403).json({ message: "You can only edit your own profile" });
+    }
 
     const user = await UserModel.findOne({ username });
 
