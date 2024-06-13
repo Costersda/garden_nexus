@@ -10,9 +10,12 @@ import { AuthInterceptor } from './auth/services/authinterceptor.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -20,6 +23,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     HttpClientModule,
     HomeModule,
     ProfileModule,
+    FormsModule,
     ToolbarComponent,
     NavbarComponent
   ],

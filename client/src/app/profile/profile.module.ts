@@ -5,6 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './components/profile.component';
 import { AuthGuardService } from '../auth/services/authGuard.service';
+import { EditProfileModalComponent } from '../auth/components/editProfileModal/editProfileModal.component';
+import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { FooterComponent } from '../shared/footer/footer.component';
 
 const routes: Routes = [
   { 
@@ -16,16 +20,21 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ProfileComponent
+    ProfileComponent,
+    EditProfileModalComponent
   ],
   imports: [
     CommonModule, 
     FormsModule,
     HttpClientModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ToolbarComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
-//   exports: [
-//     ProfileComponent
-//   ]
+  exports: [
+    ProfileComponent,
+    EditProfileModalComponent
+  ]
 })
 export class ProfileModule { }

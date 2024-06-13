@@ -8,17 +8,17 @@ interface Profile {
   username: string;
   country?: string;
   bio?: string;
-  imageFile?: string; // base64 string
+  imageFile?: string;
 }
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  //styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
   profile: Profile | null = null;
   errorMessage: string | null = null;
+  isModalOpen = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,5 +44,9 @@ export class ProfileComponent implements OnInit {
         console.error('Error fetching profile:', error);
       }
     });
+  }
+
+  openEditProfileModal(): void {
+    this.isModalOpen = true;
   }
 }

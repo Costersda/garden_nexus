@@ -99,3 +99,36 @@ export const getProfile = async (
     res.status(500).json({ message: 'Error fetching profile', error });
   }
 };
+
+// New updateProfile function
+export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { username } = req.params;
+    const { country, bio, imageFile } = req.body;
+
+    const user = await UserModel.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.country = country || user.country;
+    user.bio = bio || user.bio;
+
+    if (imageFile) {
+      user.imageFile = Buffer.from(imageFile, "base64");
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      email: user.email,
+      username: user.username,
+      country: user.country,
+      bio: user.bio,
+      imageFile: user.imageFile ? user.imageFile.toString("base64") : null,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating profile", error });
+  }
+};

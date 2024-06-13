@@ -1,0 +1,24 @@
+<div class="modal">
+  <div class="modal-content">
+    <span class="close-btn" (click)="cancel()">&times;</span>
+    <h2>Edit Profile</h2>
+    <form (ngSubmit)="saveProfile()">
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <select id="country" [(ngModel)]="updatedProfile.country" name="country">
+          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="bio">Bio:</label>
+        <textarea id="bio" [(ngModel)]="updatedProfile.bio" name="bio"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="imageFile">Profile Image:</label>
+        <input type="file" id="imageFile" (change)="onFileChange($event)" />
+      </div>
+      <button type="submit" class="save-btn">Save</button>
+      <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+    </form>
+  </div>
+</div>
