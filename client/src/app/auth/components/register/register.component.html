@@ -1,9 +1,12 @@
+<app-toolbar></app-toolbar>
+<app-navbar></app-navbar>
+
 <div class="login-page">
   <a routerLink="/">
-    <!-- <img src="/assets/trello-logo.svg" class="trello-main-logo" /> -->
+    <img src="/assets/garden-nexus-logo.webp" class="main-logo" />
   </a>
   <div class="form-container">
-    <div class="login-header">Register to Trello</div>
+    <div class="login-header">Register to Garden Nexus</div>
     <div class="errors" *ngIf="errorMessage">{{ errorMessage }}</div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <input
@@ -30,3 +33,5 @@
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>

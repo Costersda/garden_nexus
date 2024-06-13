@@ -6,6 +6,9 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/authGuard.service';
+import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { FooterComponent } from '../shared/footer/footer.component';
 
 const routes: Routes = [
   {
@@ -20,7 +23,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), ReactiveFormsModule, CommonModule],
+  imports: [
+    RouterModule.forChild(routes), 
+    ReactiveFormsModule, 
+    CommonModule,
+    ToolbarComponent,
+    NavbarComponent,
+    FooterComponent
+  ],
   providers: [AuthService, AuthGuardService],
   declarations: [RegisterComponent, LoginComponent],
 })
