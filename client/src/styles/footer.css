@@ -3,7 +3,7 @@
 .footer {
   background-color: #6C584C;
   color: #fff;
-  padding: 10px 0;
+  padding: 0px 0;
   text-align: center;
   width: 100%;
 }
@@ -36,7 +36,7 @@ h3 {
 }
 
 .footer-title {
-  font-size: 18px;
+  font-size: 1.8em !important;
   margin: 0 0 5px 0 !important;
   text-decoration: underline;
 }
@@ -45,7 +45,7 @@ h3 {
   display: block;
   color: #fff;
   text-decoration: none;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
   font-size: 20px;
   cursor: pointer; /* Ensure the cursor changes to pointer */
 }

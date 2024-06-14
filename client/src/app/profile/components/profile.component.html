@@ -8,23 +8,54 @@
 </div>
 
 <div class="img-banner">
-  <img class="banner-image" src="assets/spacer-img-1.png" alt="User banner image">
+  <img class="img-banner-image" src="assets/spacer-img-1.png" alt="User banner image">
 </div>
 
-<div class="profile-container" *ngIf="profile">
-  <h2>{{ profile.username }}'s Profile</h2>
-  <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
-  <p><strong>Bio:</strong> {{ profile.bio || 'Not specified' }}</p>
-  <div *ngIf="profile.imageFile">
-    <strong>Profile Image:</strong>
-    <img [src]="'data:image/jpeg;base64,' + profile.imageFile" alt="Profile Image" />
+<div class="profile-picture-container">
+  <img class="profile-picture" [src]="profile?.imageFile ? 'data:image/jpeg;base64,' + profile!.imageFile : 'assets/garden-nexus-logo.webp'" alt="Profile Picture">
+</div>
+
+<div class="profile-content-container">
+  <div class="profile-container" *ngIf="profile">
+    <div class="profile-container-heading">
+      <h2 class="profile-username">{{ profile.username | titlecase }}</h2>
+      <img *ngIf="isOwner" src="assets/edit_icon.png" class="edit-icon" (click)="openEditProfileModal()" alt="Edit Profile">
+    </div>
+    <hr class="styled-hr-left">
+    <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio || '' }}</p>
   </div>
-  <button *ngIf="isOwner" (click)="openEditProfileModal()">Edit Profile</button>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
 </div>
 
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
+<div class="profile-content-container">
+  <hr class="styled-hr">
 </div>
+
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h2 class="content-subheading">Recent Blog Posts</h2>
+  </div>
+  <div class="post-content-container">
+    Blogs go here
+  </div>
+
+</div>
+
+<div class="profile-content-container">
+  <hr class="styled-hr">
+</div>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h2 class="content-subheading">Forum Activity</h2>
+  </div>
+  <div class="post-content-container">
+    Forum posts go here
+  </div>
 
 <app-footer></app-footer>
 
