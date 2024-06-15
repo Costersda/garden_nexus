@@ -23,7 +23,7 @@
     </div>
     <hr class="styled-hr-left">
     <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
-    <p><strong>Bio:</strong> {{ profile.bio || '' }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio || '(blank)' }}</p>
   </div>
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
@@ -56,6 +56,7 @@
   <div class="post-content-container">
     Forum posts go here
   </div>
+</div>
 
 <app-footer></app-footer>
 
