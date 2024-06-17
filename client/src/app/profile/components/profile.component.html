@@ -9,11 +9,12 @@
 
 <div class="img-banner">
   <img class="img-banner-image" src="assets/spacer-img-1.png" alt="User banner image">
+  <div class="profile-picture-container">
+    <img class="profile-picture" [src]="profile?.imageFile ? 'data:image/jpeg;base64,' + profile!.imageFile : 'assets/garden-nexus-logo.webp'" alt="Profile Picture">
+  </div>
 </div>
 
-<div class="profile-picture-container">
-  <img class="profile-picture" [src]="profile?.imageFile ? 'data:image/jpeg;base64,' + profile!.imageFile : 'assets/garden-nexus-logo.webp'" alt="Profile Picture">
-</div>
+
 
 <div class="profile-content-container">
   <div class="profile-container" *ngIf="profile">
