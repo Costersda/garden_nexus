@@ -8,9 +8,10 @@ import { HomeModule } from './home/home.module';
 import { ProfileModule } from './profile/profile.module';
 import { AuthInterceptor } from './auth/services/authinterceptor.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { ToolbarComponent } from './shared/toolbar/toolbar.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
+import { ToolbarComponent } from './shared/modules/toolbar/toolbar.component';
+import { NavbarComponent } from './shared/modules/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
+import { BlogModule } from './blog/components/blog.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     ProfileModule,
     FormsModule,
     ToolbarComponent,
-    NavbarComponent
+    NavbarComponent,
+    BlogModule
   ],
   providers: [
     {

@@ -6,9 +6,9 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/authGuard.service';
-import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { FooterComponent } from '../shared/footer/footer.component';
+import { ToolbarComponent } from '../shared/modules/toolbar/toolbar.component';
+import { NavbarComponent } from '../shared/modules/navbar/navbar.component';
+import { FooterComponent } from '../shared/modules/footer/footer.component';
 
 const routes: Routes = [
   {

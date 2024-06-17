@@ -1,8 +1,8 @@
 // src/app/shared/toolbar/toolbar.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/services/auth.service';
-import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
+import { AuthService } from '../../../auth/services/auth.service';
+import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 
 @Component({
   selector: 'app-toolbar',

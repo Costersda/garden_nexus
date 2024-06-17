@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../auth/services/auth.service';
-import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
+import { AuthService } from '../../../auth/services/auth.service';
+import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 
 @Component({
   selector: 'app-toolbar',

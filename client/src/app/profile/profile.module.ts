@@ -6,9 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './components/profile.component';
 import { AuthGuardService } from '../auth/services/authGuard.service';
 import { EditProfileModalComponent } from '../auth/components/editProfileModal/editProfileModal.component';
-import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { FooterComponent } from '../shared/footer/footer.component';
+import { ToolbarComponent } from '../shared/modules/toolbar/toolbar.component';
+import { NavbarComponent } from '../shared/modules/navbar/navbar.component';
+import { FooterComponent } from '../shared/modules/footer/footer.component';
 
 const routes: Routes = [
   { 

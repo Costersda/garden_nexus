@@ -1,0 +1,47 @@
+<app-toolbar></app-toolbar>
+<app-navbar></app-navbar>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h1 class="profile-heading">Blogs</h1>
+  </div>
+</div>
+
+<div class="img-spacer">
+  <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
+</div>
+
+<div class="toolbar">
+  <div class="dropdown" [class.open]="isDropdownOpen">
+    <button class="dropdown-toggle" type="button" (click)="toggleDropdown()">
+      Categories
+    </button>
+    <div class="dropdown-menu">
+      <label *ngFor="let category of categories">
+        <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
+      </label>
+    </div>
+  </div>
+  <div class="search-box">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
+    <button (click)="searchBlogs()">Search</button>
+  </div>
+</div>
+
+<div class="inline-toolbar">
+  <button (click)="createBlogPost()">Create a Blog Post</button>
+  <h2>Featured Blog Posts</h2>
+  <button (click)="sortBlogsByNewest()">New</button>
+</div>
+
+<div class="blog-list">
+  <div *ngFor="let blog of blogs" class="blog-item">
+    <h2>{{ blog.title }}</h2>
+    <p>{{ blog.content_section_1 }}</p>
+    <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
+    <button *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

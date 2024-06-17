@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SlideInterface } from '../../../shared/imageSlider/types/slide.interface';
+import { SlideInterface } from '../../../shared/modules/types/slide.interface';
 import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 
 @Component({

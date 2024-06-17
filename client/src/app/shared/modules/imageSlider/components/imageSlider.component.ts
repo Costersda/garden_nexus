@@ -7,7 +7,7 @@ import {
   switchMap,
   timer,
 } from 'rxjs';
-import { SlideInterface } from '../types/slide.interface';
+import { SlideInterface } from '../../types/slide.interface';
 
 @Component({
   selector: 'image-slider',
