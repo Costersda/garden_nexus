@@ -11,11 +11,11 @@ import { Blog } from '../../../shared/types/blog.interface';
 export class BlogComponent implements OnInit, OnDestroy {
     blogs: Blog[] = [];
     categories = [
-      { name: 'Vegetable Gardening', selected: false },
-      { name: 'Fruit Gardening', selected: false },
-      { name: 'Herb Gardening', selected: false },
-      { name: 'Flower Gardening', selected: false },
-      { name: 'Organic Gardening', selected: false }
+      { name: 'Fruits & Vegetables', selected: false },
+      { name: 'Lawns', selected: false },
+      { name: 'Trees', selected: false },
+      { name: 'Shrubs', selected: false },
+      { name: 'Full Gardens', selected: false }
     ];
     searchQuery: string = '';
     isDropdownOpen = false;

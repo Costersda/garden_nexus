@@ -12,26 +12,45 @@
 </div>
 
 <div class="toolbar">
-  <div class="dropdown" [class.open]="isDropdownOpen">
-    <button class="dropdown-toggle" type="button" (click)="toggleDropdown()">
-      Categories
-    </button>
-    <div class="dropdown-menu">
-      <label *ngFor="let category of categories">
-        <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
-      </label>
+  <div class="toolbar-content">
+    <div class="left">
+      <div class="dropdown" [class.open]="isDropdownOpen">
+        <button class="dropdown-toggle" type="button" (click)="toggleDropdown()">
+          Categories
+        </button>
+        <div class="dropdown-menu">
+          <label *ngFor="let category of categories">
+            <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
+          </label>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="search-box">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
-    <button (click)="searchBlogs()">Search</button>
+    <div class="right">
+      <div class="search-box">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
+        <button (click)="searchBlogs()">Search</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="inline-toolbar">
-  <button (click)="createBlogPost()">Create a Blog Post</button>
-  <h2>Featured Blog Posts</h2>
-  <button (click)="sortBlogsByNewest()">New</button>
+  <div class="inline-toolbar-content">
+    <div class="left">
+      <button (click)="createBlogPost()">Create a Post</button>
+    </div>
+    <div class="center">
+      <h2>Featured Blog Posts</h2>
+    </div>
+    <div class="right">
+      <button (click)="sortBlogsByNewest()">New</button>
+      <button (click)="sortBlogsByNewest()">Popular</button>
+    </div>
+  </div>
+</div>
+
+<div class="profile-content-container">
+  <hr class="styled-hr">
 </div>
 
 <div class="blog-list">
@@ -42,6 +61,5 @@
     <button *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
   </div>
 </div>
-
 
 <app-footer></app-footer>
