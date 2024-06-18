@@ -9,7 +9,18 @@ export const createBlog = async (
   next: NextFunction
 ) => {
   try {
-    const blog = new Blog(req.body);
+    const { user } = req;
+    
+    if (!user) {
+      return res.status(401).send({ error: "Unauthorized" });
+    }
+
+    const blogData = {
+      ...req.body,
+      user_id: user._id // Ensure user_id is set to the authenticated user's ID
+    };
+
+    const blog = new Blog(blogData);
     await blog.save();
     res.status(201).send(blog);
   } catch (error) {

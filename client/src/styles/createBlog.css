@@ -1,0 +1,137 @@
+/* blog.component.css */
+
+.create-blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .form-element {
+    display: grid;
+    grid-template-columns: 150px 1fr; /* Adjust column widths as needed */
+    text-align: right;
+    margin-bottom: 15px;
+  }
+  
+  .form-label {
+    font-size: 1.2em; /* Increase font size for labels */
+    padding-top: 10px;
+    margin-right: 10px;
+  }
+  
+  .optional-label {
+    font-size: 0.9em;
+    color: gray;
+    align-self: start;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  
+  .form-input {
+    font-size: 1.2em; /* Increase font size for input text */
+    padding: 5px;
+    width: 100%; /* Ensure inputs take full width */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+  }
+  
+  .input-file-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure the container takes full width */
+  }
+  
+  input[type="file"] {
+    font-size: 1.2em; /* Increase font size for file input */
+    margin-top: 0; /* Reset any top margin */
+  }
+  
+  textarea {
+    width: 100%;
+    font-size: 1.2em; /* Increase font size for textarea */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+  }
+  
+  button[type="submit"] {
+    background-color: #ADC178;
+    color: #ffffff;
+    font-size: 1.2em; /* Increase font size for button */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #8baa5b;
+  }
+  
+  .categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #DDE5B6;
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Add grey border */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+  }
+  
+  .category-item {
+    width: 50%; /* Adjust width as needed */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .category-item label {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+  }
+  
+  .category-item input[type="checkbox"] {
+    width: 20px; /* Increase checkbox width */
+    height: 20px; /* Increase checkbox height */
+    margin-right: 10px; /* Space between checkbox and label */
+  }
+  
+  /* Media Queries for Responsiveness */
+  
+  @media (max-width: 840px) {
+    .form-element {
+      display: block;
+      text-align: left;
+    }
+  
+    .form-label, .optional-label {
+      padding-top: 0;
+      margin-right: 0;
+    }
+
+    .optional-label {
+        margin-left: 10px;
+    }
+  
+    .form-input, .input-file-wrapper, textarea {
+      width: 100%;
+      margin-top: 5px;
+    }
+  
+    .categories-container {
+      flex-direction: column;
+    }
+  
+    .category-item {
+      width: 100%;
+    }
+
+    .profile-content {
+        max-width: 90%;
+    }
+  }
+  

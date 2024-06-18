@@ -29,18 +29,18 @@ app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
 app.put("/api/profile/:username", authMiddleware, usersController.updateProfile); // New update profile route
 
 // Comment routes
-app.post("/api/comments", commentsController.createComment);
+app.post("/api/comments", authMiddleware, commentsController.createComment);
 app.get("/api/comments/:blogId", commentsController.getAllComments);
 app.get("/api/comments/:blogId/:id", commentsController.getCommentById);
-app.patch("/api/comments/:blogId/:id", commentsController.updateCommentById);
+app.patch("/api/comments/:blogId/:id", authMiddleware, commentsController.updateCommentById);
 app.delete("/api/comments/:blogId/:id", commentsController.deleteCommentById);
 
 // Blog routes
-app.post("/api/blogs", blogController.createBlog);
+app.post("/api/blogs", authMiddleware, blogController.createBlog);
 app.get("/api/blogs", blogController.getAllBlogs);
 app.get("/api/blogs/:id", blogController.getBlogById);
 app.get("/api/blogs/category", blogController.getBlogsByCategory); // New route for getting blogs by category
-app.patch("/api/blogs/:id", blogController.updateBlogById);
+app.patch("/api/blogs/:id", authMiddleware, blogController.updateBlogById);
 app.delete("/api/blogs/:id", blogController.deleteBlogById);
 
 io.on("connection", () => {
