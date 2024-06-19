@@ -26,19 +26,37 @@
 <div class="profile-content-container">
   <div class="profile-content">
     <div class="create-blog-container">
-      <form (ngSubmit)="createBlog()">
-        <div class="form-element">
+      <form (ngSubmit)="createBlog()" #blogForm="ngForm">
+        <div class="form-element" [class.error]="formSubmitted && (!title.valid || blog.title.length > maxTitleLength)">
           <label for="title" class="form-label">Title:</label>
-          <input type="text" id="title" [(ngModel)]="blog.title" name="title" required class="form-input">
+          <div class="input-file-wrapper">
+            <input type="text" id="title" [(ngModel)]="blog.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
+            <div class="word-count" [class.error-text]="blog.title.length > maxTitleLength">
+              Character count: {{ blog.title.length }}/100
+            </div>
+            <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
+            <div *ngIf="blog.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
+          </div>
         </div>
-        <div class="form-element">
+        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || blog.content_section_1.length > maxContentLength)">
           <label for="content_section_1" class="form-label">Content Section 1:</label>
-          <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input"></textarea>
+          <div class="input-file-wrapper">
+            <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
+            <div class="word-count" [class.error-text]="blog.content_section_1.length > maxContentLength">
+              Character count: {{ blog.content_section_1.length }}/1000
+            </div>
+            <div *ngIf="formSubmitted && !content_section_1.valid" class="error-text">Required</div>
+            <div *ngIf="blog.content_section_1.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+          </div>
         </div>
-        <div class="form-element">
+        <div class="form-element" [class.error]="formSubmitted && (!blog.image_1 || fileSizeError['image_1'] || fileTypeError['image_1'])">
           <label for="image_1" class="form-label">Image 1:</label>
           <div class="input-file-wrapper">
             <input type="file" id="image_1" (change)="onFileChange($event, 'image_1')" required>
+            <div class="file-size-info">Maximum file size: 2 MB</div>
+            <div *ngIf="formSubmitted && !blog.image_1" class="error-text">Required</div>
+            <div *ngIf="fileSizeError['image_1']" class="error-text">{{ fileSizeError['image_1'] }}</div>
+            <div *ngIf="fileTypeError['image_1']" class="error-text">{{ fileTypeError['image_1'] }}</div>
           </div>
         </div>
         <div class="form-element">
@@ -46,15 +64,23 @@
             <label for="content_section_2" class="form-label">Content Section 2:</label>
             <label class="optional-label">(optional)</label>
           </div>
-          <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input"></textarea>
+          <div class="input-file-wrapper">
+            <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input auto-grow" maxlength="1000"></textarea>
+            <div class="word-count" [class.error-text]="(blog.content_section_2?.length ?? 0) > maxContentLength">
+              Character count: {{ blog.content_section_2?.length ?? 0 }}/1000
+            </div>
+          </div>
         </div>
-        <div class="form-element">
+        <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
           <div>
             <label for="image_2" class="form-label">Image 2:</label>
             <label class="optional-label">(optional)</label>
           </div>
           <div class="input-file-wrapper">
             <input type="file" id="image_2" (change)="onFileChange($event, 'image_2')">
+            <div class="file-size-info">Maximum file size: 2 MB</div>
+            <div *ngIf="fileSizeError['image_2']" class="error-text">{{ fileSizeError['image_2'] }}</div>
+            <div *ngIf="fileTypeError['image_2']" class="error-text">{{ fileTypeError['image_2'] }}</div>
           </div>
         </div>
         <div class="form-element">
@@ -62,15 +88,23 @@
             <label for="content_section_3" class="form-label">Content Section 3:</label>
             <label class="optional-label">(optional)</label>
           </div>
-          <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input"></textarea>
+          <div class="input-file-wrapper">
+            <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input auto-grow" maxlength="1000"></textarea>
+            <div class="word-count" [class.error-text]="(blog.content_section_3?.length ?? 0) > maxContentLength">
+              Character count: {{ blog.content_section_3?.length ?? 0 }}/1000
+            </div>
+          </div>
         </div>
-        <div class="form-element">
+        <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
           <div>
             <label for="image_3" class="form-label">Image 3:</label>
             <label class="optional-label">(optional)</label>
           </div>
           <div class="input-file-wrapper">
             <input type="file" id="image_3" (change)="onFileChange($event, 'image_3')">
+            <div class="file-size-info">Maximum file size: 2 MB</div>
+            <div *ngIf="fileSizeError['image_3']" class="error-text">{{ fileSizeError['image_3'] }}</div>
+            <div *ngIf="fileTypeError['image_3']" class="error-text">{{ fileTypeError['image_3'] }}</div>
           </div>
         </div>
         <div class="form-element">
@@ -83,7 +117,11 @@
             </div>
           </div>
         </div>
-        <button type="submit">Create Blog Post</button>
+        <!-- Error message displayed if form submission fails -->
+        <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors())" class="error-text">
+          Please fix any errors before submitting.
+        </div>
+        <button class="blog-submitBtn" type="submit">Create Blog Post</button>
       </form>
     </div>
   </div>  
