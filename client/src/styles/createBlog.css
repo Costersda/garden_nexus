@@ -74,7 +74,6 @@ input[type="file"] {
 .categories-container {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 10px;
   padding: 10px;
   background-color: #DDE5B6;
   border-radius: 5px;

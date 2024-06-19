@@ -1,0 +1,14 @@
+<!-- blog-preview.component.html -->
+<div class="blog-preview">
+  <div class="blog-preview-title">
+        <h2>{{ blog.title }}</h2>
+  </div>
+  <div class="blog-preview-image">
+        <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
+  </div>
+  <div class="blog-preview-content">
+    <p>{{ previewContent }}</p>
+  </div>
+    <button *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
+  </div>
+  

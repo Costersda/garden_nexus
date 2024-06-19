@@ -53,13 +53,10 @@
   <hr class="styled-hr">
 </div>
 
-<div class="blog-list">
-  <div *ngFor="let blog of blogs" class="blog-item">
-    <h2>{{ blog.title }}</h2>
-    <p>{{ blog.content_section_1 }}</p>
-    <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
-    <button *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
-  </div>
+<div class="blog-list-container">
+  <div class="blog-list-content">
+    <app-blog-preview *ngFor="let blog of blogs" [blog]="blog"></app-blog-preview>
+  </div>  
 </div>
 
 <app-footer></app-footer>

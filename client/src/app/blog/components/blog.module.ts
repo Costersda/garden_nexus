@@ -1,3 +1,4 @@
+// src/app/blog/components/blog.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToolbarComponent } from '../../shared/modules/toolbar/toolbar.component';
 import { NavbarComponent } from '../../shared/modules/navbar/navbar.component';
 import { FooterComponent } from '../../shared/modules/footer/footer.component';
-
+import { BlogPreviewComponent } from '../../shared/modules/blog-preview/blog-preview.component';
 
 const routes: Routes = [
     { 
@@ -30,7 +31,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     BlogComponent,
-    CreateBlogComponent
+    CreateBlogComponent,
   ],
   imports: [
     CommonModule,
@@ -40,6 +41,7 @@ const routes: Routes = [
     ToolbarComponent,
     NavbarComponent,
     FooterComponent,
+    BlogPreviewComponent // Import BlogPreviewComponent as standalone
   ],
   providers: [BlogService]
 })
