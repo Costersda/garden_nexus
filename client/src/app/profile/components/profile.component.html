@@ -40,8 +40,12 @@
   <div class="profile-content">
     <h2 class="content-subheading">Recent Blog Posts</h2>
   </div>
-  <div class="post-content-container">
-    Blogs go here
+  <div class="blog-list-container">
+    <div class="blog-list-content">
+      <div class="blog-item" *ngFor="let blog of blogs">
+        <app-blog-preview [blog]="blog"></app-blog-preview>
+      </div>
+    </div>
   </div>
 
 </div>

@@ -9,6 +9,7 @@ import { EditProfileModalComponent } from '../auth/components/editProfileModal/e
 import { ToolbarComponent } from '../shared/modules/toolbar/toolbar.component';
 import { NavbarComponent } from '../shared/modules/navbar/navbar.component';
 import { FooterComponent } from '../shared/modules/footer/footer.component';
+import { BlogPreviewComponent } from '../shared/modules/blog-preview/blog-preview.component';
 
 const routes: Routes = [
   { 
@@ -31,6 +32,7 @@ const routes: Routes = [
     ToolbarComponent,
     NavbarComponent,
     FooterComponent,
+    BlogPreviewComponent
   ],
   exports: [
     ProfileComponent,

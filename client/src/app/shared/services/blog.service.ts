@@ -1,5 +1,3 @@
-// services/blog.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -44,5 +42,9 @@ export class BlogService {
     }
 
     return this.http.get<Blog[]>(this.apiUrl, { params });
+  }
+
+  getBlogsByUser(username: string): Observable<Blog[]> {
+    return this.http.get<Blog[]>(`${this.apiUrl}/user/${username}`);
   }
 }

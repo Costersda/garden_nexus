@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
+import  User  from "../models/user"; // Assuming you have a User model
 
 // Create a new blog post
 export const createBlog = async (
@@ -68,6 +69,27 @@ export const getBlogsByCategory = async (
   try {
     const categories = req.query.categories?.toString().split(",");
     const blogs = await Blog.find({ categories: { $in: categories } });
+    res.status(200).send(blogs);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get blog posts by username
+export const getBlogsByUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    const blogs = await Blog.find({ user_id: user._id });
     res.status(200).send(blogs);
   } catch (error) {
     next(error);

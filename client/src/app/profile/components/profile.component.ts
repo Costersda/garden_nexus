@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
 import { Subscription } from 'rxjs';
+import { BlogService } from '../../shared/services/blog.service';
+import { Blog } from '../../shared/types/blog.interface';
 
 interface Profile {
   email: string;
@@ -19,15 +21,18 @@ interface Profile {
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   profile: Profile | null = null;
+  blogs: Blog[] = [];
   errorMessage: string | null = null;
   isOwner: boolean = false;
   isModalOpen: boolean = false; // Define the isModalOpen property
   routeSubscription: Subscription | undefined;
+  blogSubscription: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private authService: AuthService,
+    private blogService: BlogService,
     private router: Router
   ) {}
 
@@ -37,6 +42,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       if (username) {
         this.fetchProfile(username);
         this.checkOwnership(username);
+        this.fetchBlogsByUser(username);
       }
     });
   }
@@ -44,6 +50,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
+    }
+    if (this.blogSubscription) {
+      this.blogSubscription.unsubscribe();
     }
   }
 
@@ -65,6 +74,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.authService.getCurrentUser().subscribe((currentUser) => {
       this.isOwner = currentUser ? currentUser.username === username : false;
     });
+  }
+
+  fetchBlogsByUser(username: string): void {
+    this.blogSubscription = this.blogService.getBlogsByUser(username).subscribe(
+      (blogs: Blog[]) => {
+        this.blogs = blogs;
+      },
+      (error) => {
+        console.error('Error fetching blogs by user:', error);
+      }
+    );
   }
 
   openEditProfileModal(): void {

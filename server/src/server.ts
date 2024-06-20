@@ -13,7 +13,6 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' })); 
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
@@ -40,6 +39,7 @@ app.post("/api/blogs", authMiddleware, blogController.createBlog);
 app.get("/api/blogs", blogController.getAllBlogs);
 app.get("/api/blogs/:id", blogController.getBlogById);
 app.get("/api/blogs/category", blogController.getBlogsByCategory); // New route for getting blogs by category
+app.get("/api/blogs/user/:username", blogController.getBlogsByUser); // New route for getting blogs by username
 app.patch("/api/blogs/:id", authMiddleware, blogController.updateBlogById);
 app.delete("/api/blogs/:id", blogController.deleteBlogById);
 
