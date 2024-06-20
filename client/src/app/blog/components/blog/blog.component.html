@@ -55,8 +55,10 @@
 
 <div class="blog-list-container">
   <div class="blog-list-content">
-    <app-blog-preview *ngFor="let blog of blogs" [blog]="blog"></app-blog-preview>
-  </div>  
+    <div class="blog-item" *ngFor="let blog of blogs">
+      <app-blog-preview [blog]="blog"></app-blog-preview>
+    </div>
+  </div>
 </div>
 
 <app-footer></app-footer>
