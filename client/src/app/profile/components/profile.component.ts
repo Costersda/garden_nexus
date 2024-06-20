@@ -6,21 +6,14 @@ import { AuthService } from '../../auth/services/auth.service';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../shared/services/blog.service';
 import { Blog } from '../../shared/types/blog.interface';
-
-interface Profile {
-  email: string;
-  username: string;
-  country?: string;
-  bio?: string;
-  imageFile?: string;
-}
+import { User } from '../../shared/types/user.interface';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  profile: Profile | null = null;
+  profile: User | null = null;
   blogs: Blog[] = [];
   errorMessage: string | null = null;
   isOwner: boolean = false;
@@ -58,7 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   fetchProfile(username: string): void {
     const url = `${environment.apiUrl}/profile/${username}`;
-    this.http.get<Profile>(url).subscribe({
+    this.http.get<User>(url).subscribe({
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
