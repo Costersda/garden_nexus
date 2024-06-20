@@ -26,6 +26,7 @@ app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);
 app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
 app.put("/api/profile/:username", authMiddleware, usersController.updateProfile); // New update profile route
+app.get('/api/users/:id', usersController.getUserById); // Add this line
 
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);
@@ -38,6 +39,7 @@ app.delete("/api/comments/:blogId/:id", commentsController.deleteCommentById);
 app.post("/api/blogs", authMiddleware, blogController.createBlog);
 app.get("/api/blogs", blogController.getAllBlogs);
 app.get("/api/blogs/:id", blogController.getBlogById);
+app.get("/api/blogs/:id", blogController.getBlogWithUserById); // Updated route to include user info
 app.get("/api/blogs/category", blogController.getBlogsByCategory); // New route for getting blogs by category
 app.get("/api/blogs/user/:username", blogController.getBlogsByUser); // New route for getting blogs by username
 app.patch("/api/blogs/:id", authMiddleware, blogController.updateBlogById);

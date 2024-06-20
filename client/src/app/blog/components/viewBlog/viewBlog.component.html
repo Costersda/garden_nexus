@@ -1,0 +1,30 @@
+<app-toolbar></app-toolbar>
+<app-navbar></app-navbar>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h1 class="profile-heading">{{ blog?.title }}</h1>
+    <p class="blog-author">By: {{ user?.username }}</p> 
+  </div>
+</div>
+
+<div class="img-spacer">
+  <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
+</div>
+
+<div class="blog-content-container" *ngIf="blog">
+  <div class="blog-section">
+    <p>{{ blog.content_section_1 }}</p>
+    <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
+  </div>
+  <div class="blog-section">
+    <p>{{ blog.content_section_2 }}</p>
+    <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
+  </div>
+  <div class="blog-section">
+    <p>{{ blog.content_section_3 }}</p>
+    <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
+  </div>
+</div>
+
+<app-footer></app-footer>

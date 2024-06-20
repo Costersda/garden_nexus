@@ -11,7 +11,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { ToolbarComponent } from './shared/modules/toolbar/toolbar.component';
 import { NavbarComponent } from './shared/modules/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
-import { BlogModule } from './blog/components/blog.module';
+import { BlogModule } from './blog/blog.module';
 import { BlogPreviewComponent } from './shared/modules/blog-preview/blog-preview.component';
 
 @NgModule({

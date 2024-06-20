@@ -132,3 +132,27 @@ export const deleteBlogById = async (
     next(error);
   }
 };
+
+
+// Get a single blog post by ID including user information
+export const getBlogWithUserById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const blog = await Blog.findById(req.params.id).populate('comments');
+    if (!blog) {
+      return res.status(404).send();
+    }
+
+    const user = await User.findById(blog.user_id);
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    res.status(200).send({ blog, user });
+  } catch (error) {
+    next(error);
+  }
+};
