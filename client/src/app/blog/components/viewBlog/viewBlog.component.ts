@@ -32,7 +32,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       this.route.queryParams.subscribe(queryParams => {
         this.source = queryParams['source'] || null;
         this.username = queryParams['username'] || null;
-        console.log('Query Params:', queryParams);
       });
       if (blogId) {
         this.fetchBlog(blogId);
@@ -78,8 +77,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    console.log('source:', this.source);
-    console.log('username:', this.username);
     if (this.source === 'profile' && this.username) {
       this.router.navigate(['/profile', this.username]);
     } else {

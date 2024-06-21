@@ -232,6 +232,28 @@
   font-size: 1.4em !important;
 }
 
+.blog-author-container {
+  margin-top: 40px;
+  text-align: right;
+}
+
+/* Styling for the blog author link */
+.blog-author a {
+  background-color: #DDE5B6;
+  font-size: 1.6em; /* Increase font size */
+  font-weight: bold; /* Make font bold */
+  color: #5e4a37; /* Change link color */
+  text-decoration: underline; /* Remove underline */
+  margin-right: 100px;
+  border: 3px solid #ADC178;
+  border-radius: 10px; /* Rounded edges */
+  padding: 10px 20px;
+}
+
+.blog-author a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
 .blog-section {
   display: flex;
   flex-direction: column;
@@ -260,6 +282,21 @@
   border-radius: 10px; /* Rounded edges for images */
   display: block; /* Ensure images are treated as block elements */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for images */
+}
+
+.back-btn-container {
+  text-align: center;
+}
+
+.back-btn {
+  background-color: #ADC178;
+  color: #ffffff;
+  font-size: 1.2em;
+  padding: 15px 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 
 /* Responsive Design */

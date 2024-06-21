@@ -3,18 +3,10 @@
 
 <div class="profile-content-container">
   <div class="profile-content">
-    <h1 class="profile-heading">Blogs</h1>
-  </div>
-</div>
-
-<div class="img-spacer">
-  <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
-</div>
-
-<div class="profile-content-container">
-  <div class="profile-content">
     <h1 class="profile-heading">{{ blog?.title }}</h1>
-    <p class="blog-author">By: {{ user?.username }}</p> 
+    <div class="blog-author-container">
+      <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p> 
+    </div>
   </div>
 </div>
 
@@ -51,8 +43,10 @@
   </div>
 </div>
 
-<div class="back-btn-container">
-  <button class="back-btn" (click)="goBack()">Back</button>
+<div class="profile-content-container">
+  <div class="back-btn-container">
+    <button class="back-btn" (click)="goBack()">Back</button>
+  </div>
 </div>
 
 <app-footer></app-footer>
