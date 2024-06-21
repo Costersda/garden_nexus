@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
+import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
   selector: 'app-blog',
@@ -10,13 +11,7 @@ import { Blog } from '../../../shared/types/blog.interface';
 })
 export class BlogComponent implements OnInit, OnDestroy {
   blogs: Blog[] = [];
-  categories = [
-    { name: 'Fruits & Vegetables', selected: false },
-    { name: 'Lawns', selected: false },
-    { name: 'Trees', selected: false },
-    { name: 'Shrubs', selected: false },
-    { name: 'Full Gardens', selected: false }
-  ];
+  categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false }));
   searchQuery: string = '';
   isDropdownOpen = false;
   private blogSubscription!: Subscription;
@@ -53,7 +48,6 @@ export class BlogComponent implements OnInit, OnDestroy {
       this.router.navigate(['/blog', blogId], { queryParams: { source: 'blog' } });
     }
   }
-  
 
   searchBlogs(): void {
     const selectedCategories = this.categories

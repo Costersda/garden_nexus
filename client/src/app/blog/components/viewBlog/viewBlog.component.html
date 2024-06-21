@@ -3,7 +3,7 @@
 
 <div class="profile-content-container">
   <div class="profile-content">
-    <h1 class="profile-heading">{{ blog?.title }}</h1>
+    <h1 class="profile-heading">{{ blog?.title | titlecase}}</h1>
     <div class="blog-author-container">
       <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p> 
     </div>
@@ -41,6 +41,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="profile-content-container">
+  <hr class="styled-hr">
 </div>
 
 <div class="profile-content-container">

@@ -65,11 +65,24 @@
   padding: 10px;
   margin-top: 5px;
   z-index: 1000;
-  width: 50%;
+  width: 150%;
+  padding: 20px;
 }
 
 .dropdown.open .dropdown-menu {
   display: block;
+}
+
+.dropdown-menu label {
+  display: block; /* Ensure each label takes up the full width */
+  margin-bottom: 10px; /* Add more spacing between the labels */
+  font-size: 1.2em; /* Make the font larger */
+}
+
+.dropdown-menu input[type="checkbox"] {
+  width: 20px; /* Increase the width of the checkbox */
+  height: 20px; /* Increase the height of the checkbox */
+  margin-right: 10px; /* Add some space between the checkbox and the text */
 }
 
 .search-box {
@@ -128,7 +141,7 @@
   }
 
   .dropdown-menu {
-    width: 100%;
+    width: 80%;
   }
 }
 
@@ -240,7 +253,7 @@
 /* Styling for the blog author link */
 .blog-author a {
   background-color: #DDE5B6;
-  font-size: 1.6em; /* Increase font size */
+  font-size: 1.5em; /* Increase font size */
   font-weight: bold; /* Make font bold */
   color: #5e4a37; /* Change link color */
   text-decoration: underline; /* Remove underline */

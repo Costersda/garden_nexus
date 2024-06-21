@@ -56,9 +56,8 @@
 <div class="blog-list-container">
   <div class="blog-list-content">
     <div class="blog-item" *ngFor="let blog of blogs">
-      <app-blog-preview [blog]="blog" [source]="'blog'"></app-blog-preview>
+      <app-blog-preview [blog]="blog" [routerLink]="['/blog', blog._id]" [queryParams]="{ source: 'blog' }"></app-blog-preview>
     </div>
-    
   </div>
 </div>
 
