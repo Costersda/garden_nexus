@@ -1,4 +1,3 @@
-// src/app/shared/modules/blog-preview/blog-preview.component.ts
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
@@ -12,6 +11,8 @@ import { Blog } from '../../../shared/types/blog.interface';
 })
 export class BlogPreviewComponent {
   @Input() blog!: Blog;
+  @Input() source: string = 'blog';
+  @Input() username?: string;
 
   constructor(private router: Router) {}
 
@@ -20,6 +21,7 @@ export class BlogPreviewComponent {
   }
 
   viewBlog(id: string): void {
-    this.router.navigate(['/blog', id]);
+    const queryParams: any = this.source === 'profile' && this.username ? { source: 'profile', username: this.username } : { source: 'blog' };
+    this.router.navigate(['/blog', id], { queryParams });
   }
 }

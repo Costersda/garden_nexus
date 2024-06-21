@@ -223,36 +223,62 @@
   border-radius: 10px; /* Rounded edges */
   padding: 20px; /* Padding inside the container */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
-  margin-bottom: 20px;
-  max-width: 100%;
+  margin: 0 auto;
+  max-width: 80%;
+  text-align: left;
+}
+
+.blog-content-container p{
+  font-size: 1.4em !important;
 }
 
 .blog-section {
+  display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #ADC178;
-  border-radius: 10px; /* Rounded edges for images */
-  border: 3px solid #767772; /* Green border */
   padding: 20px;
-  margin-bottom: 20px;
 }
 
 .blog-img {
-  margin-right: 20px; /* Space between image and content */
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
 }
 
-.blog-content-container {
-  flex: 1;
-  text-align: left; /* Left-align the content */
+.blog-content {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 80%;
 }
 
 /* Styling for blog images */
 .blog-img img {
-  width: auto; /* Ensure images take up full width of the container */
-  height: 80%; /* Maintain aspect ratio */
+  width: 100%; /* Ensure images take up full width of the container */
+  max-width: 700px; /* Set a max width for images */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 500px; /* Set a max height for images */
   object-fit: cover; /* Ensure images cover the container */
   border-radius: 10px; /* Rounded edges for images */
   display: block; /* Ensure images are treated as block elements */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for images */
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .blog-content-container {
+    padding: 10px;
+  }
 
+  .blog-img img {
+    max-width: 100%; /* Ensure images are responsive */
+  }
+
+  .blog-section {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .blog-content-container {
+    max-width: 100%;
+  }
+}

@@ -24,7 +24,7 @@
 
 <div class="profile-content-container" *ngIf="blog">
   <div class="profile-content">
-    <div class="blog-section">
+    <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1">
       <div class="blog-img">
         <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
       </div>
@@ -32,7 +32,7 @@
         <p>{{ blog.content_section_1 }}</p>
       </div>
     </div>
-    <div class="blog-section">
+    <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2">
       <div class="blog-img">
         <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
       </div>
@@ -40,7 +40,7 @@
         <p>{{ blog.content_section_2 }}</p>
       </div>
     </div>
-    <div class="blog-section">
+    <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3">
       <div class="blog-img">
         <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
       </div>
@@ -49,6 +49,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="back-btn-container">
+  <button class="back-btn" (click)="goBack()">Back</button>
 </div>
 
 <app-footer></app-footer>

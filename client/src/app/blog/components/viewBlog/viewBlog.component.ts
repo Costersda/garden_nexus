@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
 import { UserService } from '../../../shared/services/user.service';
-import { User } from '../../../shared/types/user.interface'; // Import the User interface
+import { User } from '../../../shared/types/user.interface';
 
 @Component({
   selector: 'app-view-blog',
@@ -13,6 +13,8 @@ import { User } from '../../../shared/types/user.interface'; // Import the User 
 export class ViewBlogComponent implements OnInit, OnDestroy {
   blog: Blog | null = null;
   user: User | null = null;
+  source: string | null = null;
+  username: string | null = null;
   private routeSubscription!: Subscription;
   private blogSubscription!: Subscription;
   private userSubscription!: Subscription;
@@ -20,12 +22,18 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.routeSubscription = this.route.paramMap.subscribe(params => {
       const blogId = params.get('id');
+      this.route.queryParams.subscribe(queryParams => {
+        this.source = queryParams['source'] || null;
+        this.username = queryParams['username'] || null;
+        console.log('Query Params:', queryParams);
+      });
       if (blogId) {
         this.fetchBlog(blogId);
       }
@@ -67,5 +75,15 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         console.error('Error fetching user:', error);
       }
     );
+  }
+
+  goBack(): void {
+    console.log('source:', this.source);
+    console.log('username:', this.username);
+    if (this.source === 'profile' && this.username) {
+      this.router.navigate(['/profile', this.username]);
+    } else {
+      this.router.navigate(['/blogs']);
+    }
   }
 }

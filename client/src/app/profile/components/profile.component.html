@@ -14,8 +14,6 @@
   </div>
 </div>
 
-
-
 <div class="profile-content-container">
   <div class="profile-container" *ngIf="profile">
     <div class="profile-container-heading">
@@ -35,7 +33,6 @@
   <hr class="styled-hr">
 </div>
 
-
 <div class="profile-content-container">
   <div class="profile-content">
     <h2 class="content-subheading">Recent Blog Posts</h2>
@@ -43,11 +40,10 @@
   <div class="blog-list-container">
     <div class="blog-list-content">
       <div class="blog-item" *ngFor="let blog of blogs">
-        <app-blog-preview [blog]="blog"></app-blog-preview>
+        <app-blog-preview [blog]="blog" [source]="'profile'" [username]="profile?.username"></app-blog-preview>
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="profile-content-container">

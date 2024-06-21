@@ -1,4 +1,3 @@
-// src/app/blog/components/blog.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +24,6 @@ const routes: Routes = [
     { 
         path: 'blogs/create', 
         component: CreateBlogComponent 
-        // canActivate: [AuthGuardService]
     },
 ];
 
@@ -43,7 +41,7 @@ const routes: Routes = [
     ToolbarComponent,
     NavbarComponent,
     FooterComponent,
-    BlogPreviewComponent // Import BlogPreviewComponent as standalone
+    BlogPreviewComponent
   ],
   providers: [BlogService]
 })

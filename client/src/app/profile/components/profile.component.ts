@@ -80,6 +80,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
+  viewBlog(blogId: string | undefined): void {
+    if (blogId && this.profile?.username) {
+      this.router.navigate(['/blog', blogId], { queryParams: { source: 'profile', username: this.profile.username } });
+    }
+  }
+  
+
   openEditProfileModal(): void {
     if (this.isOwner) {
       this.isModalOpen = true;
