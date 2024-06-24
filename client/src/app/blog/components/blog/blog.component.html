@@ -43,14 +43,21 @@
       <h2>{{ blogHeader }}</h2>
     </div>
     <div class="right">
-      <button (click)="sortBlogs('newest')">New</button>
-      <button (click)="sortBlogs('oldest')">Old</button>
+      <button (click)="sortBlogs('newest')">Newest</button>
+      <button (click)="sortBlogs('oldest')">Oldest</button>
     </div>
   </div>
 </div>
 
 <div class="profile-content-container">
   <hr class="styled-hr">
+</div>
+
+<!-- Display no results message if no blogs are found -->
+<div class="profile-content-container" *ngIf="noResults">
+  <div class="profile-content">
+    <p>No blogs found for the selected categories and search query.</p>
+  </div>
 </div>
 
 <div class="blog-list-container">

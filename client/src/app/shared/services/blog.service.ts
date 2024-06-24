@@ -41,7 +41,9 @@ export class BlogService {
       params = params.set('categories', categories.join(','));
     }
 
-    return this.http.get<Blog[]>(this.apiUrl, { params });
+    console.log('Sending search request with params:', params.toString()); // Debugging log
+
+    return this.http.get<Blog[]>(`${this.apiUrl}/search`, { params });
   }
 
   getBlogsByUser(username: string): Observable<Blog[]> {

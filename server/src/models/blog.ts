@@ -25,4 +25,6 @@ const blogSchema = new Schema<BlogDocument>(
   }
 );
 
+blogSchema.index({ title: "text", content_section_1: "text", content_section_2: "text", content_section_3: "text" });
+
 export const Blog = model<BlogDocument>("Blog", blogSchema);

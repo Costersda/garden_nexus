@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
-import  User  from "../models/user"; // Assuming you have a User model
+import User from "../models/user";
 
 // Create a new blog post
 export const createBlog = async (
@@ -11,7 +11,7 @@ export const createBlog = async (
 ) => {
   try {
     const { user } = req;
-    
+
     if (!user) {
       return res.status(401).send({ error: "Unauthorized" });
     }
@@ -68,7 +68,7 @@ export const getBlogsByCategory = async (
 ) => {
   try {
     const categories = req.query.categories?.toString().split(",");
-    const blogs = await Blog.find({ categories: { $in: categories } });
+    const blogs = await Blog.find({ category: { $in: categories } });
     res.status(200).send(blogs);
   } catch (error) {
     next(error);
@@ -84,7 +84,7 @@ export const getBlogsByUser = async (
   try {
     const { username } = req.params;
     const user = await User.findOne({ username });
-    
+
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
@@ -133,7 +133,6 @@ export const deleteBlogById = async (
   }
 };
 
-
 // Get a single blog post by ID including user information
 export const getBlogWithUserById = async (
   req: Request,
@@ -152,6 +151,34 @@ export const getBlogWithUserById = async (
     }
 
     res.status(200).send({ blog, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get blog posts by search query and categories
+export const getBlogsBySearch = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { query, categories } = req.query;
+
+    const searchCriteria: any = {};
+
+    if (typeof query === 'string' && query.trim() !== '') {
+      searchCriteria.$text = { $search: query };
+    }
+
+    if (typeof categories === 'string' && categories.trim() !== '') {
+      searchCriteria.categories = { $in: categories.split(',') };
+    }
+
+    console.log('Search Criteria:', searchCriteria); // Debugging log
+
+    const blogs = await Blog.find(searchCriteria);
+    res.status(200).send(blogs);
   } catch (error) {
     next(error);
   }
