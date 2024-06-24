@@ -40,11 +40,11 @@
       <button (click)="createBlogPost()">Create a Post</button>
     </div>
     <div class="center">
-      <h2>Featured Blog Posts</h2>
+      <h2>{{ blogHeader }}</h2>
     </div>
     <div class="right">
-      <button (click)="sortBlogsByNewest()">New</button>
-      <button (click)="sortBlogsByNewest()">Popular</button>
+      <button (click)="sortBlogs('newest')">New</button>
+      <button (click)="sortBlogs('oldest')">Old</button>
     </div>
   </div>
 </div>

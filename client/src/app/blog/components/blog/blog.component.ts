@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
-import { Category } from '../../../shared/types/category.interface'; // Use your category interface
 
 @Component({
   selector: 'app-blog',
@@ -12,7 +11,7 @@ import { Category } from '../../../shared/types/category.interface'; // Use your
 export class BlogComponent implements OnInit, OnDestroy {
   blogs: Blog[] = [];
   displayedBlogs: Blog[] = [];
-  categories: Category[] = [
+  categories = [
     { name: 'Fruits & Vegetables', selected: false },
     { name: 'Lawns', selected: false },
     { name: 'Trees', selected: false },
@@ -22,7 +21,9 @@ export class BlogComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   isDropdownOpen = false;
   private blogSubscription!: Subscription;
-  private currentBlogCount = 10;
+  private initialBlogsToShow = 10; // Number of blogs to show initially
+  private blogsIncrement = 10; // Number of blogs to load each time
+  blogHeader: string = 'Newest Blog Posts'; // Default header text
 
   constructor(
     private blogService: BlogService,
@@ -43,8 +44,8 @@ export class BlogComponent implements OnInit, OnDestroy {
   fetchBlogs(): void {
     this.blogSubscription = this.blogService.getAllBlogs().subscribe(
       (blogs: Blog[]) => {
-        this.blogs = blogs;
-        this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
+        this.blogs = blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); // Sort by newest by default
+        this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
       },
       (error) => {
         console.error('Error fetching blogs', error);
@@ -58,11 +59,6 @@ export class BlogComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadMoreBlogs(): void {
-    this.currentBlogCount += 10;
-    this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
-  }
-
   searchBlogs(): void {
     const selectedCategories = this.categories
       .filter(category => category.selected)
@@ -71,8 +67,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.blogSubscription = this.blogService.getBlogsBySearch(this.searchQuery, selectedCategories).subscribe(
       (blogs: Blog[]) => {
         this.blogs = blogs;
-        this.currentBlogCount = 10; // Reset the count when new search results come in
-        this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
+        this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
       },
       (error) => {
         console.error('Error searching blogs', error);
@@ -88,8 +83,20 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.router.navigate(['/blogs/create'], { relativeTo: this.route });
   }
 
-  sortBlogsByNewest(): void {
-    this.blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
+  loadMoreBlogs(): void {
+    const currentLength = this.displayedBlogs.length;
+    const nextLength = currentLength + this.blogsIncrement;
+    this.displayedBlogs = this.blogs.slice(0, nextLength);
+  }
+
+  sortBlogs(order: 'newest' | 'oldest'): void {
+    if (order === 'newest') {
+      this.blogHeader = 'Newest Blog Posts';
+      this.blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    } else {
+      this.blogHeader = 'Oldest Blog Posts';
+      this.blogs.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    }
+    this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow); // Reset displayed blogs after sorting
   }
 }
