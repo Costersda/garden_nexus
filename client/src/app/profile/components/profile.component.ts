@@ -15,11 +15,14 @@ import { User } from '../../shared/types/user.interface';
 export class ProfileComponent implements OnInit, OnDestroy {
   profile: User | null = null;
   blogs: Blog[] = [];
+  displayedBlogs: Blog[] = [];
   errorMessage: string | null = null;
   isOwner: boolean = false;
   isModalOpen: boolean = false; // Define the isModalOpen property
   routeSubscription: Subscription | undefined;
   blogSubscription: Subscription | undefined;
+  private initialBlogsToShow = 5; // Number of blogs to show initially
+  private blogsIncrement = 5; // Number of blogs to load each time
 
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +76,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.blogSubscription = this.blogService.getBlogsByUser(username).subscribe(
       (blogs: Blog[]) => {
         this.blogs = blogs;
+        this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
       },
       (error) => {
         console.error('Error fetching blogs by user:', error);
@@ -80,12 +84,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
+  loadMoreBlogs(): void {
+    const currentLength = this.displayedBlogs.length;
+    const nextLength = currentLength + this.blogsIncrement;
+    this.displayedBlogs = this.blogs.slice(0, nextLength);
+  }
+
   viewBlog(blogId: string | undefined): void {
     if (blogId && this.profile?.username) {
       this.router.navigate(['/blog', blogId], { queryParams: { source: 'profile', username: this.profile.username } });
     }
   }
-  
 
   openEditProfileModal(): void {
     if (this.isOwner) {

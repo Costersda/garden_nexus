@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
-import { Category, CATEGORIES } from '../../../shared/types/category.interface';
+import { Category } from '../../../shared/types/category.interface'; // Use your category interface
 
 @Component({
   selector: 'app-blog',
@@ -11,10 +11,18 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 })
 export class BlogComponent implements OnInit, OnDestroy {
   blogs: Blog[] = [];
-  categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false }));
+  displayedBlogs: Blog[] = [];
+  categories: Category[] = [
+    { name: 'Fruits & Vegetables', selected: false },
+    { name: 'Lawns', selected: false },
+    { name: 'Trees', selected: false },
+    { name: 'Shrubs', selected: false },
+    { name: 'Full Gardens', selected: false }
+  ];
   searchQuery: string = '';
   isDropdownOpen = false;
   private blogSubscription!: Subscription;
+  private currentBlogCount = 10;
 
   constructor(
     private blogService: BlogService,
@@ -36,6 +44,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.blogSubscription = this.blogService.getAllBlogs().subscribe(
       (blogs: Blog[]) => {
         this.blogs = blogs;
+        this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
       },
       (error) => {
         console.error('Error fetching blogs', error);
@@ -49,6 +58,11 @@ export class BlogComponent implements OnInit, OnDestroy {
     }
   }
 
+  loadMoreBlogs(): void {
+    this.currentBlogCount += 10;
+    this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
+  }
+
   searchBlogs(): void {
     const selectedCategories = this.categories
       .filter(category => category.selected)
@@ -57,6 +71,8 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.blogSubscription = this.blogService.getBlogsBySearch(this.searchQuery, selectedCategories).subscribe(
       (blogs: Blog[]) => {
         this.blogs = blogs;
+        this.currentBlogCount = 10; // Reset the count when new search results come in
+        this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
       },
       (error) => {
         console.error('Error searching blogs', error);
@@ -74,5 +90,6 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   sortBlogsByNewest(): void {
     this.blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    this.displayedBlogs = this.blogs.slice(0, this.currentBlogCount);
   }
 }

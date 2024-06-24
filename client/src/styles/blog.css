@@ -123,6 +123,23 @@
   width: 100%; /* Ensure all blog items take up the full width of the grid column */
 }
 
+.load-more-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.load-more-btn img {
+  width: 90px; /* Adjust size as needed */
+  height: 90px; /* Adjust size as needed */
+}
+
+.load-more-btn:hover img {
+  transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
 @media (max-width: 768px) {
   .toolbar-content, .inline-toolbar-content {
     flex-direction: column;

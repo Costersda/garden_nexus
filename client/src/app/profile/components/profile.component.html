@@ -39,9 +39,16 @@
   </div>
   <div class="blog-list-container">
     <div class="blog-list-content">
-      <div class="blog-item" *ngFor="let blog of blogs">
+      <div class="blog-item" *ngFor="let blog of displayedBlogs">
         <app-blog-preview [blog]="blog" [source]="'profile'" [username]="profile?.username"></app-blog-preview>
       </div>
+    </div>
+  </div>
+  <div class="profile-content-container" *ngIf="blogs.length > displayedBlogs.length">
+    <div class="profile-content">
+      <button class="load-more-btn" (click)="loadMoreBlogs()">
+        <img src="assets/arrow_down.png" alt="Load More">
+      </button>
     </div>
   </div>
 </div>
