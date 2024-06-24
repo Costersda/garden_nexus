@@ -32,7 +32,8 @@
 
 .inline-toolbar button,
 .dropdown-toggle,
-.search-box button {
+.search-box button,
+.toolbar button {
   padding: 10px 25px;
   border: none;
   border-radius: 15px;
@@ -40,10 +41,13 @@
   color: #ffffff;
   font-size: 1.4em;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 .inline-toolbar .right button {
+  margin-left: 10px;
+}
+
+.reset-btn {
   margin-left: 10px;
 }
 
@@ -99,6 +103,10 @@
   margin-right: 10px;
   width: 400px;
   flex-grow: 1;
+}
+
+.search-error-message {
+  height: 400px;
 }
 
 .profile-content-container {

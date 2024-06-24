@@ -175,8 +175,6 @@ export const getBlogsBySearch = async (
       searchCriteria.categories = { $in: categories.split(',') };
     }
 
-    console.log('Search Criteria:', searchCriteria); // Debugging log
-
     const blogs = await Blog.find(searchCriteria);
     res.status(200).send(blogs);
   } catch (error) {

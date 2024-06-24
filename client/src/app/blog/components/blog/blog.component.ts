@@ -20,6 +20,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   private blogsIncrement = 10; // Number of blogs to load each time
   blogHeader: string = 'Newest Blog Posts'; // Default header text
   noResults: boolean = false; // Flag to show no results message
+  isSearchActive: boolean = false; // Flag to track if a search is active
 
   constructor(
     private blogService: BlogService,
@@ -37,12 +38,20 @@ export class BlogComponent implements OnInit, OnDestroy {
     }
   }
 
+  get isSearchButtonDisabled(): boolean {
+    const hasSelectedCategories = this.categories.some(category => category.selected);
+    const hasValidSearchQuery = this.searchQuery.trim().length > 0;
+    return !(hasSelectedCategories || hasValidSearchQuery);
+  }
+
   fetchBlogs(): void {
     this.blogSubscription = this.blogService.getAllBlogs().subscribe(
       (blogs: Blog[]) => {
         this.blogs = blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); // Sort by newest by default
         this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
         this.noResults = this.displayedBlogs.length === 0; // Check if no results
+        this.blogHeader = 'Newest Blog Posts';
+        this.isSearchActive = false; // Reset search active flag
       },
       (error) => {
         console.error('Error fetching blogs', error);
@@ -61,16 +70,17 @@ export class BlogComponent implements OnInit, OnDestroy {
       .filter(category => category.selected)
       .map(category => category.name);
 
-    console.log('Searching blogs with query:', this.searchQuery, 'and categories:', selectedCategories);
-
     this.blogSubscription = this.blogService.getBlogsBySearch(this.searchQuery, selectedCategories).subscribe(
       (blogs: Blog[]) => {
         this.blogs = blogs;
         this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
-        console.log('Blogs found:', blogs);
+        this.noResults = this.blogs.length === 0; // Set noResults based on blogs length
+        this.blogHeader = 'Search Results';
+        this.isSearchActive = true; // Set search active flag
       },
       (error) => {
         console.error('Error searching blogs', error);
+        this.noResults = true;
       }
     );
   }
@@ -91,12 +101,18 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   sortBlogs(order: 'newest' | 'oldest'): void {
     if (order === 'newest') {
-      this.blogHeader = 'Newest Blog Posts';
+      this.blogHeader = this.isSearchActive ? 'Newest Query Results' : 'Newest Blog Posts';
       this.blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     } else {
-      this.blogHeader = 'Oldest Blog Posts';
+      this.blogHeader = this.isSearchActive ? 'Oldest Query Results' : 'Oldest Blog Posts';
       this.blogs.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     }
     this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow); // Reset displayed blogs after sorting
+  }
+
+  resetSearch(): void {
+    this.categories.forEach(category => category.selected = false);
+    this.searchQuery = '';
+    this.fetchBlogs();
   }
 }

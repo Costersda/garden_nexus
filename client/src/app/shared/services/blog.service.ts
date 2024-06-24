@@ -41,8 +41,6 @@ export class BlogService {
       params = params.set('categories', categories.join(','));
     }
 
-    console.log('Sending search request with params:', params.toString()); // Debugging log
-
     return this.http.get<Blog[]>(`${this.apiUrl}/search`, { params });
   }
 

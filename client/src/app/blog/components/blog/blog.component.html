@@ -18,6 +18,7 @@
         <button class="dropdown-toggle" type="button" (click)="toggleDropdown()">
           Categories
         </button>
+        <button class="reset-btn" (click)="resetSearch()">Reset</button>
         <div class="dropdown-menu">
           <label *ngFor="let category of categories">
             <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
@@ -28,7 +29,7 @@
     <div class="right">
       <div class="search-box">
         <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
-        <button (click)="searchBlogs()">Search</button>
+        <button [disabled]="isSearchButtonDisabled" (click)="searchBlogs()">Search</button>
       </div>
     </div>
   </div>
@@ -56,7 +57,9 @@
 <!-- Display no results message if no blogs are found -->
 <div class="profile-content-container" *ngIf="noResults">
   <div class="profile-content">
-    <p>No blogs found for the selected categories and search query.</p>
+    <div class="search-error-message">
+      <p>No blogs found for the selected categories and search query.</p>
+    </div>
   </div>
 </div>
 
