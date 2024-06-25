@@ -18,6 +18,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   imageErrors: { [key: string]: boolean } = {};
   maxTitleLength = 100; // Example maximum length for title
   maxContentLength = 1000;
+  minContentLength = 200;
 
   constructor(
     private blogService: BlogService,
@@ -97,8 +98,8 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   createBlog(): void {
     this.formSubmitted = true;
 
-    if (!this.blog.title || !this.blog.content_section_1 || !this.blog.image_1) {
-      return; // Prevent form submission if required fields are missing
+    if (!this.blog.title || !this.blog.content_section_1 || !this.blog.image_1 || this.blog.content_section_1.length < this.minContentLength) {
+      return; // Prevent form submission if required fields are missing or content_section_1 is too short
     }
 
     this.blogService.createBlog(this.blog).subscribe(() => {

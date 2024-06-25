@@ -265,6 +265,8 @@
   margin: 0 auto;
   max-width: 80%;
   text-align: left;
+  word-wrap: break-word; /* Ensure long words break and wrap within the container */
+  overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
 }
 
 .blog-content-container p{

@@ -75,7 +75,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   fetchBlogsByUser(username: string): void {
     this.blogSubscription = this.blogService.getBlogsByUser(username).subscribe(
       (blogs: Blog[]) => {
-        this.blogs = blogs;
+        this.blogs = blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
       },
       (error) => {

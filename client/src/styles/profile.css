@@ -12,6 +12,8 @@
   background-color: #DDE5B6;
   padding: 20px;
   border-radius: 20px;
+  word-wrap: break-word; /* Ensure long words break and wrap within the container */
+  overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
 }
 
 .profile-content {
@@ -25,6 +27,8 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 0;
+  word-wrap: break-word; /* Ensure long words break and wrap within the container */
+  overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
 }
 
 .profile-username {

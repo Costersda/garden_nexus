@@ -13,14 +13,12 @@
 
 <div class="profile-content-container">
   <div class="profile-content">
-    <h2 class="content-subheading">Create a Blog Posts</h2>
+    <h2 class="content-subheading">Create a Blog Post</h2>
   </div>
   <div class="profile-content-container">
     <hr class="styled-hr">
   </div>
 </div>
-
-
 
 <div class="profile-content-container">
   <div class="profile-content">
@@ -37,14 +35,15 @@
             <div *ngIf="blog.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
           </div>
         </div>
-        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || blog.content_section_1.length > maxContentLength)">
+        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || blog.content_section_1.length < minContentLength)">
           <label for="content_section_1" class="form-label">Content Section 1:</label>
           <div class="input-file-wrapper">
             <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
             <div class="word-count" [class.error-text]="blog.content_section_1.length > maxContentLength">
-              Character count: {{ blog.content_section_1.length }}/1000
+              Character count: {{ blog.content_section_1.length }}/1000 - Min 200 Characters.
             </div>
-            <div *ngIf="formSubmitted && !content_section_1.valid" class="error-text">Required</div>
+            <div *ngIf="formSubmitted && !content_section_1.valid && blog.content_section_1.length === 0" class="error-text">Required</div>
+            <div *ngIf="formSubmitted && blog.content_section_1.length > 0 && blog.content_section_1.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
             <div *ngIf="blog.content_section_1.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
           </div>
         </div>
