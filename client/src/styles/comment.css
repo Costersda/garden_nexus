@@ -6,9 +6,9 @@
     border-radius: 8px;
     background-color: #DDE5B6; /* Light green background */
     border: 5px solid #ADC178; /* Green border */
-  }
-  
-  .comment-left {
+}
+
+.comment-left {
     display: flex;
     flex-direction: column;
     flex: 0 0 150px;
@@ -16,50 +16,54 @@
     text-align: center;
     border-right: 5px solid #ADC178;
     padding: 15px 40px;
-  }
-  
-  .profile-image {
+}
+
+.profile-image {
     width: 100px;
     height: 100px;
     border-radius: 10%;
     object-fit: cover;
-  }
-  
-  .comment-author {
+}
+
+.comment-author {
     font-weight: bold;
-  }
-  
-  .comment-date {
+    color: #2C5F2D; /* Change the color to a darker green */
+    font-size: 1.2em; /* Increase the font size */
+    text-decoration: none; /* Remove underline from the link */
+}
+
+.comment-date {
     font-size: 0.8em;
     color: #666;
     margin: 0 !important;
-  }
-  
-  .comment-right {
+}
+
+.comment-right {
     flex: 1;
     padding: 20px;
     text-align: left; /* Align text to the left */
-  }
-  
-  .comment-text {
+}
+
+.comment-text {
     font-size: 1.2em !important; /* Larger text size */
-  }
-  
-  .add-comment-section {
+}
+
+.add-comment-section {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-  }
-  
-  .add-comment-section textarea {
+}
+
+.add-comment-section textarea {
     width: 100%;
     height: 150px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     resize: none;
-  }
-  
-  .add-comment-section button {
-    align-self: flex-end; /* Align the button to the right */
+}
+
+.add-comment-section button {
+    display: block;
+    margin-top: 10px;
     background-color: #ADC178;
     color: #ffffff;
     font-size: 1.2em;
@@ -67,52 +71,58 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 20px;
+    align-self: flex-end; /* Align the button to the right */
+}
 
-  }
-  
-  /* Media Query for smaller screens */
-  @media (max-width: 768px) {
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
     .comment {
-      flex-direction: column;
-      align-items: flex-start;
+        flex-direction: column;
+        align-items: left;
     }
-  
+
     .comment-left {
-      flex-direction: row;
-      align-items: center;
-      margin-right: 0;
-      margin-bottom: 0;
-      text-align: center;
-      border: none;
-      padding: 10px;
-      flex: 0 0 50px;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 0;
+        margin-bottom: 0;
+        text-align: center;
+        border: none;
+        padding: 10px;
+        flex: 0 0 50px;
     }
-  
+
     .profile-image {
-      width: 80px;
-      height: 80px;
-      margin-right: 10px;
+        width: 80px;
+        height: 80px;
+        margin-right: 10px;
     }
-  
+
     .comment-author,
     .comment-date {
-      text-align: left;
+        text-align: left;
+    }
+
+    .comment-right {
+        width: 100%;
+        text-align: left; /* Align text to the left */
+        font-size: 1.2em; /* Larger text size */
+        border-top: 5px solid #ADC178;
+        padding: 10px 20px;
     }
   
-    .comment-right {
-      width: 100%;
-      text-align: left; /* Align text to the left */
-      font-size: 1.2em; /* Larger text size */
-      border-top: 5px solid #ADC178;
-      padding: 10px 20px;
-    }
   
     .add-comment-section {
       width: 100%;
     }
   
-    .add-comment-section textarea {
-      height: 120px;
+
+    .add-comment-section {
+      width: 100%;
     }
-  }
   
+    .add-comment-section textarea {
+        height: 120px;
+    }
+}

@@ -55,7 +55,7 @@
         <div class="comment-left">
           <img [src]="comment.user.imageFile || 'assets/garden-nexus-logo.webp'" alt="User Image" class="profile-image">
           <div class="user-info">
-            <p class="comment-author">{{ comment.user.username | titlecase}}</p>
+            <a [routerLink]="['/profile', comment.user.username]" class="comment-author">{{ comment.user.username | titlecase }}</a>
             <p class="comment-date">{{ comment.createdAt | date:'short' }}</p>
           </div>
         </div>

@@ -41,7 +41,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       });
       if (blogId) {
         this.fetchBlog(blogId);
-        this.fetchComments(blogId);
       }
     });
   }
@@ -68,6 +67,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         if (blog.user_id) {
           this.fetchUser(blog.user_id);
         }
+        this.fetchComments(blogId); // Moved this here to ensure comments are fetched after blog data
       },
       (error) => {
         console.error('Error fetching blog:', error);
@@ -85,6 +85,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
 
   fetchComments(blogId: string): void {
     this.commentSubscription = this.commentService.getCommentsByBlogId(blogId).subscribe(
@@ -103,12 +104,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.userService.getCurrentUser().subscribe(
       (currentUser: User) => {
         console.log('Current User:', currentUser);
-        
+
         const commentData: Comment = {
           user: {
             _id: currentUser._id,
             username: currentUser.username,
-            imageFile: currentUser.imageFile
+            imageFile: currentUser.imageFile ? 'data:image/jpeg;base64,' + currentUser.imageFile : 'assets/garden-nexus-logo.webp'
           },
           blogId: this.blog?._id || '',
           comment: this.newComment,

@@ -30,7 +30,7 @@ app.get('/api/user', authMiddleware, usersController.currentUser);
 app.get('/api/user/current', authMiddleware, usersController.currentUser);
 app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
 app.put("/api/profile/:username", authMiddleware, usersController.updateProfile); // New update profile route
-app.get('/api/users/:id', usersController.getUserById); // Add this line
+app.get('/api/users/:id', usersController.getUserById);
 
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);
