@@ -56,12 +56,12 @@
           <img [src]="comment.user.imageFile || 'assets/garden-nexus-logo.webp'" alt="User Image" class="profile-image">
           <div class="user-info">
             <a [routerLink]="['/profile', comment.user.username]" class="comment-author">{{ comment.user.username | titlecase }}</a>
-            <p class="comment-date">{{ comment.createdAt | date:'short' }}</p>
           </div>
         </div>
         <div class="comment-right">
           <p class="comment-text">{{ comment.comment }}</p>
         </div>
+        <p class="comment-date">{{ comment.createdAt | date:'short' }}</p>
       </div>
     </div>
     <div class="add-comment-section">
