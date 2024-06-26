@@ -69,20 +69,14 @@ export const login = async (
 export const currentUser = async (req: ExpressRequestInterface, res: Response) => {
   try {
     if (!req.user) {
-      console.log('No user found in request');
       return res.sendStatus(401);
     }
-
     const user = await UserModel.findById(req.user.id);
     if (!user) {
-      console.log('User not found in database');
       return res.sendStatus(404);
     }
-
-    console.log('User found:', user);
     res.send(normalizeUser(user));
   } catch (error) {
-    console.error('Error fetching user:', error);
     res.status(500).json({ message: 'Error fetching user', error });
   }
 };
