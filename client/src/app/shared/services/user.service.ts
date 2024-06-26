@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { User } from '../types/user.interface';
 import { environment } from '../../../environments/environment';
 
@@ -17,6 +17,14 @@ export class UserService {
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/current`);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found in local storage');
+      return throwError('Token not found');
+    }
+    
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<User>(`${this.apiUrl}/current`, { headers });
   }
+  
 }

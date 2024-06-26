@@ -60,6 +60,7 @@
     height: 150px;
     margin-bottom: 10px;
     resize: none;
+    padding: 20px;
 }
 
 .add-comment-section button {

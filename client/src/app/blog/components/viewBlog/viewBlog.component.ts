@@ -100,39 +100,32 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   addComment(): void {
     if (!this.newComment.trim()) return;
-
-    this.userService.getCurrentUser().subscribe(
-      (currentUser: User) => {
-        console.log('Current User:', currentUser);
-
-        const commentData: Comment = {
-          user: {
-            _id: currentUser._id,
-            username: currentUser.username,
-            imageFile: currentUser.imageFile ? 'data:image/jpeg;base64,' + currentUser.imageFile : 'assets/garden-nexus-logo.webp'
-          },
-          blogId: this.blog?._id || '',
-          comment: this.newComment,
-          createdAt: new Date()
-        };
-
-        console.log('Comment Data:', commentData);
-
-        this.commentService.createComment(commentData).subscribe(
-          (comment: Comment) => {
-            console.log('Comment Created:', comment);
-            this.comments.push(comment);
-            this.newComment = '';
-          },
-          (error) => {
-            console.error('Error adding comment:', error);
-          }
-        );
-      },
-      (error) => {
-        console.error('Error fetching current user:', error);
-      }
-    );
+  
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser && currentUser.id) {
+      const commentData: Comment = {
+        user: {
+          _id: currentUser.id,
+          username: currentUser.username,
+          imageFile: currentUser.imageFile || 'assets/garden-nexus-logo.webp'
+        },
+        blogId: this.blog?._id || '',
+        comment: this.newComment,
+        createdAt: new Date()
+      };
+  
+      this.commentService.createComment(commentData).subscribe(
+        (comment: Comment) => {
+          this.comments.push(comment);
+          this.newComment = '';
+        },
+        (error) => {
+          console.error('Error adding comment:', error);
+        }
+      );
+    } else {
+      console.error('Current user not found in local storage');
+    }
   }
 
   goBack(): void {
