@@ -8,14 +8,17 @@ import * as blogController from "./controllers/blogs";
 import bodyParser from "body-parser";
 import authMiddleware from "./middlewares/auth";
 import cors from "cors";
+import path from 'path';
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' })); 
+app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.get("/", (req, res) => {
   res.send("API is UP");
@@ -24,6 +27,7 @@ app.get("/", (req, res) => {
 app.post("/api/users", usersController.register);
 app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);
+app.get('/api/user/current', authMiddleware, usersController.currentUser);
 app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
 app.put("/api/profile/:username", authMiddleware, usersController.updateProfile); // New update profile route
 app.get('/api/users/:id', usersController.getUserById); // Add this line
@@ -45,7 +49,6 @@ app.get("/api/blogs/:id", blogController.getBlogById);
 app.get("/api/blogs/:id", blogController.getBlogWithUserById); // Updated route to include user info
 app.patch("/api/blogs/:id", authMiddleware, blogController.updateBlogById);
 app.delete("/api/blogs/:id", blogController.deleteBlogById);
-
 
 io.on("connection", () => {
   console.log("connect");

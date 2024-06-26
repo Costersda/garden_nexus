@@ -5,6 +5,8 @@ import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
 import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/types/user.interface';
+import { CommentService } from '../../../shared/services/comment.service';
+import { Comment } from '../../../shared/types/comment.interface';
 
 @Component({
   selector: 'app-view-blog',
@@ -13,16 +15,20 @@ import { User } from '../../../shared/types/user.interface';
 export class ViewBlogComponent implements OnInit, OnDestroy {
   blog: Blog | null = null;
   user: User | null = null;
+  comments: Comment[] = [];
+  newComment: string = '';
   source: string | null = null;
   username: string | null = null;
   private routeSubscription!: Subscription;
   private blogSubscription!: Subscription;
   private userSubscription!: Subscription;
+  private commentSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
     private userService: UserService,
+    private commentService: CommentService,
     private router: Router
   ) {}
 
@@ -35,6 +41,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       });
       if (blogId) {
         this.fetchBlog(blogId);
+        this.fetchComments(blogId);
       }
     });
   }
@@ -48,6 +55,9 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.commentSubscription) {
+      this.commentSubscription.unsubscribe();
     }
   }
 
@@ -72,6 +82,54 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Error fetching user:', error);
+      }
+    );
+  }
+
+  fetchComments(blogId: string): void {
+    this.commentSubscription = this.commentService.getCommentsByBlogId(blogId).subscribe(
+      (comments: Comment[]) => {
+        this.comments = comments;
+      },
+      (error) => {
+        console.error('Error fetching comments:', error);
+      }
+    );
+  }
+
+  addComment(): void {
+    if (!this.newComment.trim()) return;
+
+    this.userService.getCurrentUser().subscribe(
+      (currentUser: User) => {
+        console.log('Current User:', currentUser);
+        
+        const commentData: Comment = {
+          user: {
+            _id: currentUser._id,
+            username: currentUser.username,
+            imageFile: currentUser.imageFile
+          },
+          blogId: this.blog?._id || '',
+          comment: this.newComment,
+          createdAt: new Date()
+        };
+
+        console.log('Comment Data:', commentData);
+
+        this.commentService.createComment(commentData).subscribe(
+          (comment: Comment) => {
+            console.log('Comment Created:', comment);
+            this.comments.push(comment);
+            this.newComment = '';
+          },
+          (error) => {
+            console.error('Error adding comment:', error);
+          }
+        );
+      },
+      (error) => {
+        console.error('Error fetching current user:', error);
       }
     );
   }

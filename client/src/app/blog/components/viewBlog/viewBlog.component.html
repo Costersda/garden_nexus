@@ -3,7 +3,7 @@
 
 <div class="profile-content-container">
   <div class="profile-content">
-    <h1 class="profile-heading">{{ blog?.title | titlecase}}</h1>
+    <h1 class="profile-heading">{{ blog?.title | titlecase }}</h1>
     <div class="blog-author-container">
       <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p> 
     </div>
@@ -50,6 +50,20 @@
 <div class="profile-content-container">
   <div class="profile-content">
     <h2 class="content-subheading">Comments</h2>
+    <div class="comment-section">
+      <div *ngFor="let comment of comments" class="comment">
+        <img *ngIf="comment.user.imageFile" [src]="comment.user.imageFile" alt="User Image" class="profile-image">        
+        <div class="comment-content">
+          <p class="comment-author">{{ comment.user.username }}</p>
+          <p>{{ comment.comment }}</p>
+          <p class="comment-date">{{ comment.createdAt | date:'short' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="add-comment-section">
+      <textarea [(ngModel)]="newComment" placeholder="Add a comment..."></textarea>
+      <button (click)="addComment()">Post Comment</button>
+    </div>
   </div>
 </div>
 

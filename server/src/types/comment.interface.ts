@@ -1,7 +1,8 @@
 import { Document, ObjectId } from "mongoose";
+import { User } from "./user.interface"; // Import the User interface from the user model
 
 export interface Comment {
-  user: ObjectId;
+  user: User | ObjectId; // Use the imported User interface here
   blogId: ObjectId;
   comment: string;
   createdAt: Date;

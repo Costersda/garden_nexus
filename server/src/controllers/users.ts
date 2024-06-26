@@ -1,8 +1,9 @@
+// usersController.ts
 import { NextFunction, Request, Response } from "express";
 import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
 import { Error } from "mongoose";
-import  jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { secret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 
@@ -65,14 +66,21 @@ export const login = async (
   }
 };
 
-
-export const currentUser = (req: ExpressRequestInterface, res: Response) => {
+export const currentUser = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
   if (!req.user) {
     return res.sendStatus(401);
   }
-  res.send(normalizeUser(req.user));
+  
+  try {
+    const user = await UserModel.findById(req.user.id).select('-password'); // Exclude password field
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    res.status(200).send(user);
+  } catch (error) {
+    next(error);
+  }
 };
-
 
 export const getProfile = async (
   req: Request,
