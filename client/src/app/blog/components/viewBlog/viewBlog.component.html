@@ -52,11 +52,15 @@
     <h2 class="content-subheading">Comments</h2>
     <div class="comment-section">
       <div *ngFor="let comment of comments" class="comment">
-        <img *ngIf="comment.user.imageFile" [src]="comment.user.imageFile" alt="User Image" class="profile-image">        
-        <div class="comment-content">
-          <p class="comment-author">{{ comment.user.username }}</p>
-          <p>{{ comment.comment }}</p>
-          <p class="comment-date">{{ comment.createdAt | date:'short' }}</p>
+        <div class="comment-left">
+          <img [src]="comment.user.imageFile || 'assets/garden-nexus-logo.webp'" alt="User Image" class="profile-image">
+          <div class="user-info">
+            <p class="comment-author">{{ comment.user.username | titlecase}}</p>
+            <p class="comment-date">{{ comment.createdAt | date:'short' }}</p>
+          </div>
+        </div>
+        <div class="comment-right">
+          <p class="comment-text">{{ comment.comment }}</p>
         </div>
       </div>
     </div>

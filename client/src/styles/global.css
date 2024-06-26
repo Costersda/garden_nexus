@@ -4,4 +4,6 @@
 
 * {
   box-sizing: border-box;
+  word-wrap: break-word; /* Ensure long words break and wrap within the container */
+  overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
 }
