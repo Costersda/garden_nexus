@@ -86,9 +86,6 @@
     .comment-left {
         flex-direction: row;
         align-items: center;
-        margin-right: 0;
-        margin-bottom: 0;
-        text-align: center;
         border: none;
         padding: 10px;
         flex: 0 0 50px;
@@ -100,10 +97,6 @@
         margin-right: 10px;
     }
 
-    .comment-author,
-    .comment-date {
-        text-align: left;
-    }
 
     .comment-right {
         width: 100%;
