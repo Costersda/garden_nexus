@@ -56,12 +56,13 @@
           <img [src]="comment.user.imageFile || 'assets/garden-nexus-logo.webp'" alt="User Image" class="profile-image">
           <div class="user-info">
             <a [routerLink]="['/profile', comment.user.username]" class="comment-author">{{ comment.user.username | titlecase }}</a>
+            <p class="comment-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
           </div>
         </div>
         <div class="comment-right">
           <p class="comment-text">{{ comment.comment }}</p>
+          <button *ngIf="user && comment.user._id === user._id" (click)="deleteComment(comment.id)" class="delete-comment-btn">Delete</button>
         </div>
-        <p class="comment-date">{{ comment.createdAt | date: 'dd/MM/yyyy' }}</p>
       </div>
     </div>
     <div class="add-comment-section">

@@ -1,4 +1,6 @@
 export interface Comment {
+  _id?: string;
+  id?: string;
   user: {
       _id: string;
       username: string;

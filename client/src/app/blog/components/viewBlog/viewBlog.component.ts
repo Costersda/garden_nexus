@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
@@ -23,13 +23,15 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   private blogSubscription!: Subscription;
   private userSubscription!: Subscription;
   private commentSubscription!: Subscription;
+  public currentUser: User | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
     private userService: UserService,
     private commentService: CommentService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         this.username = queryParams['username'] || null;
       });
       if (blogId) {
+        this.fetchCurrentUser();
         this.fetchBlog(blogId);
       }
     });
@@ -60,6 +63,20 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
+  fetchCurrentUser(): void {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUser = JSON.parse(storedUser);
+      console.log('Fetched current user from local storage:', this.currentUser);
+      if (this.currentUser && !this.currentUser._id) {
+        this.currentUser._id = (this.currentUser as any).id || this.currentUser._id; // Ensure _id is set
+        console.log('Updated currentUser with _id:', this.currentUser._id);
+      }
+    } else {
+      console.error('Current user not found in local storage');
+    }
+  }
+
   fetchBlog(blogId: string): void {
     this.blogSubscription = this.blogService.getBlogById(blogId).subscribe(
       (blog: Blog) => {
@@ -67,7 +84,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         if (blog.user_id) {
           this.fetchUser(blog.user_id);
         }
-        this.fetchComments(blogId); // Moved this here to ensure comments are fetched after blog data
+        this.fetchComments(blogId); // Ensure comments are fetched after blog data
       },
       (error) => {
         console.error('Error fetching blog:', error);
@@ -79,18 +96,37 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.userSubscription = this.userService.getUserById(userId).subscribe(
       (user: User) => {
         this.user = user;
+        console.log('User:', user);
       },
       (error) => {
         console.error('Error fetching user:', error);
       }
     );
   }
-  
 
   fetchComments(blogId: string): void {
     this.commentSubscription = this.commentService.getCommentsByBlogId(blogId).subscribe(
       (comments: Comment[]) => {
-        this.comments = comments;
+        this.comments = comments.map(comment => {
+          const user = comment.user as User;
+          const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
+          const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+          return {
+            ...comment,
+            _id: commentId,
+            user: {
+              ...user,
+              _id: userId
+            }
+          };
+        });
+        console.log('Comments:', this.comments);
+        if (this.currentUser) {
+          this.comments.forEach(comment => {
+            console.log(`Comparing: comment.user._id (${comment.user._id}) === currentUser._id (${this.currentUser!._id})`);
+          });
+        }
+        this.cd.detectChanges(); // Manually trigger change detection
       },
       (error) => {
         console.error('Error fetching comments:', error);
@@ -101,13 +137,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   addComment(): void {
     if (!this.newComment.trim()) return;
   
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser && currentUser.id) {
+    if (this.currentUser && this.currentUser._id) {
       const commentData: Comment = {
         user: {
-          _id: currentUser.id,
-          username: currentUser.username,
-          imageFile: currentUser.imageFile || 'assets/garden-nexus-logo.webp'
+          _id: this.currentUser._id,
+          username: this.currentUser.username,
+          imageFile: this.currentUser.imageFile || 'assets/garden-nexus-logo.webp'
         },
         blogId: this.blog?._id || '',
         comment: this.newComment,
@@ -116,8 +151,21 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   
       this.commentService.createComment(commentData).subscribe(
         (comment: Comment) => {
-          this.comments.push(comment);
+          const user = comment.user as User;
+          const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
+          const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+          const newComment: Comment = {
+            ...comment,
+            _id: commentId,
+            user: {
+              ...user,
+              _id: userId
+            }
+          };
+          this.comments = [...this.comments, newComment];
           this.newComment = '';
+          console.log('Added Comment:', newComment);
+          this.cd.detectChanges();
         },
         (error) => {
           console.error('Error adding comment:', error);
@@ -126,6 +174,29 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     } else {
       console.error('Current user not found in local storage');
     }
+  }
+  
+  deleteComment(commentId: string | undefined): void {
+    console.log('Attempting to delete comment with ID:', commentId);
+  
+    if (!commentId) {
+      console.error('Comment ID is undefined');
+      return;
+    }
+  
+    this.commentService.deleteCommentById(this.blog?._id || '', commentId).subscribe(
+      () => {
+        console.log('Successfully deleted comment with ID:', commentId);
+        this.comments = this.comments.filter(comment => {
+          const currentCommentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+          return currentCommentId !== commentId;
+        });
+        this.cd.detectChanges();
+      },
+      (error) => {
+        console.error('Error deleting comment:', error);
+      }
+    );
   }
 
   goBack(): void {
