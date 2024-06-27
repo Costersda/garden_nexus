@@ -20,19 +20,34 @@ export class AuthService {
 
   getCurrentUser(): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/user';
-    return this.http.get<CurrentUserInterface>(url);
+    return this.http.get<CurrentUserInterface>(url).pipe(
+      map((currentUser) => {
+        this.setCurrentUser(currentUser);
+        return currentUser;
+      })
+    );
   }
 
   register(
     registerRequest: RegisterRequestInterface
   ): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/users';
-    return this.http.post<CurrentUserInterface>(url, registerRequest);
+    return this.http.post<CurrentUserInterface>(url, registerRequest).pipe(
+      map((currentUser) => {
+        this.setCurrentUser(currentUser);
+        return currentUser;
+      })
+    );
   }
 
   login(loginRequest: LoginRequestInterface): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/users/login';
-    return this.http.post<CurrentUserInterface>(url, loginRequest);
+    return this.http.post<CurrentUserInterface>(url, loginRequest).pipe(
+      map((currentUser) => {
+        this.setCurrentUser(currentUser);
+        return currentUser;
+      })
+    );
   }
 
   setToken(currentUser: CurrentUserInterface): void {
@@ -40,6 +55,11 @@ export class AuthService {
   }
 
   setCurrentUser(currentUser: CurrentUserInterface | null): void {
+    if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('currentUser');
+    }
     this.currentUser$.next(currentUser);
   }
 
@@ -49,6 +69,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
   }
 }
