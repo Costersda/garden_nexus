@@ -24,7 +24,7 @@ export class CommentService {
     return this.http.get<Comment>(`${this.apiUrl}/${blogId}/${id}`);
   }
 
-  updateCommentById(blogId: string, id: string, comment: Comment): Observable<Comment> {
+  updateCommentById(blogId: string, id: string, comment: Partial<Comment>): Observable<Comment> {
     return this.http.patch<Comment>(`${this.apiUrl}/${blogId}/${id}`, comment);
   }
 

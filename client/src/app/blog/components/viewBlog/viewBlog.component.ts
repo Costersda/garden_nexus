@@ -24,6 +24,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   private userSubscription!: Subscription;
   private commentSubscription!: Subscription;
   public currentUser: User | null = null;
+  commentBeingEdited: Comment | null = null;
+  editCommentText: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -136,7 +138,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   addComment(): void {
     if (!this.newComment.trim()) return;
-  
+
     if (this.currentUser && this.currentUser._id) {
       const commentData: Comment = {
         user: {
@@ -148,7 +150,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         comment: this.newComment,
         createdAt: new Date()
       };
-  
+
       this.commentService.createComment(commentData).subscribe(
         (comment: Comment) => {
           const user = comment.user as User;
@@ -175,15 +177,15 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       console.error('Current user not found in local storage');
     }
   }
-  
+
   deleteComment(commentId: string | undefined): void {
     console.log('Attempting to delete comment with ID:', commentId);
-  
+
     if (!commentId) {
       console.error('Comment ID is undefined');
       return;
     }
-  
+
     this.commentService.deleteCommentById(this.blog?._id || '', commentId).subscribe(
       () => {
         console.log('Successfully deleted comment with ID:', commentId);
@@ -195,6 +197,42 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Error deleting comment:', error);
+      }
+    );
+  }
+
+  editComment(comment: Comment): void {
+    this.commentBeingEdited = comment;
+    this.editCommentText = comment.comment;
+  }
+
+  saveEditedComment(): void {
+    if (!this.editCommentText.trim() || !this.commentBeingEdited) return;
+  
+    const updatedComment = {
+      ...this.commentBeingEdited,
+      comment: this.editCommentText,
+      isEdited: true
+    };
+  
+    // Update local state immediately
+    this.comments = this.comments.map(c =>
+      c._id === updatedComment._id ? { ...updatedComment, comment: `${updatedComment.comment} ` } : c
+    );
+    this.commentBeingEdited = null;
+    this.editCommentText = '';
+    this.cd.detectChanges();
+  
+    // Then make the API call
+    this.commentService.updateCommentById(this.blog!._id!, updatedComment._id!, updatedComment).subscribe(
+      (comment: Comment) => {
+        console.log('Updated comment:', comment);
+        // No need to update local state again, as it's already updated
+      },
+      (error) => {
+        console.error('Error editing comment:', error);
+        // Revert the local change if the API call fails
+        this.fetchComments(this.blog!._id!);
       }
     );
   }

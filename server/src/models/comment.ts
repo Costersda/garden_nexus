@@ -17,6 +17,10 @@ const commentSchema = new Schema<CommentDocument>(
         type: String, 
         required: [true, "Comment is required"] 
     },
+    isEdited: {
+        type: Boolean,
+        default: false
+    }
   },
   {
     timestamps: { 

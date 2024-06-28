@@ -5,6 +5,7 @@ export interface Comment {
   user: User | ObjectId; // Use the imported User interface here
   blogId: ObjectId;
   comment: string;
+  isEdited?: boolean;
   createdAt: Date;
 }
 

@@ -9,4 +9,5 @@ export interface Comment {
   blogId: string;
   comment: string;
   createdAt: Date;
+  isEdited?: boolean;
 }

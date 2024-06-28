@@ -5,7 +5,7 @@
   <div class="profile-content">
     <h1 class="profile-heading">{{ blog?.title | titlecase }}</h1>
     <div class="blog-author-container">
-      <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p> 
+      <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
     </div>
   </div>
 </div>
@@ -60,8 +60,15 @@
           </div>
         </div>
         <div class="comment-right">
-          <p class="comment-text">{{ comment.comment }}</p>
-          <button *ngIf="user && comment.user._id === user._id" (click)="deleteComment(comment.id)" class="delete-comment-btn">Delete</button>
+          <div *ngIf="commentBeingEdited && commentBeingEdited._id === comment._id">
+            <textarea [(ngModel)]="editCommentText"></textarea>
+            <button (click)="saveEditedComment()">Save</button>
+          </div>
+          <div *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
+            <p class="comment-text">{{ comment.comment }} <span *ngIf="comment.isEdited">(edited)</span></p>
+            <button *ngIf="currentUser && comment.user._id === currentUser._id" (click)="editComment(comment)" class="edit-comment-btn">Edit</button>
+            <button *ngIf="currentUser && comment.user._id === currentUser._id" (click)="deleteComment(comment._id)" class="delete-comment-btn">Delete</button>
+          </div>
         </div>
       </div>
     </div>

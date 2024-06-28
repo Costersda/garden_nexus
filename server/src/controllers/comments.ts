@@ -16,6 +16,7 @@ const normalizeComment = (comment: CommentDocument) => {
     blogId: comment.blogId,
     comment: comment.comment,
     createdAt: comment.createdAt,
+    isEdited: comment.isEdited, // Include the isEdited field
     user: {
       id: user._id,
       username: user.username,
@@ -87,7 +88,7 @@ export const updateCommentById = async (
   try {
     const comment = await Comment.findOneAndUpdate(
       { _id: req.params.id, blogId: req.params.blogId },
-      req.body,
+      { ...req.body, isEdited: true }, // Set isEdited to true
       { new: true, runValidators: true }
     )
     .populate('user', 'username imageFile')
