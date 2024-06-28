@@ -1,20 +1,29 @@
 .comment {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     margin-bottom: 20px;
     border-radius: 8px;
-    background-color: #DDE5B6; /* Light green background */
-    border: 5px solid #ADC178; /* Green border */
+    background-color: #DDE5B6;
+    border: 5px solid #ADC178;
+    position: relative;
+}
+
+.comment::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 180px;
+    bottom: 0;
+    width: 5px;
+    background-color: #ADC178;
 }
 
 .comment-left {
     display: flex;
     flex-direction: column;
     flex: 0 0 150px;
-    margin-right: 20px;
     text-align: center;
-    border-right: 5px solid #ADC178;
     padding: 15px 40px;
 }
 
@@ -27,26 +36,27 @@
 
 .comment-author {
     font-weight: bold;
-    color: #2C5F2D; /* Change the color to a darker green */
-    font-size: 1.2em; /* Increase the font size */
-    text-decoration: none; /* Remove underline from the link */
+    color: #2C5F2D;
+    font-size: 1.2em;
+    text-decoration: none;
 }
 
 .comment-date {
     font-size: 0.8em;
     color: #666;
     margin: 0 !important;
-    padding: 10px;
+    font-style: oblique;
 }
 
 .comment-right {
     flex: 1;
-    padding: 20px;
-    text-align: left; /* Align text to the left */
+    padding: 10px 20px;
+    text-align: left;
 }
 
 .comment-text {
-    font-size: 1.2em !important; /* Larger text size */
+    font-size: 1.2em !important;
+    font-weight: 500;
 }
 
 .add-comment-section {
@@ -74,20 +84,19 @@
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 20px;
-    align-self: flex-end; /* Align the button to the right */
+    align-self: flex-end;
 }
 
 /* Media Query for smaller screens */
 @media (max-width: 768px) {
     .comment {
         flex-direction: column;
-        align-items: left;
+        align-items: flex-start;
     }
 
     .comment-left {
         flex-direction: row;
         align-items: center;
-        border: none;
         padding: 10px;
         flex: 0 0 50px;
     }
@@ -98,26 +107,98 @@
         margin-right: 10px;
     }
 
+    .comment::after {
+        display: none;
+    }
 
     .comment-right {
         width: 100%;
-        text-align: left; /* Align text to the left */
-        font-size: 1.2em; /* Larger text size */
+        text-align: left;
+        font-size: 1.2em;
         border-top: 5px solid #ADC178;
         padding: 10px 20px;
     }
-  
-  
-    .add-comment-section {
-      width: 100%;
-    }
-  
 
     .add-comment-section {
-      width: 100%;
+        width: 100%;
     }
-  
+
     .add-comment-section textarea {
         height: 120px;
+    }
+}
+
+.comment-toolbar {
+    position: relative;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+}
+
+.ellipsis-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu label {
+    display: block;
+    padding: 10px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    margin-bottom: 0;
+}
+
+.dropdown-menu label:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+}
+
+@media (max-width: 768px) {
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+    }
+
+    .dropdown {
+        align-self: flex-end;
+        margin-top: -25px;
     }
 }

@@ -10,4 +10,5 @@ export interface Comment {
   comment: string;
   createdAt: Date;
   isEdited?: boolean;
+  showDropdown?: boolean;  
 }

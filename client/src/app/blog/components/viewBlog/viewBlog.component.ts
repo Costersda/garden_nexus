@@ -65,6 +65,13 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleDropdown(comment: Comment): void {
+    this.comments = this.comments.map(c => ({
+      ...c,
+      showDropdown: c._id === comment._id ? !c.showDropdown : false
+    }));
+  }
+
   fetchCurrentUser(): void {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
@@ -244,4 +251,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       this.router.navigate(['/blogs']);
     }
   }
+
+  
 }

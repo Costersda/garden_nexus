@@ -56,7 +56,6 @@
           <img [src]="comment.user.imageFile || 'assets/garden-nexus-logo.webp'" alt="User Image" class="profile-image">
           <div class="user-info">
             <a [routerLink]="['/profile', comment.user.username]" class="comment-author">{{ comment.user.username | titlecase }}</a>
-            <p class="comment-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
           </div>
         </div>
         <div class="comment-right">
@@ -64,10 +63,20 @@
             <textarea [(ngModel)]="editCommentText"></textarea>
             <button (click)="saveEditedComment()">Save</button>
           </div>
-          <div *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
+          <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
+            <div class="comment-header">
+              <p class="comment-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
+              <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
+                <button class="dropdown-toggle" (click)="toggleDropdown(comment)">
+                  <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+                </button>
+                <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">
+                  <label (click)="editComment(comment)">Edit</label>
+                  <label (click)="deleteComment(comment._id)">Delete</label>
+                </div>
+              </div>
+            </div>
             <p class="comment-text">{{ comment.comment }} <span *ngIf="comment.isEdited">(edited)</span></p>
-            <button *ngIf="currentUser && comment.user._id === currentUser._id" (click)="editComment(comment)" class="edit-comment-btn">Edit</button>
-            <button *ngIf="currentUser && comment.user._id === currentUser._id" (click)="deleteComment(comment._id)" class="delete-comment-btn">Delete</button>
           </div>
         </div>
       </div>
@@ -78,6 +87,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="profile-content-container">
   <hr class="styled-hr">
