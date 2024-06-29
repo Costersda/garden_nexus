@@ -60,7 +60,13 @@
         </div>
         <div class="comment-right">
           <div *ngIf="commentBeingEdited && commentBeingEdited._id === comment._id">
-            <textarea [(ngModel)]="editCommentText"></textarea>
+            <textarea [(ngModel)]="editCommentText" (ngModelChange)="checkCommentLength('edit')" [ngClass]="{'error-border': isEditCommentTooLong}"></textarea>
+            <div class="word-count-container">
+              <div class="word-count" [class.error-text]="editCommentText.length > maxCommentLength">
+                Character count: {{ editCommentText.length }}/{{ maxCommentLength }}
+              </div>
+              <div *ngIf="isEditCommentTooLong" class="error-message">Comment cannot exceed 600 characters.</div>
+            </div>
             <button (click)="saveEditedComment()">Save</button>
           </div>
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
@@ -82,12 +88,17 @@
       </div>
     </div>
     <div class="add-comment-section">
-      <textarea [(ngModel)]="newComment" placeholder="Add a comment..."></textarea>
-      <button (click)="addComment()">Post Comment</button>
+      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}"></textarea>
+      <div class="word-count-container">
+        <div class="word-count" [class.error-text]="newComment.length > maxCommentLength">
+          Character count: {{ newComment.length }}/{{ maxCommentLength }}
+        </div>
+        <div *ngIf="isNewCommentTooLong" class="error-message">Comment cannot exceed 600 characters.</div>
+      </div>
+      <button (click)="addComment()" [disabled]="isNewCommentTooLong">Post Comment</button>
     </div>
   </div>
 </div>
-
 
 <div class="profile-content-container">
   <hr class="styled-hr">

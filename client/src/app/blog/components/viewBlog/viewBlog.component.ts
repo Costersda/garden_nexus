@@ -26,6 +26,9 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   public currentUser: User | null = null;
   commentBeingEdited: Comment | null = null;
   editCommentText: string = '';
+  isNewCommentTooLong: boolean = false;
+  isEditCommentTooLong: boolean = false;
+  maxCommentLength: number = 600;
 
   constructor(
     private route: ActivatedRoute,
@@ -143,8 +146,16 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     );
   }
 
+  checkCommentLength(type: string): void {
+    if (type === 'new') {
+      this.isNewCommentTooLong = this.newComment.length > this.maxCommentLength;
+    } else if (type === 'edit') {
+      this.isEditCommentTooLong = this.editCommentText.length > this.maxCommentLength;
+    }
+  }
+
   addComment(): void {
-    if (!this.newComment.trim()) return;
+    if (!this.newComment.trim() || this.isNewCommentTooLong) return;
 
     if (this.currentUser && this.currentUser._id) {
       const commentData: Comment = {
@@ -173,6 +184,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           };
           this.comments = [...this.comments, newComment];
           this.newComment = '';
+          this.isNewCommentTooLong = false;
           console.log('Added Comment:', newComment);
           this.cd.detectChanges();
         },
@@ -211,10 +223,11 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   editComment(comment: Comment): void {
     this.commentBeingEdited = comment;
     this.editCommentText = comment.comment;
+    this.isEditCommentTooLong = false;
   }
 
   saveEditedComment(): void {
-    if (!this.editCommentText.trim() || !this.commentBeingEdited) return;
+    if (!this.editCommentText.trim() || !this.commentBeingEdited || this.isEditCommentTooLong) return;
   
     const updatedComment = {
       ...this.commentBeingEdited,
@@ -251,6 +264,4 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       this.router.navigate(['/blogs']);
     }
   }
-
-  
 }
