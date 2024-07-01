@@ -73,7 +73,7 @@
             <div class="comment-header">
               <p class="comment-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
               <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
-                <button class="dropdown-toggle" (click)="toggleDropdown(comment)">
+                <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
                   <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
                 </button>
                 <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">

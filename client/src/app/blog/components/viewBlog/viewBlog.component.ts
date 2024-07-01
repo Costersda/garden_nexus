@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
@@ -68,7 +68,16 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleDropdown(comment: Comment): void {
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    this.comments = this.comments.map(c => ({
+      ...c,
+      showDropdown: false
+    }));
+  }
+
+  toggleDropdown(comment: Comment, event: MouseEvent): void {
+    event.stopPropagation();
     this.comments = this.comments.map(c => ({
       ...c,
       showDropdown: c._id === comment._id ? !c.showDropdown : false
