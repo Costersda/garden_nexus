@@ -29,6 +29,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   isNewCommentTooLong: boolean = false;
   isEditCommentTooLong: boolean = false;
   maxCommentLength: number = 600;
+  private imageUrls: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +67,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     if (this.commentSubscription) {
       this.commentSubscription.unsubscribe();
     }
+    // Revoke all created object URLs
+  this.imageUrls.forEach(url => URL.revokeObjectURL(url));
   }
 
   @HostListener('document:click', ['$event'])
@@ -277,9 +280,15 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   getImageUrl(imageFile: any): string {
     if (imageFile && imageFile.type === 'Buffer' && Array.isArray(imageFile.data)) {
-      // Convert Buffer to base64
-      const base64 = btoa(String.fromCharCode.apply(null, imageFile.data));
-      return `data:image/jpeg;base64,${base64}`;
+      // Convert Buffer to Uint8Array
+      const uint8Array = new Uint8Array(imageFile.data);
+      // Convert Uint8Array to blob
+      const blob = new Blob([uint8Array], { type: 'image/jpeg' });
+      // Create a URL for the blob
+      const url = URL.createObjectURL(blob);
+      // Store the URL for later revocation
+      this.imageUrls.push(url);
+      return url;
     } else if (typeof imageFile === 'string') {
       return imageFile;
     }
