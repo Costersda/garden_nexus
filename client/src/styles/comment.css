@@ -75,7 +75,7 @@
   
   .add-comment-section button {
     display: block;
-    margin-top: 10px;
+    margin-top: 25px;
     background-color: #adc178;
     color: #ffffff;
     font-size: 1.2em;
@@ -83,7 +83,6 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 20px;
     align-self: flex-end;
   }
   

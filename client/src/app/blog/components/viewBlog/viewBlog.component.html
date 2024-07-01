@@ -4,12 +4,15 @@
 <div class="profile-content-container">
   <div class="profile-content">
     <h1 class="profile-heading">{{ blog?.title | titlecase }}</h1>
-    <div class="blog-author-container">
+    <div class="blog-author-box">
       <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
-      <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
+      <div class="author-info">
+        <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
+      </div>
     </div>
   </div>
 </div>
+
 
 <div class="profile-content-container">
   <hr class="styled-hr">

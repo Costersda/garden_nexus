@@ -1,9 +1,10 @@
-/* General styling */
 .toolbar, .inline-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  flex-wrap: wrap; /* Allow wrapping */
+  width: 100%; /* Ensure toolbar takes full width */
 }
 
 .toolbar {
@@ -19,7 +20,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 82%;
+  width: 100%; /* Use 100% width for better wrapping */
+  max-width: 1200px; /* Limit max width for larger screens */
+  flex-wrap: wrap; /* Allow wrapping */
 }
 
 .inline-toolbar .center {
@@ -58,7 +61,7 @@
   line-height: 45px;
 }
 
-.dropdown {
+.category-dropdown {
   position: relative;
 }
 
@@ -74,7 +77,7 @@
   padding: 20px;
 }
 
-.dropdown.open .dropdown-menu {
+.category-dropdown.open .dropdown-menu {
   display: block;
 }
 
@@ -101,7 +104,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-right: 10px;
-  width: 400px;
+  width: 100%; /* Allow the input to take full width */
+  max-width: 400px; /* Limit the max width */
   flex-grow: 1;
 }
 
@@ -124,7 +128,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Set a minimum width for blog items */
   gap: 20px;
-  width: 82%;
+  width: 100%;
 }
 
 .blog-item {
@@ -170,6 +174,7 @@
     width: 80%;
   }
 }
+
 
 .blog-preview {
   border: 5px solid #6C584C;
@@ -278,22 +283,42 @@
   text-align: right;
 }
 
-/* Styling for the blog author link */
-.blog-author a {
+.blog-author-box {
+  display: flex;
+  align-items: center;
+  padding: 10px;
   background-color: #DDE5B6;
-  font-size: 1.5em; /* Increase font size */
-  font-weight: bold; /* Make font bold */
-  color: #5e4a37; /* Change link color */
-  text-decoration: none; /* Remove underline */
-  margin-right: 100px;
-  border: 3px solid #ADC178;
-  border-radius: 10px; /* Rounded edges */
-  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  width: 250px; /* Adjust width as needed */
+  margin-left: auto; /* Align to the right */
+}
+
+.author-profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-author a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 1em;
 }
 
 .blog-author a:hover {
-  text-decoration: underline; /* Add underline on hover */
+  text-decoration: underline;
 }
+
 
 .blog-section {
   display: flex;
@@ -352,6 +377,10 @@
 
   .blog-section {
     padding: 10px;
+  }
+  
+  .blog-author-box {
+    margin-right: 20px;
   }
 }
 
