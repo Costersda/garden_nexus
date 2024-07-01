@@ -118,6 +118,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       (user: User) => {
         this.user = user;
         console.log('User:', user);
+        console.log('User image file:', user.imageFile);
       },
       (error) => {
         console.error('Error fetching user:', error);
@@ -272,5 +273,16 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/blogs']);
     }
+  }
+
+  getImageUrl(imageFile: any): string {
+    if (imageFile && imageFile.type === 'Buffer' && Array.isArray(imageFile.data)) {
+      // Convert Buffer to base64
+      const base64 = btoa(String.fromCharCode.apply(null, imageFile.data));
+      return `data:image/jpeg;base64,${base64}`;
+    } else if (typeof imageFile === 'string') {
+      return imageFile;
+    }
+    return 'assets/garden-nexus-logo.webp'; // Make sure this file exists
   }
 }
