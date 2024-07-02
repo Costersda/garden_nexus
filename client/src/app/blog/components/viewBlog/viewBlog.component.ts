@@ -33,6 +33,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   isEditCommentTooLong: boolean = false;
   maxCommentLength: number = 600;
   private imageUrls: string[] = [];
+  private imageUrlCache: { [key: string]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +74,14 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
     // Revoke all created object URLs
   this.imageUrls.forEach(url => URL.revokeObjectURL(url));
+
+  // Clear the image URL cache
+  for (const key in this.imageUrlCache) {
+    if (this.imageUrlCache[key].startsWith('blob:')) {
+      URL.revokeObjectURL(this.imageUrlCache[key]);
+    }
+  }
+  this.imageUrlCache = {};
   }
 
   @HostListener('document:click', ['$event'])
@@ -297,19 +306,28 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   getImageUrl(imageFile: any): string {
-    if (imageFile && imageFile.type === 'Buffer' && Array.isArray(imageFile.data)) {
-      // Convert Buffer to Uint8Array
-      const uint8Array = new Uint8Array(imageFile.data);
-      // Convert Uint8Array to blob
-      const blob = new Blob([uint8Array], { type: 'image/jpeg' });
-      // Create a URL for the blob
-      const url = URL.createObjectURL(blob);
-      // Store the URL for later revocation
-      this.imageUrls.push(url);
-      return url;
-    } else if (typeof imageFile === 'string') {
-      return imageFile;
+    if (!imageFile) {
+      return 'assets/garden-nexus-logo.webp';
     }
-    return 'assets/garden-nexus-logo.webp'; // Make sure this file exists
+  
+    const cacheKey = JSON.stringify(imageFile);
+    if (this.imageUrlCache[cacheKey]) {
+      return this.imageUrlCache[cacheKey];
+    }
+  
+    let url: string;
+    if (imageFile && imageFile.type === 'Buffer' && Array.isArray(imageFile.data)) {
+      const uint8Array = new Uint8Array(imageFile.data);
+      const blob = new Blob([uint8Array], { type: 'image/jpeg' });
+      url = URL.createObjectURL(blob);
+      this.imageUrls.push(url);
+    } else if (typeof imageFile === 'string') {
+      url = imageFile;
+    } else {
+      url = 'assets/garden-nexus-logo.webp';
+    }
+  
+    this.imageUrlCache[cacheKey] = url;
+    return url;
   }
 }
