@@ -171,9 +171,6 @@
     order: -1;
   }
 
-  .category-dropdown-menu {
-    /* width: 80%; */
-  }
 
   .search-box input {
     width: 60%;
@@ -212,6 +209,12 @@
   word-wrap: break-word; /* Wrap long words */
   height: 100%; /* Take up available space */
   line-height: 1.2;
+}
+
+.dropdown-placement {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px; 
 }
 
 .blog-preview-image {

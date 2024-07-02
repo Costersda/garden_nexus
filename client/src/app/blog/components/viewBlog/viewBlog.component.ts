@@ -34,6 +34,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   maxCommentLength: number = 600;
   private imageUrls: string[] = [];
   private imageUrlCache: { [key: string]: string } = {};
+  showBlogDropdown: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,12 +85,14 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   this.imageUrlCache = {};
   }
 
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     this.comments = this.comments.map(c => ({
       ...c,
       showDropdown: false
     }));
+    this.showBlogDropdown = false;
   }
 
   toggleDropdown(comment: Comment, event: MouseEvent): void {
@@ -98,6 +101,11 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       ...c,
       showDropdown: c._id === comment._id ? !c.showDropdown : false
     }));
+  }
+
+  toggleBlogDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showBlogDropdown = !this.showBlogDropdown;
   }
 
   fetchCurrentUser(): void {
@@ -127,6 +135,24 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         console.error('Error fetching blog:', error);
       }
     );
+  }
+
+  deleteBlog(blogId: string | undefined): void {
+    if (blogId) {
+      console.log('Delete blog with ID:', blogId);
+      // Implement delete logic here
+    } else {
+      console.error('Cannot delete blog: ID is undefined');
+    }
+  }
+
+  editBlog(blogId: string | undefined): void {
+    if (blogId) {
+      console.log('Edit blog with ID:', blogId);
+      // Implement edit logic here
+    } else {
+      console.error('Cannot edit blog: ID is undefined');
+    }
   }
 
   fetchUser(userId: string): void {
