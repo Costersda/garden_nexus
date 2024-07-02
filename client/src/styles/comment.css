@@ -100,6 +100,7 @@
     border-radius: 5px;
     cursor: pointer;
     padding: 10px 30px;
+    margin-top: 10px;
   }
   
   .save-btn {
@@ -107,8 +108,14 @@
   }
   
   .cancel-btn {
+    background-color: #ccc;
+    color: #333;
     align-self: flex-end;
     margin-right: 10px;
+  }
+
+  .edit-comment-btn:hover {
+    opacity: 0.8;
   }
   
   /* Media Query for smaller screens */

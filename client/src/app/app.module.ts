@@ -13,10 +13,14 @@ import { NavbarComponent } from './shared/modules/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { BlogModule } from './blog/blog.module';
 import { BlogPreviewComponent } from './shared/modules/blog-preview/blog-preview.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConfirmationDialogComponent } from './shared/modules/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -29,8 +33,11 @@ import { BlogPreviewComponent } from './shared/modules/blog-preview/blog-preview
     ToolbarComponent,
     NavbarComponent,
     BlogModule,
-    BlogPreviewComponent
+    BlogPreviewComponent,
+    MatDialogModule,
+    BrowserAnimationsModule,
   ],
+
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

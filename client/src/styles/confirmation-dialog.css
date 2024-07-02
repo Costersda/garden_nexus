@@ -1,0 +1,46 @@
+.dialog-container {
+    padding: 20px;
+    border-radius: 0px; /* Less rounded corners */
+    background-color: #F0EAD2;
+  }
+
+.dialog-title {
+    font-size: 1.6em !important;
+    color: #333;
+    font-weight: 500 !important;
+  }
+  
+  .dialog-content {
+    font-size: 1.2em;
+    color: #666;
+    margin: 30px 0;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .dialog-btn {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  
+  .dialog-cancel-btn {
+    background-color: #ccc;
+    color: #333;
+    margin-right: 10px;
+  }
+  
+  .dialog-confirm-btn {
+    background-color: #ADC178;
+    color: #ffffff;
+  }
+  
+  .dialog-btn:hover {
+    opacity: 0.8;
+  }
+  

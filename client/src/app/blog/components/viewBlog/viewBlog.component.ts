@@ -7,6 +7,9 @@ import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/types/user.interface';
 import { CommentService } from '../../../shared/services/comment.service';
 import { Comment } from '../../../shared/types/comment.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogService } from '../../../shared/modules/confirmation-dialog/confirmation-dialog.service';
+
 
 @Component({
   selector: 'app-view-blog',
@@ -37,7 +40,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private commentService: CommentService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private confirmationDialogService: ConfirmationDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -210,7 +214,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteComment(commentId: string | undefined): void {
+  async deleteComment(commentId: string | undefined): Promise<void> {
     console.log('Attempting to delete comment with ID:', commentId);
 
     if (!commentId) {
@@ -218,20 +222,28 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.commentService.deleteCommentById(this.blog?._id || '', commentId).subscribe(
-      () => {
-        console.log('Successfully deleted comment with ID:', commentId);
-        this.comments = this.comments.filter(comment => {
-          const currentCommentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
-          return currentCommentId !== commentId;
-        });
-        this.cd.detectChanges();
-      },
-      (error) => {
-        console.error('Error deleting comment:', error);
-      }
+    const confirmed = await this.confirmationDialogService.confirm(
+      'Confirm Deletion',
+      'Are you sure you want to delete this comment?'
     );
+
+    if (confirmed) {
+      this.commentService.deleteCommentById(this.blog?._id || '', commentId).subscribe(
+        () => {
+          console.log('Successfully deleted comment with ID:', commentId);
+          this.comments = this.comments.filter(comment => {
+            const currentCommentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+            return currentCommentId !== commentId;
+          });
+          this.cd.detectChanges();
+        },
+        (error) => {
+          console.error('Error deleting comment:', error);
+        }
+      );
+    }
   }
+
 
   editComment(comment: Comment): void {
     this.commentBeingEdited = comment;
