@@ -71,7 +71,10 @@
               </div>
               <div *ngIf="isEditCommentTooLong" class="error-message">Comment cannot exceed 600 characters.</div>
             </div>
-            <button (click)="saveEditedComment()">Save</button>
+            <div class="btn-bar">
+              <button class="edit-comment-btn cancel-btn" (click)="cancelEditComment()">Cancel</button>
+              <button class="edit-comment-btn save-btn" (click)="saveEditedComment()">Save</button>
+            </div>
           </div>
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="comment-header">

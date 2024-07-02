@@ -85,6 +85,31 @@
     cursor: pointer;
     align-self: flex-end;
   }
+
+  .btn-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .edit-comment-btn {
+    background-color: #adc178;
+    color: #ffffff;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 30px;
+  }
+  
+  .save-btn {
+    align-self: flex-start;
+  }
+  
+  .cancel-btn {
+    align-self: flex-end;
+    margin-right: 10px;
+  }
   
   /* Media Query for smaller screens */
   @media (max-width: 768px) {
@@ -126,6 +151,7 @@
     .add-comment-section textarea {
       height: 120px;
     }
+    
   }
   
   .comment-toolbar {

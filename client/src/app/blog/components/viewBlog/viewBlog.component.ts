@@ -239,6 +239,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.isEditCommentTooLong = false;
   }
 
+  cancelEditComment(): void {
+    this.commentBeingEdited = null;
+    this.editCommentText = '';
+    this.isEditCommentTooLong = false;
+  }
+
   saveEditedComment(): void {
     if (!this.editCommentText.trim() || !this.commentBeingEdited || this.isEditCommentTooLong) return;
   
