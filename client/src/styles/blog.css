@@ -20,7 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%; /* Use 100% width for better wrapping */
+  width: 80%;
   max-width: 1200px; /* Limit max width for larger screens */
   flex-wrap: wrap; /* Allow wrapping */
 }
@@ -104,8 +104,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-right: 10px;
-  width: 100%; /* Allow the input to take full width */
-  max-width: 400px; /* Limit the max width */
+  width: 500px; /* Allow the input to take full width */
   flex-grow: 1;
 }
 
@@ -172,6 +171,10 @@
 
   .dropdown-menu {
     width: 80%;
+  }
+
+  .search-box input {
+    width: 60%;
   }
 }
 
