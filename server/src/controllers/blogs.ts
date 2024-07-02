@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
+import { Comment } from "../models/comment"; // Import the Comment model
 import User from "../models/user";
 
 // Create a new blog post
@@ -127,6 +128,10 @@ export const deleteBlogById = async (
     if (!blog) {
       return res.status(404).send();
     }
+
+    // Delete all comments associated with the blog
+    await Comment.deleteMany({ blogId: req.params.id });
+
     res.status(200).send(blog);
   } catch (error) {
     next(error);

@@ -137,12 +137,27 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteBlog(blogId: string | undefined): void {
-    if (blogId) {
-      console.log('Delete blog with ID:', blogId);
-      // Implement delete logic here
-    } else {
-      console.error('Cannot delete blog: ID is undefined');
+  async deleteBlog(blogId: string): Promise<void> {
+    if (!blogId) {
+      console.error('Blog ID is undefined');
+      return;
+    }
+
+    const confirmed = await this.confirmationDialogService.confirm(
+      'Confirm Deletion',
+      'Are you sure you want to delete this blog and all its comments?'
+    );
+
+    if (confirmed) {
+      this.blogService.deleteBlog(blogId).subscribe(
+        () => {
+          console.log('Successfully deleted blog with ID:', blogId);
+          this.router.navigate(['/blogs']);
+        },
+        (error) => {
+          console.error('Error deleting blog:', error);
+        }
+      );
     }
   }
 
