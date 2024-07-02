@@ -15,11 +15,11 @@
   <div class="toolbar-content">
     <div class="left">
       <div class="category-dropdown" [class.open]="isDropdownOpen">
-        <button class="dropdown-toggle" type="button" (click)="toggleDropdown()">
+        <button class="category-dropdown-toggle" type="button" (click)="toggleDropdown()">
           Categories
         </button>
         <button class="reset-btn" (click)="resetSearch()">Reset</button>
-        <div class="dropdown-menu">
+        <div class="category-dropdown-menu">
           <label *ngFor="let category of categories">
             <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
           </label>

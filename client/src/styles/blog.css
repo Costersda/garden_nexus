@@ -34,7 +34,7 @@
 }
 
 .inline-toolbar button,
-.dropdown-toggle,
+.category-dropdown-toggle,
 .search-box button,
 .toolbar button {
   padding: 10px 25px;
@@ -65,29 +65,31 @@
   position: relative;
 }
 
-.dropdown-menu {
+.category-dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #DDE5B6;
-  border: 1px solid #ccc;
-  padding: 10px;
+  top: 100%;
+  background-color: #F0EAD2;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
   margin-top: 5px;
-  z-index: 1000;
-  width: 150%;
-  padding: 20px;
 }
 
-.category-dropdown.open .dropdown-menu {
+.category-dropdown.open .category-dropdown-menu {
   display: block;
 }
 
-.dropdown-menu label {
+.category-dropdown-menu label {
   display: block; /* Ensure each label takes up the full width */
-  margin-bottom: 10px; /* Add more spacing between the labels */
   font-size: 1.2em; /* Make the font larger */
+  display: block;
+  padding: 15px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 0;
 }
 
-.dropdown-menu input[type="checkbox"] {
+.category-dropdown-menu input[type="checkbox"] {
   width: 20px; /* Increase the width of the checkbox */
   height: 20px; /* Increase the height of the checkbox */
   margin-right: 10px; /* Add some space between the checkbox and the text */
@@ -169,8 +171,8 @@
     order: -1;
   }
 
-  .dropdown-menu {
-    width: 80%;
+  .category-dropdown-menu {
+    /* width: 80%; */
   }
 
   .search-box input {
