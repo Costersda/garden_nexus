@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div class="add-comment-section">
+    <div *ngIf="currentUser" class="add-comment-section">
       <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}"></textarea>
       <div class="word-count-container">
         <div class="word-count" [class.error-text]="newComment.length > maxCommentLength">
