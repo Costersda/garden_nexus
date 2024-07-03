@@ -145,7 +145,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
     const confirmed = await this.confirmationDialogService.confirm(
       'Confirm Deletion',
-      'Are you sure you want to delete this blog and all its comments?'
+      'Are you sure you want to delete this blog?'
     );
 
     if (confirmed) {

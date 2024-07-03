@@ -11,7 +11,8 @@ export class ConfirmationDialogService {
   confirm(title: string, message: string): Promise<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '400px',
-      data: { title, message }
+      data: { title, message },
+      panelClass: 'custom-dialog-container'
     });
 
     return dialogRef.afterClosed().toPromise();
