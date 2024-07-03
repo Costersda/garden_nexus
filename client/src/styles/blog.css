@@ -91,7 +91,7 @@
 .blog-options-label {
   background-color: #DDE5B6;
   color: #333; /* Adjust text color as needed */
-  transition: background-color 0.5s ease;
+  transition: background-color 0.3s ease;
   margin: 0;
 }
 
@@ -293,7 +293,8 @@
 }
 
 .blog-content-container p{
-  font-size: 1.4em !important;
+  font-size: 1.2em !important;
+  font-weight: 500;
 }
 
 .blog-author-container {

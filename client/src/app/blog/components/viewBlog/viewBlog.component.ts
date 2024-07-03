@@ -7,7 +7,6 @@ import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/types/user.interface';
 import { CommentService } from '../../../shared/services/comment.service';
 import { Comment } from '../../../shared/types/comment.interface';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogService } from '../../../shared/modules/confirmation-dialog/confirmation-dialog.service';
 
 

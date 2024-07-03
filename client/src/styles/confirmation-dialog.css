@@ -45,4 +45,5 @@
   
   .custom-dialog-container .mat-mdc-dialog-surface {
     border-radius: 10px; /* Or whatever value you prefer */
+    border: 2px solid #abafa0;
   }
