@@ -88,6 +88,16 @@
   white-space: nowrap;
   margin: 0;
 }
+.blog-options-label {
+  background-color: #DDE5B6;
+  color: #333; /* Adjust text color as needed */
+  transition: background-color 0.5s ease;
+  margin: 0;
+}
+
+.blog-options-label:hover {
+  background-color: #F0EAD2 !important;
+}
 
 .category-dropdown-menu input[type="checkbox"] {
   width: 20px; /* Increase the width of the checkbox */
@@ -271,7 +281,7 @@
 
 .blog-content-container {
   background-color: #DDE5B6; /* Light green background */
-  border: 3px solid #ADC178; /* Green border */
+  border: 2px solid #ADC178; /* Green border */
   border-radius: 10px; /* Rounded edges */
   padding: 20px; /* Padding inside the container */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */

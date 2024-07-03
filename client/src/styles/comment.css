@@ -5,7 +5,7 @@
     margin-bottom: 20px;
     border-radius: 8px;
     background-color: #dde5b6;
-    border: 5px solid #adc178;
+    border: 2px solid #adc178;
     position: relative;
   }
   
@@ -15,7 +15,7 @@
     top: 0;
     left: 180px;
     bottom: 0;
-    width: 5px;
+    width: 3px;
     background-color: #adc178;
   }
   
@@ -147,7 +147,7 @@
       width: 100%;
       text-align: left;
       font-size: 1.2em;
-      border-top: 5px solid #adc178;
+      border-top: 3px solid #adc178;
       padding: 10px 20px;
     }
   
@@ -199,6 +199,7 @@
     display: block;
     margin: 0;
     padding: 0;
+    border: 2px solid #ADC178;
   }
   
   .dropdown-menu label {
@@ -208,6 +209,7 @@
     white-space: nowrap;
     margin: 0;
     font-size: 1.2em;
+    transition: background-color 0.5s ease;
   }
   
   .dropdown-menu label:hover {
@@ -269,7 +271,7 @@
   }
   
   .error-border {
-    border: 3px solid red;
+    border: 2px solid red;
   }
   
   .error-text {

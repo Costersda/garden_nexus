@@ -26,8 +26,8 @@
           <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
         </button>
         <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
-          <label (click)="blog._id && editBlog(blog._id)">Edit</label>
-          <label (click)="blog._id && deleteBlog(blog._id)">Delete</label>
+          <label class="blog-options-label" (click)="blog._id && editBlog(blog._id)">Edit</label>
+          <label class="blog-options-label" (click)="blog._id && deleteBlog(blog._id)">Delete</label>
         </div>
       </div>
     </div>   
