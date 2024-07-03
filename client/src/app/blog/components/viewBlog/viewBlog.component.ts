@@ -9,7 +9,6 @@ import { CommentService } from '../../../shared/services/comment.service';
 import { Comment } from '../../../shared/types/comment.interface';
 import { ConfirmationDialogService } from '../../../shared/modules/confirmation-dialog/confirmation-dialog.service';
 
-
 @Component({
   selector: 'app-view-blog',
   templateUrl: './viewBlog.component.html',
@@ -34,6 +33,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   private imageUrls: string[] = [];
   private imageUrlCache: { [key: string]: string } = {};
   showBlogDropdown: boolean = false;
+  isEditMode: boolean = false;
+  originalBlog: Blog | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -72,18 +73,15 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     if (this.commentSubscription) {
       this.commentSubscription.unsubscribe();
     }
-    // Revoke all created object URLs
-  this.imageUrls.forEach(url => URL.revokeObjectURL(url));
+    this.imageUrls.forEach(url => URL.revokeObjectURL(url));
 
-  // Clear the image URL cache
-  for (const key in this.imageUrlCache) {
-    if (this.imageUrlCache[key].startsWith('blob:')) {
-      URL.revokeObjectURL(this.imageUrlCache[key]);
+    for (const key in this.imageUrlCache) {
+      if (this.imageUrlCache[key].startsWith('blob:')) {
+        URL.revokeObjectURL(this.imageUrlCache[key]);
+      }
     }
+    this.imageUrlCache = {};
   }
-  this.imageUrlCache = {};
-  }
-
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
@@ -113,7 +111,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       this.currentUser = JSON.parse(storedUser);
       console.log('Fetched current user from local storage:', this.currentUser);
       if (this.currentUser && !this.currentUser._id) {
-        this.currentUser._id = (this.currentUser as any).id || this.currentUser._id; // Ensure _id is set
+        this.currentUser._id = (this.currentUser as any).id || this.currentUser._id;
         console.log('Updated currentUser with _id:', this.currentUser._id);
       }
     } else {
@@ -125,10 +123,11 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.blogSubscription = this.blogService.getBlogById(blogId).subscribe(
       (blog: Blog) => {
         this.blog = blog;
+        this.originalBlog = JSON.parse(JSON.stringify(blog)); // Deep copy for reverting changes
         if (blog.user_id) {
           this.fetchUser(blog.user_id);
         }
-        this.fetchComments(blogId); // Ensure comments are fetched after blog data
+        this.fetchComments(blogId);
       },
       (error) => {
         console.error('Error fetching blog:', error);
@@ -160,13 +159,38 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
-  editBlog(blogId: string | undefined): void {
-    if (blogId) {
-      console.log('Edit blog with ID:', blogId);
-      // Implement edit logic here
-    } else {
-      console.error('Cannot edit blog: ID is undefined');
+  toggleEditMode(): void {
+    this.isEditMode = !this.isEditMode;
+    if (!this.isEditMode) {
+      this.saveBlogChanges();
     }
+  }
+
+  saveBlogChanges(): void {
+    if (this.blog && this.blog._id) {
+      this.blogService.updateBlog(this.blog._id, this.blog).subscribe(
+        (updatedBlog: Blog) => {
+          console.log('Blog updated successfully:', updatedBlog);
+          this.blog = updatedBlog;
+          this.originalBlog = JSON.parse(JSON.stringify(updatedBlog));
+          this.isEditMode = false;
+        },
+        (error) => {
+          console.error('Error updating blog:', error);
+        }
+      );
+    }
+  }
+
+  cancelEdit(): void {
+    this.blog = JSON.parse(JSON.stringify(this.originalBlog));
+    this.isEditMode = false;
+  }
+
+  uploadImage(section: number): void {
+    // Implement image upload logic here
+    console.log(`Uploading image for section ${section}`);
+    // You'll need to implement a file input and handle the file upload
   }
 
   fetchUser(userId: string): void {
@@ -204,7 +228,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
             console.log(`Comparing: comment.user._id (${comment.user._id}) === currentUser._id (${this.currentUser!._id})`);
           });
         }
-        this.cd.detectChanges(); // Manually trigger change detection
+        this.cd.detectChanges();
       },
       (error) => {
         console.error('Error fetching comments:', error);
@@ -293,7 +317,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
-
   editComment(comment: Comment): void {
     this.commentBeingEdited = comment;
     this.editCommentText = comment.comment;
@@ -308,30 +331,26 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   saveEditedComment(): void {
     if (!this.editCommentText.trim() || !this.commentBeingEdited || this.isEditCommentTooLong) return;
-  
+
     const updatedComment = {
       ...this.commentBeingEdited,
       comment: this.editCommentText,
       isEdited: true
     };
-  
-    // Update local state immediately
+
     this.comments = this.comments.map(c =>
       c._id === updatedComment._id ? { ...updatedComment, comment: `${updatedComment.comment} ` } : c
     );
     this.commentBeingEdited = null;
     this.editCommentText = '';
     this.cd.detectChanges();
-  
-    // Then make the API call
+
     this.commentService.updateCommentById(this.blog!._id!, updatedComment._id!, updatedComment).subscribe(
       (comment: Comment) => {
         console.log('Updated comment:', comment);
-        // No need to update local state again, as it's already updated
       },
       (error) => {
         console.error('Error editing comment:', error);
-        // Revert the local change if the API call fails
         this.fetchComments(this.blog!._id!);
       }
     );
@@ -349,12 +368,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     if (!imageFile) {
       return 'assets/garden-nexus-logo.webp';
     }
-  
+
     const cacheKey = JSON.stringify(imageFile);
     if (this.imageUrlCache[cacheKey]) {
       return this.imageUrlCache[cacheKey];
     }
-  
+
     let url: string;
     if (imageFile && imageFile.type === 'Buffer' && Array.isArray(imageFile.data)) {
       const uint8Array = new Uint8Array(imageFile.data);
@@ -366,7 +385,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     } else {
       url = 'assets/garden-nexus-logo.webp';
     }
-  
+
     this.imageUrlCache[cacheKey] = url;
     return url;
   }

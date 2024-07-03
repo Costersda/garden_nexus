@@ -13,7 +13,6 @@
   </div>
 </div>
 
-
 <div class="profile-content-container">
   <hr class="styled-hr">
 </div>
@@ -21,12 +20,12 @@
 <div class="profile-content-container" *ngIf="blog">
   <div class="profile-content">
     <div class="dropdown-placement">
-      <div class="dropdown" *ngIf="currentUser && blog && currentUser._id === blog.user_id">
+      <div class="dropdown" *ngIf="currentUser && blog && currentUser._id === blog.user_id && !isEditMode">
         <button class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
           <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
         </button>
         <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
-          <label class="blog-options-label" (click)="blog._id && editBlog(blog._id)">Edit</label>
+          <label class="blog-options-label" (click)="toggleEditMode()">Edit</label>
           <label class="blog-options-label" (click)="blog._id && deleteBlog(blog._id)">Delete</label>
         </div>
       </div>
@@ -35,26 +34,36 @@
     <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1">
       <div class="blog-img">
         <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
+        <button *ngIf="isEditMode" (click)="uploadImage(1)">Upload Image</button>
       </div>
       <div class="blog-content-container">
-        <p>{{ blog.content_section_1 }}</p>
+        <p *ngIf="!isEditMode">{{ blog.content_section_1 }}</p>
+        <textarea *ngIf="isEditMode" [(ngModel)]="blog.content_section_1"></textarea>
       </div>
     </div>
     <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2">
       <div class="blog-img">
         <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
+        <button *ngIf="isEditMode" (click)="uploadImage(2)">Upload Image</button>
       </div>
       <div class="blog-content-container">
-        <p>{{ blog.content_section_2 }}</p>
+        <p *ngIf="!isEditMode">{{ blog.content_section_2 }}</p>
+        <textarea *ngIf="isEditMode" [(ngModel)]="blog.content_section_2"></textarea>
       </div>
     </div>
     <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3">
       <div class="blog-img">
         <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
+        <button *ngIf="isEditMode" (click)="uploadImage(3)">Upload Image</button>
       </div>
       <div class="blog-content-container">
-        <p>{{ blog.content_section_3 }}</p>
+        <p *ngIf="!isEditMode">{{ blog.content_section_3 }}</p>
+        <textarea *ngIf="isEditMode" [(ngModel)]="blog.content_section_3"></textarea>
       </div>
+    </div>
+    <div *ngIf="isEditMode" class="edit-buttons">
+      <button (click)="saveBlogChanges()">Save</button>
+      <button (click)="cancelEdit()">Cancel</button>
     </div>
   </div>
 </div>
