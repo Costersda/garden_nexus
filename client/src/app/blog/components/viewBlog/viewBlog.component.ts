@@ -35,6 +35,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   showBlogDropdown: boolean = false;
   isEditMode: boolean = false;
   originalBlog: Blog | null = null;
+  fileSizeError: { [key: string]: string } = {};
+  fileTypeError: { [key: string]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -188,9 +190,33 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   uploadImage(section: number): void {
-    // Implement image upload logic here
-    console.log(`Uploading image for section ${section}`);
-    // You'll need to implement a file input and handle the file upload
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: any) => {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+          this.fileSizeError[`image_${section}`] = 'File size exceeds 2 MB';
+          this.fileTypeError[`image_${section}`] = '';
+        } else if (!file.type.startsWith('image/')) {
+          this.fileTypeError[`image_${section}`] = 'Invalid file type';
+          this.fileSizeError[`image_${section}`] = '';
+        } else {
+          this.fileSizeError[`image_${section}`] = '';
+          this.fileTypeError[`image_${section}`] = '';
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (this.blog) {
+              // Ensure the property is assignable to string type
+              (this.blog as any)[`image_${section}`] = reader.result as string;
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    };
+    input.click();
   }
 
   fetchUser(userId: string): void {
