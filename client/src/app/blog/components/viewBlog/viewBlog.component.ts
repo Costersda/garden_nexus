@@ -37,6 +37,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   originalBlog: Blog | null = null;
   fileSizeError: { [key: string]: string } = {};
   fileTypeError: { [key: string]: string } = {};
+  formSubmitted: boolean = false;
+  maxTitleLength: number = 100;
+  minContentLength: number = 200;
+  maxContentLength: number = 1000;
 
   constructor(
     private route: ActivatedRoute,
@@ -169,19 +173,22 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   saveBlogChanges(): void {
-    if (this.blog && this.blog._id) {
-      this.blogService.updateBlog(this.blog._id, this.blog).subscribe(
-        (updatedBlog: Blog) => {
-          console.log('Blog updated successfully:', updatedBlog);
-          this.blog = updatedBlog;
-          this.originalBlog = JSON.parse(JSON.stringify(updatedBlog));
-          this.isEditMode = false;
-        },
-        (error) => {
-          console.error('Error updating blog:', error);
-        }
-      );
-    }
+    this.formSubmitted = true;
+    if (!this.blog || !this.blog._id) return;
+    if (this.hasFormErrors()) return;
+
+    this.blogService.updateBlog(this.blog._id, this.blog).subscribe(
+      (updatedBlog: Blog) => {
+        console.log('Blog updated successfully:', updatedBlog);
+        this.blog = updatedBlog;
+        this.originalBlog = JSON.parse(JSON.stringify(updatedBlog));
+        this.isEditMode = false;
+        this.formSubmitted = false;
+      },
+      (error) => {
+        console.error('Error updating blog:', error);
+      }
+    );
   }
 
   cancelEdit(): void {
@@ -208,7 +215,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           const reader = new FileReader();
           reader.onload = () => {
             if (this.blog) {
-              // Ensure the property is assignable to string type
               (this.blog as any)[`image_${section}`] = reader.result as string;
             }
           };
@@ -221,7 +227,30 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   deleteImage(section: number): void {
     if (this.blog) {
-      (this.blog as any)[`image_${section}`] = null;
+      (this.blog as any)[`image_${section}`] = '';
+    }
+  }
+
+  onFileChange(event: any, fieldName: string): void {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        this.fileSizeError[fieldName] = 'File size exceeds 2 MB';
+        this.fileTypeError[fieldName] = '';
+      } else if (!file.type.startsWith('image/')) {
+        this.fileTypeError[fieldName] = 'Invalid file type';
+        this.fileSizeError[fieldName] = '';
+      } else {
+        this.fileSizeError[fieldName] = '';
+        this.fileTypeError[fieldName] = '';
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (this.blog) {
+            (this.blog as any)[fieldName] = reader.result as string;
+          }
+        };
+        reader.readAsDataURL(file);
+      }
     }
   }
 
@@ -420,5 +449,22 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
     this.imageUrlCache[cacheKey] = url;
     return url;
+  }
+
+  private hasFormErrors(): boolean {
+    if (!this.blog) return true;
+    const titleValid = this.blog?.title?.length <= this.maxTitleLength;
+    const contentSection1Valid = this.blog?.content_section_1?.length >= this.minContentLength && this.blog?.content_section_1?.length <= this.maxContentLength;
+    if (!this.blog.content_section_2) this.blog.content_section_2 = '';
+    const contentSection2Valid = this.blog?.content_section_2?.length >= this.minContentLength && this.blog?.content_section_2?.length <= this.maxContentLength;
+    if (!this.blog.content_section_3) this.blog.content_section_3 = '';
+    const contentSection3Valid = this.blog?.content_section_3?.length >= this.minContentLength && this.blog?.content_section_3?.length <= this.maxContentLength;
+    const image1Valid = !!this.blog?.image_1 && !this.fileSizeError['image_1'] && !this.fileTypeError['image_1'];
+    
+    return !titleValid || !contentSection1Valid || !image1Valid || this.hasImageErrors();
+  }
+
+  hasImageErrors(): boolean {
+    return Object.values(this.fileSizeError).some(error => !!error) || Object.values(this.fileTypeError).some(error => !!error);
   }
 }
