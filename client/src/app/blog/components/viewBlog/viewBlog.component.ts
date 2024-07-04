@@ -219,6 +219,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     input.click();
   }
 
+  deleteImage(section: number): void {
+    if (this.blog) {
+      (this.blog as any)[`image_${section}`] = null;
+    }
+  }
+
   fetchUser(userId: string): void {
     this.userSubscription = this.userService.getUserById(userId).subscribe(
       (user: User) => {

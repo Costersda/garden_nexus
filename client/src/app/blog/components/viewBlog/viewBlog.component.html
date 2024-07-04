@@ -29,10 +29,10 @@
           <label class="blog-options-label" (click)="blog._id && deleteBlog(blog._id)">Delete</label>
         </div>
       </div>
-    </div>   
+    </div>
 
-    <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1">
-      <div class="blog-img">
+    <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1 || isEditMode">
+      <div class="blog-img" *ngIf="blog.image_1 || isEditMode">
         <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
         <button *ngIf="isEditMode" (click)="uploadImage(1)">Upload Image</button>
       </div>
@@ -41,26 +41,35 @@
         <textarea *ngIf="isEditMode" [(ngModel)]="blog.content_section_1"></textarea>
       </div>
     </div>
-    <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2">
-      <div class="blog-img">
+
+    <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2 || isEditMode">
+      <div class="blog-img" *ngIf="blog.image_2 || isEditMode">
         <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
-        <button *ngIf="isEditMode" (click)="uploadImage(2)">Upload Image</button>
+        <div *ngIf="isEditMode">
+          <button (click)="uploadImage(2)">Upload Image</button>
+          <button *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
+        </div>
       </div>
-      <div class="blog-content-container">
+      <div *ngIf="isEditMode || blog.content_section_2" class="blog-content-container">
         <p *ngIf="!isEditMode">{{ blog.content_section_2 }}</p>
         <textarea *ngIf="isEditMode" [(ngModel)]="blog.content_section_2"></textarea>
       </div>
     </div>
-    <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3">
-      <div class="blog-img">
+
+    <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3 || isEditMode">
+      <div class="blog-img" *ngIf="blog.image_3 || isEditMode">
         <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
-        <button *ngIf="isEditMode" (click)="uploadImage(3)">Upload Image</button>
+        <div *ngIf="isEditMode">
+          <button (click)="uploadImage(3)">Upload Image</button>
+          <button *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
+        </div>
       </div>
-      <div class="blog-content-container">
+      <div *ngIf="isEditMode || blog.content_section_3" class="blog-content-container">
         <p *ngIf="!isEditMode">{{ blog.content_section_3 }}</p>
         <textarea *ngIf="isEditMode" [(ngModel)]="blog.content_section_3"></textarea>
       </div>
     </div>
+
     <div *ngIf="isEditMode" class="edit-buttons">
       <button (click)="saveBlogChanges()">Save</button>
       <button (click)="cancelEdit()">Cancel</button>
