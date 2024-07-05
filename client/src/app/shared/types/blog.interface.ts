@@ -12,6 +12,7 @@ export interface Blog {
     image_3?: string;
     categories: string[];
     comments: any[];
+    isEdited?: boolean;
     createdAt: Date;
     updatedAt: Date;
   }

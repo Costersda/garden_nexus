@@ -187,7 +187,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.formSubmitted = true;
     if (!this.blog || !this.blog._id) return;
     if (this.hasFormErrors()) return;
-
+  
+    // Mark the blog as edited
+    this.blog.isEdited = true;
+  
     this.blogService.updateBlog(this.blog._id, this.blog).subscribe(
       (updatedBlog: Blog) => {
         console.log('Blog updated successfully:', updatedBlog);
@@ -198,9 +201,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Error updating blog:', error);
+        this.formSubmitted = false; // Reset formSubmitted on error as well
       }
     );
   }
+  
+  
 
   cancelEdit(): void {
     this.blog = JSON.parse(JSON.stringify(this.originalBlog));
@@ -364,6 +370,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.commentBeingEdited = comment;
     this.editCommentText = comment.comment;
     this.isEditCommentTooLong = false;
+    setTimeout(() => {
+      const textarea = document.querySelector('.edit-comment-textarea') as HTMLTextAreaElement;
+      if (textarea) {
+        textarea.focus();
+      }
+    });
   }
 
   cancelEditComment(): void {

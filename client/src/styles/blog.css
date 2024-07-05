@@ -297,6 +297,11 @@
   font-weight: 500;
 }
 
+.edited-text {
+  margin-bottom: 0 !important;
+  margin-right: 30px !important;
+}
+
 .blog-author-container {
   margin-top: 40px;
   text-align: right;
@@ -426,6 +431,11 @@
   
   .blog-author-box {
     margin-right: 20px;
+  }
+
+  .edited-text {
+    margin-top: -25px !important;
+    margin-right: 15px !important;
   }
 }
 

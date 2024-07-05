@@ -19,6 +19,10 @@ const blogSchema = new Schema<BlogDocument>(
     image_3: { type: String },
     categories: [{ type: String }],
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+    isEdited: {
+        type: Boolean,
+        default: false
+    }
   },
   {
     timestamps: true,
