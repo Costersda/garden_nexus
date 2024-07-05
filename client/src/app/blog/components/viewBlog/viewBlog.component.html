@@ -47,7 +47,7 @@
       <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1 || isEditMode">
         <div class="blog-img" *ngIf="blog.image_1 || isEditMode">
           <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
-          <button *ngIf="isEditMode" (click)="uploadImage(1)">Upload Image</button>
+          <!-- <button *ngIf="isEditMode" (click)="uploadImage(1)">Upload Image</button> -->
         </div>
         <div class="form-element" [class.error]="formSubmitted && (!blog.image_1 || fileSizeError['image_1'] || fileTypeError['image_1'])">
           <label for="image_1" class="form-label">Image 1:</label>
@@ -76,10 +76,10 @@
       <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2 || isEditMode">
         <div class="blog-img" *ngIf="blog.image_2 || isEditMode">
           <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
-          <div *ngIf="isEditMode">
-            <button (click)="uploadImage(2)">Upload Image</button>
-            <button *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
-          </div>
+        </div>
+        <div *ngIf="isEditMode">
+          <!-- <button (click)="uploadImage(2)">Upload Image</button> -->
+          <button class="delete-img-btn" *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
         </div>
         <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
           <div>
@@ -108,10 +108,10 @@
       <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3 || isEditMode">
         <div class="blog-img" *ngIf="blog.image_3 || isEditMode">
           <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
-          <div *ngIf="isEditMode">
-            <button (click)="uploadImage(3)">Upload Image</button>
-            <button *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
-          </div>
+        </div>
+        <div *ngIf="isEditMode">
+          <!-- <button (click)="uploadImage(3)">Upload Image</button> -->
+          <button class="delete-img-btn" *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
         </div>
         <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
           <div>
@@ -137,9 +137,11 @@
           </div>
       </div>
 
-      <div *ngIf="isEditMode" class="edit-buttons">
-        <button type="submit">Save</button>
-        <button type="button" (click)="cancelEdit()">Cancel</button>
+      <div class="blog-btn-bar-container">
+        <div class="blog-btn-bar">
+          <button class="edit-comment-btn cancel-btn" type="button" (click)="cancelEdit()">Cancel</button>
+          <button class="edit-comment-btn save-btn" type="submit">Save</button>
+        </div>
       </div>
     </form>
 

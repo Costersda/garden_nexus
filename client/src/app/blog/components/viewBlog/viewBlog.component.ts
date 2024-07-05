@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
@@ -64,8 +64,19 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         this.fetchBlog(blogId);
       }
     });
+  
+    // Add the MutationObserver here
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          this.addAutoGrow();
+        }
+      });
+    });
+  
+    observer.observe(document.body, { childList: true, subtree: true });
   }
-
+  
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
@@ -80,7 +91,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       this.commentSubscription.unsubscribe();
     }
     this.imageUrls.forEach(url => URL.revokeObjectURL(url));
-
+  
     for (const key in this.imageUrlCache) {
       if (this.imageUrlCache[key].startsWith('blob:')) {
         URL.revokeObjectURL(this.imageUrlCache[key]);
@@ -88,7 +99,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
     this.imageUrlCache = {};
   }
-
+  
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     this.comments = this.comments.map(c => ({
@@ -129,7 +140,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.blogSubscription = this.blogService.getBlogById(blogId).subscribe(
       (blog: Blog) => {
         this.blog = blog;
-        this.originalBlog = JSON.parse(JSON.stringify(blog)); // Deep copy for reverting changes
+        this.originalBlog = JSON.parse(JSON.stringify(blog));
         if (blog.user_id) {
           this.fetchUser(blog.user_id);
         }
@@ -194,35 +205,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   cancelEdit(): void {
     this.blog = JSON.parse(JSON.stringify(this.originalBlog));
     this.isEditMode = false;
-  }
-
-  uploadImage(section: number): void {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (event: any) => {
-      const file = event.target.files[0];
-      if (file) {
-        if (file.size > 2 * 1024 * 1024) {
-          this.fileSizeError[`image_${section}`] = 'File size exceeds 2 MB';
-          this.fileTypeError[`image_${section}`] = '';
-        } else if (!file.type.startsWith('image/')) {
-          this.fileTypeError[`image_${section}`] = 'Invalid file type';
-          this.fileSizeError[`image_${section}`] = '';
-        } else {
-          this.fileSizeError[`image_${section}`] = '';
-          this.fileTypeError[`image_${section}`] = '';
-          const reader = new FileReader();
-          reader.onload = () => {
-            if (this.blog) {
-              (this.blog as any)[`image_${section}`] = reader.result as string;
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-    };
-    input.click();
   }
 
   deleteImage(section: number): void {
@@ -466,5 +448,19 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   hasImageErrors(): boolean {
     return Object.values(this.fileSizeError).some(error => !!error) || Object.values(this.fileTypeError).some(error => !!error);
+  }
+
+  addAutoGrow(): void {
+    const textareas = document.querySelectorAll('.auto-grow') as NodeListOf<HTMLTextAreaElement>;
+    textareas.forEach(textarea => {
+      this.autoGrow.call(textarea);
+      textarea.addEventListener('input', this.autoGrow.bind(textarea), false);
+    });
+    this.cd.detectChanges();
+  }
+  
+  autoGrow(this: HTMLTextAreaElement): void {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
   }
 }

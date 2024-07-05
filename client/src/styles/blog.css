@@ -302,6 +302,17 @@
   text-align: right;
 }
 
+.blog-btn-bar-container {
+  display: flex;
+  justify-content: center; /* Center child elements */
+}
+
+.blog-btn-bar {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+}
+
 .blog-author-box {
   display: flex;
   align-items: center;
@@ -336,6 +347,21 @@
 
 .blog-author a:hover {
   text-decoration: underline;
+}
+
+.delete-img-btn {
+  background-color: #6C584C;
+  color: #ffffff;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 20px 20px 20px;
+}
+
+.delete-img-btn:hover {
+  background-color: #b35a5a;
 }
 
 
