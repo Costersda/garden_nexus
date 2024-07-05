@@ -136,7 +136,10 @@
             </div>
           </div>
       </div>
-
+      <!-- Error message displayed if form submission fails -->
+      <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors())" class="error-text">
+        Please fix any errors before submitting.
+      </div>
       <div class="blog-btn-bar-container">
         <div class="blog-btn-bar">
           <button class="edit-comment-btn cancel-btn" type="button" (click)="cancelEdit()">Cancel</button>
