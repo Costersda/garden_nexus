@@ -124,6 +124,10 @@
       flex-direction: column;
       align-items: left;
     }
+
+    .add-comment-section button {
+      width: 100%;
+    }
   
     .comment-left {
       flex-direction: row;

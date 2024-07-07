@@ -3,7 +3,7 @@
 
 <div class="profile-content-container">
   <div class="profile-content">
-    <h1 class="profile-heading">{{ blog?.title | titlecase }}</h1>
+    <h1 class="blog-heading">{{ blog?.title | titlecase }}</h1>
     <div class="blog-author-box">
       <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
       <div class="author-info">
@@ -131,10 +131,21 @@
               <div *ngIf="blog.content_section_3 && blog.content_section_3.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
             </div>
           </div>
-      </div>
-    
+                <!-- Categories -->
+          <div class="form-element">
+            <label for="categories" class="form-label">Categories:</label>
+            <div class="categories-container">
+              <div class="category-item" *ngFor="let category of categories">
+                <label>
+                  <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="blog.categories.includes(category.name)"> {{ category.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <!-- Error message displayed if form submission fails -->
-      <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors())" class="error-text">
+      <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors() || blog.content_section_1.length < minContentLength)" class="error-text">
         Please fix any errors before submitting.
       </div>
       <div class="blog-btn-bar-container">
@@ -170,6 +181,16 @@
         </div>
         <div class="blog-content-container" *ngIf="blog.content_section_3">
           <p>{{ blog.content_section_3 }}</p>
+        </div>
+      </div>
+      <div class="blog-categories" *ngIf="blog.categories && blog.categories.length > 0">
+        <div class="blog-categories-container">
+          <h4>Categories:</h4>
+          <div class="category-labels">
+            <span class="category-label" *ngFor="let category of blog.categories">
+              {{ category }}
+            </span>
+          </div>
         </div>
       </div>
     </div>

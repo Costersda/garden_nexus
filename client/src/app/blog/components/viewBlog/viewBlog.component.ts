@@ -8,6 +8,7 @@ import { User } from '../../../shared/types/user.interface';
 import { CommentService } from '../../../shared/services/comment.service';
 import { Comment } from '../../../shared/types/comment.interface';
 import { ConfirmationDialogService } from '../../../shared/modules/confirmation-dialog/confirmation-dialog.service';
+import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
   selector: 'app-view-blog',
@@ -41,6 +42,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   maxTitleLength: number = 100;
   minContentLength: number = 200;
   maxContentLength: number = 1000;
+  categories: Category[] = CATEGORIES;
 
   constructor(
     private route: ActivatedRoute,
@@ -474,5 +476,14 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   autoGrow(this: HTMLTextAreaElement): void {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
+  }
+
+  toggleCategory(category: string): void {
+    const index = this.blog!.categories.indexOf(category);
+    if (index === -1) {
+      this.blog!.categories.push(category);
+    } else {
+      this.blog!.categories.splice(index, 1);
+    }
   }
 }
