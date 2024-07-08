@@ -3,7 +3,8 @@ import { User } from "./user.interface"; // Import the User interface from the u
 
 export interface Comment {
   user: User | ObjectId; // Use the imported User interface here
-  blogId: ObjectId;
+  blogId?: ObjectId;
+  forumId?: ObjectId;
   comment: string;
   isEdited?: boolean;
   createdAt: Date;

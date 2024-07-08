@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import * as usersController from "./controllers/users";
 import * as commentsController from "./controllers/comments";
 import * as blogController from "./controllers/blogs";
+import * as forumController from "./controllers/forums";
 import bodyParser from "body-parser";
 import authMiddleware from "./middlewares/auth";
 import cors from "cors";
@@ -49,6 +50,17 @@ app.get("/api/blogs/:id", blogController.getBlogById);
 app.get("/api/blogs/:id", blogController.getBlogWithUserById); // Updated route to include user info
 app.patch("/api/blogs/:id", authMiddleware, blogController.updateBlogById);
 app.delete("/api/blogs/:id", blogController.deleteBlogById);
+
+// Forum routes
+app.post("/api/forums", authMiddleware, forumController.createForum);
+app.get("/api/forums", forumController.getAllForums);
+app.get("/api/forums/search", forumController.getForumsBySearch);
+app.get("/api/forums/category", forumController.getForumsByCategory); // New route for getting forums by category
+app.get("/api/forums/user/:username", forumController.getForumsByUser); // New route for getting forums by username
+app.get("/api/forums/:id", forumController.getForumById);
+app.get("/api/forums/:id", forumController.getForumWithUserById); // Updated route to include user info
+app.patch("/api/forums/:id", authMiddleware, forumController.updateForumById);
+app.delete("/api/forums/:id", forumController.deleteForumById);
 
 io.on("connection", () => {
   console.log("connect");

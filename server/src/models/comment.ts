@@ -10,8 +10,11 @@ const commentSchema = new Schema<CommentDocument>(
     },
     blogId: { 
         type: Schema.Types.ObjectId, 
-        ref: "Blog", 
-        required: true 
+        ref: "Blog" 
+    },
+    forumId: { 
+        type: Schema.Types.ObjectId, 
+        ref: "Forum" 
     },
     comment: { 
         type: String, 
@@ -29,5 +32,13 @@ const commentSchema = new Schema<CommentDocument>(
     },
   }
 );
+
+// Ensure at least one of blogId or forumId is present
+commentSchema.pre('save', function (next) {
+  if (!this.blogId && !this.forumId) {
+    return next(new Error('Either blogId or forumId is required'));
+  }
+  next();
+});
 
 export const Comment = model<CommentDocument>("Comment", commentSchema);
