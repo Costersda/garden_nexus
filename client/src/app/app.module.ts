@@ -16,6 +16,8 @@ import { BlogPreviewComponent } from './shared/modules/blog-preview/blog-preview
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './shared/modules/confirmation-dialog/confirmation-dialog.component';
+import { ForumModule } from './forum/forum.module';
+import { ForumPreviewComponent } from './shared/modules/forum-preview/forum-preview.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { ConfirmationDialogComponent } from './shared/modules/confirmation-dialo
     BlogPreviewComponent,
     MatDialogModule,
     BrowserAnimationsModule,
+    ForumModule,
+    ForumPreviewComponent
   ],
 
   providers: [

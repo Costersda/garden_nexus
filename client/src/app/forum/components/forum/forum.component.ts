@@ -1,5 +1,10 @@
-import { AfterViewInit, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 
+
+@Component({
+    selector: 'app-forum',
+    templateUrl: './forum.component.html',
+  })
 
 export class ForumComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
