@@ -81,8 +81,8 @@ input[type="file"].error {
   margin-top: 20px;
 }
 
-.save-btn,
-.cancel-btn {
+.edit-profile-save-btn,
+.edit-profile-cancel-btn {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -92,11 +92,11 @@ input[type="file"].error {
   font-size: 16px;
 }
 
-.save-btn {
+.edit-profile-save-btn {
   background-color: #68d16c;
 }
 
-.cancel-btn {
+.edit-profile-cancel-btn {
   background-color: #f16b62;
 }
 
@@ -141,8 +141,8 @@ button:hover {
   select,
   textarea,
   input[type="file"],
-  .save-btn,
-  .cancel-btn {
+  .edit-profile-save-btn,
+  .edit-profile-cancel-btn {
     font-size: 14px;
     padding: 8px;
   }
@@ -156,8 +156,8 @@ button:hover {
     margin-top: 5px;
   }
 
-  .save-btn,
-  .cancel-btn {
+  .edit-profile-save-btn,
+  .edit-profile-cancel-btn {
     width: 100%;
     margin-bottom: 10px;
   }

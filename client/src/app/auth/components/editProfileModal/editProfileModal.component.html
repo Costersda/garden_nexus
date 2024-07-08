@@ -26,8 +26,8 @@
         <div *ngIf="fileTypeError" class="error-text">{{ fileTypeError }}</div>
       </div>
       <div class="button-group">
-        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
-        <button type="submit" class="save-btn" [disabled]="wordCount > 100 || !!fileSizeError || !!fileTypeError">Save</button>
+        <button type="button" class="edit-profile-cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="submit" class="edit-profile-save-btn" [disabled]="wordCount > 100 || !!fileSizeError || !!fileTypeError">Save</button>
       </div>
     </form>
   </div>
