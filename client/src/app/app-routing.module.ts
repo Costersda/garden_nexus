@@ -18,8 +18,8 @@ const routes: Routes = [
   { path: 'blog/:id', component: ViewBlogComponent },
   { path: 'blogs/create', component: CreateBlogComponent },
   { path: 'forum', component: ForumComponent },
-  { path: 'forum/:id', component: ViewForumComponent },
   { path: 'forum/create', component: CreateForumComponent },
+  { path: 'forum/:id', component: ViewForumComponent },
 ];
 
 @NgModule({
