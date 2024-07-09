@@ -6,6 +6,9 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { BlogComponent } from './blog/components/blog/blog.component';
 import { ViewBlogComponent } from './blog/components/viewBlog/viewBlog.component';
 import { CreateBlogComponent } from './blog/components/createBlog/createBlog.component';
+import { ForumComponent } from './forum/components/forum/forum.component';
+import { CreateForumComponent } from './forum/components/createForum/createForum.component';
+import { ViewForumComponent } from './forum/components/viewForum/viewForum.component';
 
 const routes: Routes = [
   { path: 'profile/:username', component: ProfileComponent },
@@ -14,6 +17,9 @@ const routes: Routes = [
   { path: 'blogs', component: BlogComponent },
   { path: 'blog/:id', component: ViewBlogComponent },
   { path: 'blogs/create', component: CreateBlogComponent },
+  { path: 'forum', component: ForumComponent },
+  { path: 'forum/:id', component: ViewForumComponent },
+  { path: 'forum/create', component: CreateForumComponent },
 ];
 
 @NgModule({

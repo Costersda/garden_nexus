@@ -10,3 +10,77 @@
 <div class="img-spacer">
   <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
 </div>
+
+<div class="toolbar">
+  <div class="toolbar-content">
+    <div class="left">
+      <div class="category-dropdown" [class.open]="isDropdownOpen">
+        <button class="category-dropdown-toggle" type="button" (click)="toggleDropdown()">
+          Categories
+        </button>
+        <button class="reset-btn" (click)="resetSearch()">Reset</button>
+        <div class="category-dropdown-menu">
+          <label *ngFor="let category of categories">
+            <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="search-box">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
+        <button [disabled]="isSearchButtonDisabled" (click)="searchForums()">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="inline-toolbar">
+  <div class="inline-toolbar-content">
+    <div class="left">
+      <button (click)="createForumPost()">Create a Post</button>
+    </div>
+    <div class="center">
+      <h2>{{ forumHeader }}</h2>
+    </div>
+    <div class="right">
+      <button (click)="sortForums('newest')">Newest</button>
+      <button (click)="sortForums('oldest')">Oldest</button>
+    </div>
+  </div>
+</div>
+
+<div class="profile-content-container">
+  <hr class="styled-hr">
+</div>
+
+<!-- Display no results message if no forums are found -->
+<div class="profile-content-container" *ngIf="noResults">
+  <div class="profile-content">
+    <div class="search-error-message">
+      <p>No posts found for the selected categories and search query.</p>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="profile-content-container">
+  <div class="profile-content">
+    <div class="forum-list-container">
+      <div class="forum-list-content">
+        <div class="forum-item" *ngFor="let forum of displayedForums">
+          <app-forum-preview [forum]="forum" [routerLink]="['/forum', forum._id]" [queryParams]="{ source: 'forum' }"></app-forum-preview>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="profile-content-container" *ngIf="forums.length > displayedForums.length">
+  <div class="profile-content">
+    <button class="load-more-btn" (click)="loadMoreForums()">
+      <img src="assets/arrow_down.png" alt="Load More">
+    </button>
+  </div>
+</div>
+
+<app-footer></app-footer>

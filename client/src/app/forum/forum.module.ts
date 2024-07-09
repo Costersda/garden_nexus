@@ -18,12 +18,13 @@ const routes: Routes = [
         component: ForumComponent 
     },
     { 
-        path: 'forum/:id', 
-        component: ViewForumComponent
+      path: 'forum/create', 
+      component: CreateForumComponent 
+
     },
     { 
-        path: 'forum/create', 
-        component: CreateForumComponent 
+      path: 'forum/:id', 
+      component: ViewForumComponent
     },
 ];
 

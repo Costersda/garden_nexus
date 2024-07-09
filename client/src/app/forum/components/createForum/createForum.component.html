@@ -1,0 +1,70 @@
+<app-toolbar></app-toolbar>
+<app-navbar></app-navbar>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h1 class="profile-heading">Forums</h1>
+  </div>
+</div>
+
+<div class="img-spacer">
+  <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
+</div>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h2 class="content-subheading">Create a Forum Post</h2>
+  </div>
+  <div class="profile-content-container">
+    <hr class="styled-hr">
+  </div>
+</div>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <div class="create-forum-container">
+      <form (ngSubmit)="createForum()" #forumForm="ngForm">
+        <div class="form-element" [class.error]="formSubmitted && (!title.valid || forum.title.length > maxTitleLength)">
+          <label for="title" class="form-label">Title:</label>
+          <div class="input-file-wrapper">
+            <input type="text" id="title" [(ngModel)]="forum.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
+            <div class="word-count" [class.error-text]="forum.title.length > maxTitleLength">
+              Character count: {{ forum.title.length }}/100
+            </div>
+            <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
+            <div *ngIf="forum.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
+          </div>
+        </div>
+        <div class="form-element" [class.error]="formSubmitted && (!content.valid || forum.content.length < minContentLength)">
+          <label for="content" class="form-label">Content:</label>
+          <div class="input-file-wrapper">
+            <textarea id="content" [(ngModel)]="forum.content" name="content" required class="form-input auto-grow" #content="ngModel" maxlength="1000"></textarea>
+            <div class="word-count" [class.error-text]="forum.content.length > maxContentLength">
+              Character count: {{ forum.content.length }}/1000 - Min 200 Characters.
+            </div>
+            <div *ngIf="formSubmitted && !content.valid && forum.content.length === 0" class="error-text">Required</div>
+            <div *ngIf="formSubmitted && forum.content.length > 0 && forum.content.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
+            <div *ngIf="forum.content.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+          </div>
+        </div>
+        <div class="form-element">
+          <label for="categories" class="form-label">Categories:</label>
+          <div class="categories-container">
+            <div class="category-item" *ngFor="let category of categories">
+              <label>
+                <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="forum.categories.includes(category.name)"> {{ category.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Error message displayed if form submission fails -->
+        <div *ngIf="formSubmitted && !forumForm.valid" class="error-text">
+          Please fix any errors before submitting.
+        </div>
+        <button class="blog-submitBtn" type="submit">Create Forum Post</button>
+      </form>
+    </div>
+  </div>  
+</div>
+
+<app-footer></app-footer>
