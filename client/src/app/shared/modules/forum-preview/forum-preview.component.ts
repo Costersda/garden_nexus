@@ -27,7 +27,7 @@ export class ForumPreviewComponent implements OnInit {
   }
 
   get previewContent(): string {
-    return this.forum.content.split(' ').slice(0, 150).join(' ') + '...';
+    return this.forum.content.split(' ').slice(0, 30).join(' ') + '...';
   }
 
   viewForum(id: string): void {

@@ -1,116 +1,136 @@
 /* Add these styles to your component's CSS file or global styles */
 .forum-preview {
-    display: flex;
-    flex-direction: column;
-    border: 5px solid #6C584C;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 16px;
-    position: relative; /* Needed to position the button at the bottom right */
-    background-color: #DDE5B6;
+  display: flex;
+  flex-direction: column;
+  border: 5px solid #6C584C;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  position: relative; /* Needed to position the button at the bottom right */
+  background-color: #DDE5B6;
+}
 
+.preview-forum-top,
+.preview-forum-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.top-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ensures the author text is aligned to the left */
+  width: 100%; /* Ensure top-left takes the full width */
+}
+
+.forum-meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Ensure forum-meta takes the full width */
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.forum-author {
+  color: #555;
+  text-align: left; /* Ensures author text is aligned to the left */
+  text-decoration: none; /* Remove underline */
+}
+
+.forum-author:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.forum-replies {
+  color: #555;
+  text-align: right; /* Ensures replies text is aligned to the right */
+}
+
+.bottom-left {
+  flex: 1;
+  max-width: 80%;
+  text-align: left; /* Ensures text is aligned to the left */
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+.forum-preview-title h2 {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 1.7em;
+  text-align: left;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.forum-preview-title a {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Keep the same color */
+}
+
+.forum-preview-title a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.forum-preview-content {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #333;
+  word-wrap: break-word;
+}
+
+.forum-preview-content p {
+  margin: 0 !important;
+}
+
+.view-forum-btn {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ADC178;
+  color: #ffffff;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.view-forum-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 1000px) {
+  .forum-preview {
+      padding: 16px;
   }
-  
+
   .preview-forum-top,
   .preview-forum-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  .top-left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Ensures the author text is aligned to the left */
-    width: 100%; /* Ensure top-left takes the full width */
-  }
-  
-  .forum-meta {
-    display: flex;
-    justify-content: space-between;
-    width: 100%; /* Ensure forum-meta takes the full width */
-    margin-bottom: 10px;
-  }
-  
-  .forum-author {
-    font-size: 0.9em;
-    color: #555;
-    text-align: left; /* Ensures author text is aligned to the left */
-  }
-  
-  .forum-replies {
-    font-size: 0.9em;
-    color: #555;
-    text-align: right; /* Ensures replies text is aligned to the right */
-  }
-  
-  .bottom-left {
-    flex: 1;
-    max-width: 80%;
-    text-align: left; /* Ensures text is aligned to the left */
-  }
-
-
-
-
-  
-  .bottom-right {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-  }
-  
-  .forum-preview-title h2{
-    /* margin: 0; */
-    font-size: 1.5em;
-    text-align: left;
-    line-height: 1.2;
-  }
-  
-  .forum-preview-content {
-    margin-bottom: 10px;
-    font-size: 1em;
-    color: #333;
-    word-wrap: break-word;
-  }
-
-  .forum-preview-content p {
-    margin: 0 !important;
-  }
-  
-  button {
-
-  }
-  
-  button:hover {
-
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 1000px) {
-    .forum-preview {
-      padding: 16px;
-    }
-  
-    .preview-forum-top,
-    .preview-forum-bottom {
       flex-direction: column;
       align-items: flex-start;
-    }
-  
- 
-    .forum-replies {
+  }
+
+  .forum-replies {
       margin-left: 0;
-    }
-  
-    .bottom-left {
+  }
+
+  .bottom-left {
       max-width: 100%;
-    }
-  
-    .bottom-right {
+  }
+
+  .bottom-right {
       align-self: flex-start;
       position: static;
       margin-top: 8px;
-    }
+      width: 100%;
   }
-  
+
+  .view-forum-btn{
+      width: 100%;
+  }
+}

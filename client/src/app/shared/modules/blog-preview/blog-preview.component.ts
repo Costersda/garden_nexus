@@ -17,7 +17,7 @@ export class BlogPreviewComponent {
   constructor(private router: Router) {}
 
   get previewContent(): string {
-    return this.blog.content_section_1.split(' ').slice(0, 150).join(' ') + '...';
+    return this.blog.content_section_1.split(' ').slice(0, 15).join(' ') + '...';
   }
 
   viewBlog(id: string): void {

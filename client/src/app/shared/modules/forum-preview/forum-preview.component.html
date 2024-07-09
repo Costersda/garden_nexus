@@ -3,20 +3,22 @@
   <div class="preview-forum-top">
     <div class="top-left">
       <div class="forum-preview-title">
-        <h2>{{ forum.title | titlecase }}</h2>
+        <h2><a [routerLink]="['/forum', forum._id]" class="forum-title">{{ forum.title | titlecase }}</a></h2>
       </div>
       <div class="forum-meta">
-        <span class="forum-author">Author: {{ forumAuthor }}</span>
+        <a [routerLink]="['/profile', forumAuthor | lowercase]" class="forum-author">
+          Author: {{ forumAuthor | titlecase }}
+        </a>
         <span class="forum-replies">Replies: {{ forum.comments.length }}</span>
       </div>
     </div>
   </div>
   <div class="preview-forum-bottom">
-    <div class="bottom-left forum-preview-content">
+    <!-- <div class="bottom-left forum-preview-content">
       <p>{{ previewContent }}</p>
-    </div>
+    </div> -->
     <div class="bottom-right">
-      <button *ngIf="forum._id" (click)="viewForum(forum._id)">View Forum</button>
+      <button class="view-forum-btn" *ngIf="forum._id" (click)="viewForum(forum._id)">View Post</button>
     </div>
   </div>
 </div>

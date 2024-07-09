@@ -48,10 +48,10 @@
 .toolbar button {
   padding: 10px 25px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #ADC178;
   color: #ffffff;
-  font-size: 1.4em;
+  font-size: 1.2em;
   cursor: pointer;
 }
 
