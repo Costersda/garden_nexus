@@ -2,10 +2,13 @@
 .forum-preview {
     display: flex;
     flex-direction: column;
-    border: 1px solid #ddd;
+    border: 5px solid #6C584C;
+    border-radius: 10px;
     padding: 16px;
     margin-bottom: 16px;
     position: relative; /* Needed to position the button at the bottom right */
+    background-color: #DDE5B6;
+
   }
   
   .preview-forum-top,
@@ -26,7 +29,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%; /* Ensure forum-meta takes the full width */
-    margin-top: 8px;
+    margin-bottom: 10px;
   }
   
   .forum-author {
@@ -43,9 +46,13 @@
   
   .bottom-left {
     flex: 1;
-    max-width: 70%;
+    max-width: 80%;
     text-align: left; /* Ensures text is aligned to the left */
   }
+
+
+
+
   
   .bottom-right {
     position: absolute;
@@ -53,32 +60,34 @@
     right: 16px;
   }
   
-  .forum-preview-title {
-    margin: 0;
+  .forum-preview-title h2{
+    /* margin: 0; */
     font-size: 1.5em;
+    text-align: left;
+    line-height: 1.2;
   }
   
   .forum-preview-content {
-    margin-top: 8px;
+    margin-bottom: 10px;
     font-size: 1em;
     color: #333;
     word-wrap: break-word;
   }
+
+  .forum-preview-content p {
+    margin: 0 !important;
+  }
   
   button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
+
   }
   
   button:hover {
-    background-color: #0056b3;
+
   }
   
   /* Responsive styles */
-  @media (max-width: 600px) {
+  @media (max-width: 1000px) {
     .forum-preview {
       padding: 16px;
     }
