@@ -1,0 +1,22 @@
+<!-- forum-preview.component.html -->
+<div class="forum-preview">
+  <div class="preview-forum-top">
+    <div class="top-left">
+      <div class="forum-preview-title">
+        <h2>{{ forum.title | titlecase }}</h2>
+      </div>
+      <div class="forum-meta">
+        <span class="forum-author">Author: {{ forumAuthor }}</span>
+        <span class="forum-replies">Replies: {{ forum.comments.length }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="preview-forum-bottom">
+    <div class="bottom-left forum-preview-content">
+      <p>{{ previewContent }}</p>
+    </div>
+    <div class="bottom-right">
+      <button *ngIf="forum._id" (click)="viewForum(forum._id)">View Forum</button>
+    </div>
+  </div>
+</div>

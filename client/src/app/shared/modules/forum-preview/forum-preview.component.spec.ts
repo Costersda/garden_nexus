@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ForumPreviewComponent } from './forum-preview.component';
 
-describe('BlogPreviewComponent', () => {
+describe('ForumPreviewComponent', () => {
   let component: ForumPreviewComponent;
   let fixture: ComponentFixture<ForumPreviewComponent>;
 

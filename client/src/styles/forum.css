@@ -1,0 +1,107 @@
+/* Add these styles to your component's CSS file or global styles */
+.forum-preview {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin-bottom: 16px;
+    position: relative; /* Needed to position the button at the bottom right */
+  }
+  
+  .preview-forum-top,
+  .preview-forum-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .top-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensures the author text is aligned to the left */
+    width: 100%; /* Ensure top-left takes the full width */
+  }
+  
+  .forum-meta {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensure forum-meta takes the full width */
+    margin-top: 8px;
+  }
+  
+  .forum-author {
+    font-size: 0.9em;
+    color: #555;
+    text-align: left; /* Ensures author text is aligned to the left */
+  }
+  
+  .forum-replies {
+    font-size: 0.9em;
+    color: #555;
+    text-align: right; /* Ensures replies text is aligned to the right */
+  }
+  
+  .bottom-left {
+    flex: 1;
+    max-width: 70%;
+    text-align: left; /* Ensures text is aligned to the left */
+  }
+  
+  .bottom-right {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+  }
+  
+  .forum-preview-title {
+    margin: 0;
+    font-size: 1.5em;
+  }
+  
+  .forum-preview-content {
+    margin-top: 8px;
+    font-size: 1em;
+    color: #333;
+    word-wrap: break-word;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 600px) {
+    .forum-preview {
+      padding: 16px;
+    }
+  
+    .preview-forum-top,
+    .preview-forum-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+ 
+    .forum-replies {
+      margin-left: 0;
+    }
+  
+    .bottom-left {
+      max-width: 100%;
+    }
+  
+    .bottom-right {
+      align-self: flex-start;
+      position: static;
+      margin-top: 8px;
+    }
+  }
+  
