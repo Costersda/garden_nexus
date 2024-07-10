@@ -1,4 +1,3 @@
-<!-- forum-preview.component.html -->
 <div class="forum-preview">
   <div class="preview-forum-top">
     <div class="top-left">
@@ -7,16 +6,18 @@
       </div>
       <div class="forum-meta">
         <a [routerLink]="['/profile', forumAuthor | lowercase]" class="forum-author">
-          Author: {{ forumAuthor | titlecase }}
+          By: {{ forumAuthor | titlecase }}
         </a>
         <span class="forum-replies">Replies: {{ forum.comments.length }}</span>
       </div>
     </div>
   </div>
   <div class="preview-forum-bottom">
-    <!-- <div class="bottom-left forum-preview-content">
-      <p>{{ previewContent }}</p>
-    </div> -->
+    <div class="bottom-left">
+      <div class="forum-preview-categories">
+        <span *ngFor="let category of forum.categories" class="forum-preview-category">{{ category }}</span>
+      </div>
+    </div>
     <div class="bottom-right">
       <button class="view-forum-btn" *ngIf="forum._id" (click)="viewForum(forum._id)">View Post</button>
     </div>

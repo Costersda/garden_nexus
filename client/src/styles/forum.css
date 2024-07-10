@@ -1,4 +1,5 @@
-/* Add these styles to your component's CSS file or global styles */
+/* forum-preview.component.css */
+
 .forum-preview {
   display: flex;
   flex-direction: column;
@@ -6,7 +7,6 @@
   border-radius: 10px;
   padding: 16px;
   margin-bottom: 16px;
-  position: relative; /* Needed to position the button at the bottom right */
   background-color: #DDE5B6;
 }
 
@@ -14,79 +14,143 @@
 .preview-forum-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
+}
+
+.preview-forum-bottom {
+  margin-top: auto;
 }
 
 .top-left {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Ensures the author text is aligned to the left */
-  width: 100%; /* Ensure top-left takes the full width */
+  align-items: flex-start;
+  width: 100%;
+}
+
+.forum-preview-title h2 {
+  margin: 0;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  line-height: 1.3;
+  font-weight: 600;
+  color: #4A4A4A;
+  text-align: start;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.forum-preview-title a {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.forum-preview-title a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #ADC178;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.forum-preview-title a:hover {
+  color: #6C584C;
+}
+
+.forum-preview-title a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 .forum-meta {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* Ensure forum-meta takes the full width */
-  margin-bottom: 10px;
+  width: 100%;
+  margin-bottom: 15px;
   font-size: 1.1em;
-  font-weight: 500;
+  color: #6C6C6C;
 }
 
 .forum-author {
-  color: #555;
-  text-align: left; /* Ensures author text is aligned to the left */
-  text-decoration: none; /* Remove underline */
+  color: #6C584C;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.forum-author::before {
+  content: '👤 ';
+  margin-right: 5px;
 }
 
 .forum-author:hover {
-  text-decoration: underline; /* Underline on hover */
+  color: #4A4A4A;
+}
+
+.forum-author::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #6C584C;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.forum-author:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 .forum-replies {
-  color: #555;
-  text-align: right; /* Ensures replies text is aligned to the right */
-}
-
-.bottom-left {
-  flex: 1;
-  max-width: 80%;
-  text-align: left; /* Ensures text is aligned to the left */
-}
-
-.bottom-right {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-}
-
-.forum-preview-title h2 {
-  margin: 0;
-  margin-bottom: 10px;
-  font-size: 1.7em;
-  text-align: left;
-  line-height: 1.2;
+  color: #6C6C6C;
   font-weight: 500;
 }
 
-.forum-preview-title a {
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Keep the same color */
+.forum-replies::before {
+  content: '💬 ';
+  margin-right: 5px;
 }
 
-.forum-preview-title a:hover {
-  text-decoration: underline; /* Underline on hover */
+.bottom-left {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
 }
 
-.forum-preview-content {
-  margin-bottom: 10px;
-  font-size: 1em;
-  color: #333;
-  word-wrap: break-word;
+.bottom-right {
+  display: flex;
+  align-items: flex-end;
 }
 
-.forum-preview-content p {
-  margin: 0 !important;
+.forum-preview-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 55px 0 0;
+}
+
+.forum-preview-category {
+  background-color: #ADC178;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 .view-forum-btn {
@@ -96,41 +160,74 @@
   background-color: #ADC178;
   color: #ffffff;
   font-size: 1.2em;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.view-forum-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
 }
 
 .view-forum-btn:hover {
-  background-color: #0056b3;
+  background-color: #91A654;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view-forum-btn:hover::before {
+  left: 100%;
+}
+
+.view-forum-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive styles */
 @media (max-width: 1000px) {
   .forum-preview {
-      padding: 16px;
+    padding: 16px;
   }
 
   .preview-forum-top,
   .preview-forum-bottom {
-      flex-direction: column;
-      align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .forum-replies {
-      margin-left: 0;
+    margin-left: 0;
   }
 
-  .bottom-left {
-      max-width: 100%;
-  }
-
+  .bottom-left,
   .bottom-right {
-      align-self: flex-start;
-      position: static;
-      margin-top: 8px;
-      width: 100%;
+    width: 100%;
   }
 
-  .view-forum-btn{
-      width: 100%;
+  .view-forum-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .forum-preview-categories {
+    margin-bottom: 10px;
+    padding: 0;
   }
 }
