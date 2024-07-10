@@ -1,14 +1,24 @@
 <!-- blog-preview.component.html -->
 <div class="blog-preview">
-  <div class="blog-preview-title">
-        <h2>{{ blog.title | titlecase }}</h2>
+  <div class="preview-blog-top">
+    <div class="top-left">
+      <div class="blog-preview-title">
+        <h2><a [routerLink]="['/blog', blog._id]">{{ blog.title | titlecase }}</a></h2>
+      </div>
+      
+    </div>
   </div>
   <div class="blog-preview-image">
-        <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
+    <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
   </div>
-  <div class="blog-preview-content">
-    <p>{{ previewContent }}</p>
+  <div class="blog-meta">
+    <a [routerLink]="['/profile', blogAuthor | lowercase]" class="blog-author">
+      By: {{ blogAuthor | titlecase }}
+    </a>
   </div>
-    <button *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
+  <div class="preview-blog-bottom">
+    <div class="bottom-right">
+      <button class="view-blog-btn" *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
+    </div>
   </div>
-  
+</div>

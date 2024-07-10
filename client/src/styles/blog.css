@@ -140,20 +140,22 @@
 .blog-list-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
-  background-color: #F0EAD2;
+  padding: 20px 0;
+  width: 100%;
 }
 
 .blog-list-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Set a minimum width for blog items */
-  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   width: 100%;
 }
 
 .blog-item {
-  box-sizing: border-box;
-  width: 100%; /* Ensure all blog items take up the full width of the grid column */
+  flex: 0 0 calc(25% - 20px);
+  margin: 10px;
+  max-width: calc(25% - 20px);
+  width: 100%;
 }
 
 .load-more-btn {
@@ -171,6 +173,13 @@
 
 .load-more-btn:hover img {
   transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
+@media (max-width: 1700px) {
+  .blog-item {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+  }
 }
 
 @media (max-width: 1200px) {
@@ -194,91 +203,24 @@
   .search-box input {
     width: 60%;
   }
+
+  .blog-item {
+    flex: 0 0 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
 }
 
-
-.blog-preview {
-  border: 5px solid #6C584C;
-  padding: 20px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  background-color: #DDE5B6;
-  text-align: center;
-  box-sizing: border-box;
-  height: 450px; /* Fixed height for all blog preview items */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-}
-
-.blog-preview-title {
-  height: 5.6em; /* Limit the height of the title */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.blog-preview h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word; /* Wrap long words */
-  height: 100%; /* Take up available space */
-  line-height: 1.2;
+@media screen and (max-width: 900px) {
+  .blog-item {
+    flex: 0 0 calc(100% - 20px);
+    max-width: calc(100% - 20px);
+  }
 }
 
 .dropdown-placement {
   display: flex;
   justify-content: flex-end;
   padding-right: 10px; 
-}
-
-.blog-preview-image {
-  height: 150px; /* Fixed height for images */
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.blog-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure image covers the container */
-  border: 4px solid #6C584C;
-  border-radius: 10px;
-}
-
-.blog-preview-content {
-  height: 6em; /* Limit the height of the content */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.blog-preview p {
-  font-size: 1em;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word; /* Wrap long words */
-  height: 100%; /* Take up available space */
-}
-
-.blog-preview button {
-  background-color: #ADC178;
-  color: #ffffff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.blog-preview button:hover {
-  background-color: #8baa5b;
 }
 
 /* Make sure the last row aligns to the left */
@@ -289,16 +231,16 @@
 }
 
 .blog-content-container {
-  background-color: #DDE5B6; /* Light green background */
-  border: 2px solid #ADC178; /* Green border */
-  border-radius: 10px; /* Rounded edges */
-  padding: 20px; /* Padding inside the container */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
-  margin: 0 auto;
-  max-width: 80%;
-  text-align: left;
-  word-wrap: break-word; /* Ensure long words break and wrap within the container */
-  overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
+  background-color: #DDE5B6;
+    border: 2px solid #ADC178;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 80%;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .blog-content-container p{
@@ -397,16 +339,15 @@
   max-width: 80%;
 }
 
-/* Styling for blog images */
 .blog-img img {
-  width: 100%; /* Ensure images take up full width of the container */
-  max-width: 700px; /* Set a max width for images */
-  height: auto; /* Maintain aspect ratio */
-  max-height: 500px; /* Set a max height for images */
-  object-fit: cover; /* Ensure images cover the container */
-  border-radius: 10px; /* Rounded edges for images */
-  display: block; /* Ensure images are treated as block elements */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for images */
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .back-btn-container {

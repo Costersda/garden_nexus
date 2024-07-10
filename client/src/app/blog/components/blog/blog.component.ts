@@ -16,8 +16,8 @@ export class BlogComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   isDropdownOpen = false;
   private blogSubscription!: Subscription;
-  private initialBlogsToShow = 10; // Number of blogs to show initially
-  private blogsIncrement = 10; // Number of blogs to load each time
+  private initialBlogsToShow = 8; // Number of blogs to show initially
+  private blogsIncrement = 8; // Number of blogs to load each time
   blogHeader: string = 'Newest Blog Posts'; // Default header text
   noResults: boolean = false; // Flag to show no results message
   isSearchActive: boolean = false; // Flag to track if a search is active

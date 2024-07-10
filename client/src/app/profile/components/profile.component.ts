@@ -21,8 +21,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isModalOpen: boolean = false; // Define the isModalOpen property
   routeSubscription: Subscription | undefined;
   blogSubscription: Subscription | undefined;
-  private initialBlogsToShow = 5; // Number of blogs to show initially
-  private blogsIncrement = 5; // Number of blogs to load each time
+  private initialBlogsToShow = 4; // Number of blogs to show initially
+  private blogsIncrement = 4; // Number of blogs to load each time
 
   constructor(
     private route: ActivatedRoute,
