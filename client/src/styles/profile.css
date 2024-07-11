@@ -68,8 +68,9 @@ p strong {
   margin-top: 0;
   margin-bottom: 20px;
   border: 0;
-  border-top: 3px solid #000;
+  border-top: 3px solid #6C584C;
   text-align: left;
+  opacity: 0.8;
 }
 
 .img-banner {
@@ -112,7 +113,9 @@ p strong {
   width: 80%;
   margin: 0 auto;
   border: 0;
-  border-top: 3px solid #000;
+  border-top: 3px solid #6C584C;
+  border-radius: 25px;
+  opacity: 0.8;
 }
 
 .content-subheading {

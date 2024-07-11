@@ -58,7 +58,7 @@
   background-color: #ADC178;
   transform: scaleX(0);
   transform-origin: bottom right;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .forum-preview-title a:hover {
@@ -100,10 +100,10 @@
   content: '';
   position: absolute;
   width: 100%;
-  height: 1px;
+  height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #6C584C;
+  background-color: #ADC178;
   transform: scaleX(0);
   transform-origin: bottom right;
   transition: transform 0.3s ease;

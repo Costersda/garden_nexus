@@ -12,7 +12,7 @@
     <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
   </div>
   <div class="blog-meta">
-    <a [routerLink]="['/profile', blogAuthor | lowercase]" class="blog-author">
+    <a [routerLink]="['/profile', blogAuthor | lowercase]" class="blog-preview-author">
       By: {{ blogAuthor | titlecase }}
     </a>
   </div>
