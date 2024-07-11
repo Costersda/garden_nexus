@@ -1,12 +1,12 @@
 <mat-toolbar>
-  <span>
-    <a routerLink="/" class="toolbar-logo">
-      Garden Nexus
-    </a>
-  </span>
+  <a routerLink="/" class="toolbar-logo">
+    Garden Nexus
+  </a>
   <span class="spacer"></span>
   <div class="toolbar-logged-in-text" *ngIf="currentUser">
-    "{{ currentUser.username | titlecase }}" Logged in
+    {{ currentUser.username | titlecase }} Logged in
   </div>
-  <button mat-button class="toolbar-login-btn" (click)="onAuthAction()">{{ authButtonLabel }}</button>
+  <button mat-button class="toolbar-login-btn" (click)="onAuthAction()">
+    {{ authButtonLabel }}
+  </button>
 </mat-toolbar>

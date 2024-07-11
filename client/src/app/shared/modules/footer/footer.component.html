@@ -1,24 +1,28 @@
-<!-- src/app/shared/footer/footer.component.html -->
 <footer class="footer">
-  <div class="container">
-    <div class="footer-left">
-      <img src="assets/garden-nexus-logo.webp" alt="Logo" class="footer-logo">
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <img src="assets/garden-nexus-logo.webp" alt="Garden Nexus Logo" class="footer-logo">
     </div>
-    <div class="footer-center">
-      <div class="footer-center-content">
+    <div class="footer-links-section">
+      <div class="footer-links-column">
         <h3 class="footer-title">Quick Links</h3>
-        <a routerLink="/" class="footer-link">Home</a>
-        <a (click)="goToProfile()" class="footer-link">Profile</a>
-        <a routerLink="/blogs" class="footer-link">Blog</a>
-        <a routerLink="/forum" class="footer-link">Forum</a>
+        <nav class="footer-nav">
+          <a href="/" class="footer-link">Home</a>
+          <a href="#" class="footer-link" (click)="goToProfile()">Profile</a>
+          <a href="/blogs" class="footer-link">Blog</a>
+          <a href="/forum" class="footer-link">Forum</a>
+        </nav>
       </div>
-    </div>
-    <div class="footer-right">
-      <div class="footer-right-content">
+      <div class="footer-links-column">
         <h3 class="footer-title">Extra Links</h3>
-        <a routerLink="/help" class="footer-link">Help</a>
-        <a routerLink="/about" class="footer-link">About</a>
+        <nav class="footer-nav">
+          <a href="/help" class="footer-link">Help</a>
+          <a href="/about" class="footer-link">About</a>
+        </nav>
       </div>
     </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2023 Garden Nexus. All rights reserved.</p>
   </div>
 </footer>
