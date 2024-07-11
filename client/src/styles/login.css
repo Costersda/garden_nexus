@@ -1,91 +1,162 @@
+
+
 .login-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  min-height: calc(80vh - 100px); /* Adjust based on your header/footer height */
+  padding: 40px 20px;
   background-color: #F0EAD2;
 }
 
 .main-logo {
-  display: block;
-  height: 150px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
+  height: 120px;
   margin-bottom: 30px;
+  transition: transform 0.3s ease;
+}
+
+.main-logo:hover {
+  transform: scale(1.05);
 }
 
 .form-container {
-  background-color: #ddd9c4;
-  border-radius: 3px;
-  padding: 25px;
-  max-width: 400px;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 50px;
+  background-color: #DDE5B6;
+  border-radius: 8px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .login-header {
-  text-align: center;
-  color: #5e6c84;
-  font-size: 1.7em;
-  letter-spacing: -0.01em;
-  margin-top: 10px;
+  color: #4a4a4a;
+  font-size: 1.8em;
+  font-weight: 600;
   margin-bottom: 25px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.login-header::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -5px;
+  left: 0;
+  background-color: #ADC178;
+  transition: width 0.3s ease;
+}
+
+.form-container:hover .login-header::before {
+  width: 100%;
 }
 
 .login-input {
-  font-weight: 500;
-  font-size: 1.2em;
   width: 100%;
-  background-color: #fafbfc;
-  border: 2px solid #dfe1e6;
-  box-sizing: border-box;
-  border-radius: 3px;
-  height: 44px;
-  padding: 7px;
-  margin: 0 0 1.2em;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+  border-color: #ADC178;
+  outline: none;
 }
 
 .login-submit-button {
-  background-color: #ADC178;
-  border-radius: 0.3em;
-  color: #fff;
-  display: inline-block;
-  font-weight: bold;
-  margin-bottom: 0.8em;
-  font-size: 1.2em;
-  padding: 0.6em 1.3em !important;
-  position: relative;
-  border: 0px;
   width: 100%;
+  padding: 12px 20px;
+  background-color: #ADC178;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em !important;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
 }
 
 .login-submit-button:hover {
-  background-color: #61bd4f;
+  background-color: #91A654;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.login-submit-button:hover::before {
+  left: 100%;
+}
+
+.login-submit-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .bottom-form-links {
-  margin-top: 10px;
+  margin-top: 20px;
+  font-size: 1em;
+  font-weight: 500;
   text-align: center;
-  font-size: 1.1em;
-  display: flex;
-  padding: 0;
-  justify-content: center;
 }
 
 .register-link {
+  color: #4d3d33;
   text-decoration: none;
-  color: #0052cc;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #9CAE62;
+  text-decoration: underline;
 }
 
 .errors {
-  color: #eb5a46;
-  font-size: 1.1em;
-  margin-bottom: 5px;
+  color: #e74c3c;
+  font-size: 1em;
   font-weight: 500;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #fadbd8;
+  border-radius: 5px;
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  .login-header {
+    font-size: 1.5em;
+  }
+
+  .login-input,
+  .login-submit-button {
+    font-size: 0.9em;
+  }
 }

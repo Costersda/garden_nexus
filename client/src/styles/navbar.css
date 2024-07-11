@@ -23,6 +23,7 @@
   padding: 12px 20px;
   text-align: center;
   background-color: #DDE5B6;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
   border-left: 2px solid rgba(0, 0, 0, 0.1);
   flex: 1;
   margin: 0;
