@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { CountryService } from '../../../shared/services/country.service';
@@ -19,8 +19,9 @@ export class EditProfileModalComponent implements OnChanges {
   @Input() profile: Profile | null = null;
   @Output() profileUpdated = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
+  @ViewChild('modalBackground') modalBackground!: ElementRef;
 
-  updatedProfile: Partial<Profile> = {};  // Use Partial<Profile> to only update selected fields
+  updatedProfile: Partial<Profile> = {};
   countries: string[] = [];
   wordCount: number = 0;
   fileSizeError: string | null = null;
@@ -38,7 +39,7 @@ export class EditProfileModalComponent implements OnChanges {
         bio: this.profile.bio,
         imageFile: this.profile.imageFile
       };
-      this.checkWordCount();  // Initial check for word count
+      this.checkWordCount();
     }
   }
 
@@ -86,5 +87,12 @@ export class EditProfileModalComponent implements OnChanges {
 
   cancel(): void {
     this.close.emit();
+  }
+
+  // New method to handle clicks on the modal background
+  onModalBackgroundClick(event: MouseEvent): void {
+    if (event.target === this.modalBackground.nativeElement) {
+      this.close.emit();
+    }
   }
 }
