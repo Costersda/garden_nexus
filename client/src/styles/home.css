@@ -88,6 +88,7 @@
   line-height: 1.6;
   margin-bottom: 1rem !important;
   font-weight: 450 !important;
+  font-style: italic;
 }
 
 .styled-hr {
@@ -135,11 +136,11 @@
 .content-text-wrapper {
   width: 48%;
   text-align: left;
-  margin-left: 40px;
+  margin-left: 30px;
 }
 
 .content-text {
-  font-weight: 400 !important;
+  font-weight: 450 !important;
   font-size: 1em !important;
   line-height: 1.6;
 }
