@@ -3,7 +3,7 @@
 .forum-preview {
   display: flex;
   flex-direction: column;
-  border: 5px solid #6C584C;
+  border: 3px solid #6C584C;
   border-radius: 10px;
   padding: 16px;
   margin-bottom: 16px;

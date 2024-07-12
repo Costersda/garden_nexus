@@ -14,7 +14,6 @@
       <h2 class="profile-username">{{ profile.username | titlecase }}</h2>
       <img *ngIf="isOwner" src="assets/edit_icon.png" class="edit-icon" (click)="openEditProfileModal()" alt="Edit Profile">
     </div>
-    <hr class="styled-hr-left">
     <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
     <p><strong>Bio:</strong> {{ profile.bio || '(blank)' }}</p>
   </div>
