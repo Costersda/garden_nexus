@@ -99,13 +99,13 @@
   }
   
   .category-dropdown-toggle {
-    padding-right: 40px !important;
+    padding-right: 50px !important;
   }
   
   .category-dropdown-toggle::after {
     content: '\25BC';
     position: absolute;
-    right: 10px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -127,6 +127,8 @@
     padding: 10px 0;
     max-height: 300px;
     overflow-y: auto;
+    width: 300px; /* Increased width */
+    min-width: 200px; /* Ensure a minimum width */
   }
   
   .category-dropdown.open .category-dropdown-menu {

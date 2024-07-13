@@ -22,9 +22,9 @@
 .blog-header-container h2 {
   color: #6C584C;
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
   font-size: 2.5em;
   text-align: center;
+  font-weight: 450;
 }
 
 .sort-btns-container {
@@ -33,41 +33,65 @@
   gap: 10px;
 }
 
-.create-post-btn{
+.create-post-btn,
+.sort-btn {
   padding: 10px 25px;
   border: none;
   border-radius: 5px;
   background-color: #ADC178;
   color: #ffffff;
   font-size: 1.2em;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.create-post-btn {
   margin-right: 30px;
   margin-top: 10px;
 }
 
 .sort-btn {
-  padding: 10px 25px;
-  border: none;
   border-radius: 25px;
-  background-color: #ADC178;
-  color: #ffffff;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.create-post-btn::before,
+.sort-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
 }
 
 .create-post-btn:hover,
 .sort-btn:hover {
   background-color: #91A654;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.create-post-btn:hover::before,
+.sort-btn:hover::before {
+  left: 100%;
 }
 
 .create-post-btn:active,
 .sort-btn:active {
   transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 
 .profile-content-container {
   width: 100%;
@@ -80,8 +104,6 @@
   padding: 0px;
   background-color: #F0EAD2;
 }
-
-
 
 .create-post-btn-content {
   display: flex;
@@ -419,15 +441,12 @@
 
 @media (max-width: 768px) {
   .blog-header-container h2 {
-    font-size: 2em;
-  }
-
-  .sort-btns-container {
+    font-size: 2.3em !important;
   }
 
   .create-post-btn {
     width: 100%;
-    margin: 0px 30px;
+    margin: 0px;
   }
 
   .profile-content {

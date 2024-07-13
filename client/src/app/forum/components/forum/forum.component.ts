@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForumService } from '../../../shared/services/forum.service';
 import { Forum } from '../../../shared/types/forum.interface';
-import { Category, CATEGORIES } from '../../../shared/types/category.interface'; // Import Category and CATEGORIES
+import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
   selector: 'app-forum',
@@ -12,24 +12,35 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 export class ForumComponent implements OnInit, OnDestroy {
   forums: Forum[] = [];
   displayedForums: Forum[] = [];
-  categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false })); // Initialize categories with selected property
+  categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false }));
   searchQuery: string = '';
   isDropdownOpen = false;
   private forumSubscription!: Subscription;
-  private initialForumsToShow = 10; // Number of forums to show initially
-  private forumsIncrement = 10; // Number of forums to load each time
-  forumHeader: string = 'Newest Forum Posts'; // Default header text
-  noResults: boolean = false; // Flag to show no results message
-  isSearchActive: boolean = false; // Flag to track if a search is active
+  private initialForumsToShow = 10;
+  private forumsIncrement = 10;
+  forumHeader: string = 'Newest Forum Posts';
+  noResults: boolean = false;
+  isSearchActive: boolean = false;
+
+  @ViewChild('categoryDropdown') categoryDropdown!: ElementRef;
+  @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
 
   constructor(
     private forumService: ForumService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renderer: Renderer2,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
     this.fetchForums();
+    this.renderer.listen('document', 'click', (event: Event) => {
+      if (!this.categoryDropdown.nativeElement.contains(event.target) &&
+          !this.dropdownToggle.nativeElement.contains(event.target)) {
+        this.isDropdownOpen = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -47,11 +58,11 @@ export class ForumComponent implements OnInit, OnDestroy {
   fetchForums(): void {
     this.forumSubscription = this.forumService.getAllForums().subscribe(
       (forums: Forum[]) => {
-        this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); // Sort by newest by default
+        this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
-        this.noResults = this.displayedForums.length === 0; // Check if no results
+        this.noResults = this.displayedForums.length === 0;
         this.forumHeader = 'Newest Forum Posts';
-        this.isSearchActive = false; // Reset search active flag
+        this.isSearchActive = false;
       },
       (error) => {
         console.error('Error fetching forums', error);
@@ -74,9 +85,9 @@ export class ForumComponent implements OnInit, OnDestroy {
       (forums: Forum[]) => {
         this.forums = forums;
         this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
-        this.noResults = this.forums.length === 0; // Set noResults based on forums length
+        this.noResults = this.forums.length === 0;
         this.forumHeader = 'Search Results';
-        this.isSearchActive = true; // Set search active flag
+        this.isSearchActive = true;
       },
       (error) => {
         console.error('Error searching forums', error);
@@ -85,7 +96,8 @@ export class ForumComponent implements OnInit, OnDestroy {
     );
   }
 
-  toggleDropdown(): void {
+  toggleDropdown(event: Event): void {
+    event.stopPropagation();
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
@@ -107,7 +119,7 @@ export class ForumComponent implements OnInit, OnDestroy {
       this.forumHeader = this.isSearchActive ? 'Oldest Query Results' : 'Oldest Forum Posts';
       this.forums.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     }
-    this.displayedForums = this.forums.slice(0, this.initialForumsToShow); // Reset displayed forums after sorting
+    this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
   }
 
   resetSearch(): void {

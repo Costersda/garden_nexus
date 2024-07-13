@@ -14,16 +14,16 @@
 <div class="toolbar">
   <div class="toolbar-content">
     <div class="left">
-      <div class="category-dropdown" [class.open]="isDropdownOpen">
-        <button class="category-dropdown-toggle" type="button" (click)="toggleDropdown()">
+      <div class="category-dropdown" #categoryDropdown>
+        <button #dropdownToggle class="category-dropdown-toggle" type="button" (click)="toggleDropdown($event)">
           Categories
         </button>
-        <button class="reset-btn" (click)="resetSearch()">Reset</button>
-        <div class="category-dropdown-menu">
+        <div class="category-dropdown-menu" [style.display]="isDropdownOpen ? 'block' : 'none'">
           <label *ngFor="let category of categories">
             <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
           </label>
         </div>
+        <button class="reset-btn" (click)="resetSearch()">Reset</button>
       </div>
     </div>
     <div class="right">

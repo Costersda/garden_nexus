@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
-import { Category, CATEGORIES } from '../../../shared/types/category.interface'; // Import Category and CATEGORIES
+import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
   selector: 'app-blog',
@@ -12,24 +12,35 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 export class BlogComponent implements OnInit, OnDestroy {
   blogs: Blog[] = [];
   displayedBlogs: Blog[] = [];
-  categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false })); // Initialize categories with selected property
+  categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false }));
   searchQuery: string = '';
   isDropdownOpen = false;
   private blogSubscription!: Subscription;
-  private initialBlogsToShow = 8; // Number of blogs to show initially
-  private blogsIncrement = 8; // Number of blogs to load each time
-  blogHeader: string = 'Newest Blog Posts'; // Default header text
-  noResults: boolean = false; // Flag to show no results message
-  isSearchActive: boolean = false; // Flag to track if a search is active
+  private initialBlogsToShow = 8;
+  private blogsIncrement = 8;
+  blogHeader: string = 'Newest Blog Posts';
+  noResults: boolean = false;
+  isSearchActive: boolean = false;
+
+  @ViewChild('categoryDropdown') categoryDropdown!: ElementRef;
+  @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
 
   constructor(
     private blogService: BlogService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renderer: Renderer2,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
     this.fetchBlogs();
+    this.renderer.listen('document', 'click', (event: Event) => {
+      if (!this.categoryDropdown.nativeElement.contains(event.target) &&
+          !this.dropdownToggle.nativeElement.contains(event.target)) {
+        this.isDropdownOpen = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -47,11 +58,11 @@ export class BlogComponent implements OnInit, OnDestroy {
   fetchBlogs(): void {
     this.blogSubscription = this.blogService.getAllBlogs().subscribe(
       (blogs: Blog[]) => {
-        this.blogs = blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); // Sort by newest by default
+        this.blogs = blogs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
-        this.noResults = this.displayedBlogs.length === 0; // Check if no results
+        this.noResults = this.displayedBlogs.length === 0;
         this.blogHeader = 'Newest Blog Posts';
-        this.isSearchActive = false; // Reset search active flag
+        this.isSearchActive = false;
       },
       (error) => {
         console.error('Error fetching blogs', error);
@@ -74,9 +85,9 @@ export class BlogComponent implements OnInit, OnDestroy {
       (blogs: Blog[]) => {
         this.blogs = blogs;
         this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
-        this.noResults = this.blogs.length === 0; // Set noResults based on blogs length
+        this.noResults = this.blogs.length === 0;
         this.blogHeader = 'Search Results';
-        this.isSearchActive = true; // Set search active flag
+        this.isSearchActive = true;
       },
       (error) => {
         console.error('Error searching blogs', error);
@@ -85,7 +96,8 @@ export class BlogComponent implements OnInit, OnDestroy {
     );
   }
 
-  toggleDropdown(): void {
+  toggleDropdown(event: Event): void {
+    event.stopPropagation();
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
@@ -107,7 +119,7 @@ export class BlogComponent implements OnInit, OnDestroy {
       this.blogHeader = this.isSearchActive ? 'Oldest Query Results' : 'Oldest Blog Posts';
       this.blogs.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     }
-    this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow); // Reset displayed blogs after sorting
+    this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
   }
 
   resetSearch(): void {
