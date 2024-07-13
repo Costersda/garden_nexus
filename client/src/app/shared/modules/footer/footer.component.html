@@ -7,17 +7,17 @@
       <div class="footer-links-column">
         <h3 class="footer-title">Quick Links</h3>
         <nav class="footer-nav">
-          <a href="/" class="footer-link">Home</a>
-          <a href="#" class="footer-link" (click)="goToProfile()">Profile</a>
-          <a href="/blogs" class="footer-link">Blog</a>
-          <a href="/forum" class="footer-link">Forum</a>
+          <div class="footer-nav-item" routerLink="/" [class.active]="isActiveRoute('/')">Home</div>
+          <div class="footer-nav-item" (click)="goToProfile()" [class.active]="isActiveRoute('/profile')">Profile</div>
+          <div class="footer-nav-item" routerLink="/blogs" [class.active]="isActiveRoute('/blog')">Blogs</div>
+          <div class="footer-nav-item" routerLink="/forum" [class.active]="isActiveRoute('/forum')">Forum</div>
         </nav>
       </div>
       <div class="footer-links-column">
         <h3 class="footer-title">Extra Links</h3>
         <nav class="footer-nav">
-          <a href="/help" class="footer-link">Help</a>
-          <a href="/about" class="footer-link">About</a>
+          <div class="footer-nav-item" routerLink="/help" [class.active]="isActiveRoute('/help')">Help</div>
+          <div class="footer-nav-item" routerLink="/about" [class.active]="isActiveRoute('/about')">About</div>
         </nav>
       </div>
     </div>

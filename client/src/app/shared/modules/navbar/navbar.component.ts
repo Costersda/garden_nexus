@@ -4,7 +4,6 @@ import { Router, RouterModule, ActivatedRoute, NavigationEnd, Event } from '@ang
 import { AuthService } from '../../../auth/services/auth.service';
 import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',

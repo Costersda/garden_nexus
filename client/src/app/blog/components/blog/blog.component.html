@@ -37,15 +37,12 @@
 
 <div class="inline-toolbar">
   <div class="inline-toolbar-content">
-    <div class="left">
-      <button (click)="createBlogPost()">Create a Post</button>
-    </div>
-    <div class="center">
+    <div class="blog-header-container">
       <h2>{{ blogHeader }}</h2>
     </div>
-    <div class="right">
-      <button (click)="sortBlogs('newest')">Newest</button>
-      <button (click)="sortBlogs('oldest')">Oldest</button>
+    <div class="sort-btns-container">
+      <button class="sort-btn sort-newest-btn" (click)="sortBlogs('newest')">Newest</button>
+      <button class="sort-btn sort-oldest-btn" (click)="sortBlogs('oldest')">Oldest</button>
     </div>
   </div>
 </div>
@@ -54,6 +51,12 @@
   <hr class="styled-hr">
 </div>
 
+
+<div class="create-post-btn-container">
+  <div class="create-post-btn-content">
+    <button class="create-post-btn" (click)="createBlogPost()">Create a Post</button>
+  </div>
+</div>
 <!-- Display no results message if no blogs are found -->
 <div class="profile-content-container" *ngIf="noResults">
   <div class="profile-content">

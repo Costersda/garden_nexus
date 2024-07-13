@@ -37,15 +37,12 @@
 
 <div class="inline-toolbar">
   <div class="inline-toolbar-content">
-    <div class="left">
-      <button (click)="createForumPost()">Create a Post</button>
-    </div>
-    <div class="center">
+    <div class="blog-header-container">
       <h2>{{ forumHeader }}</h2>
     </div>
-    <div class="right">
-      <button (click)="sortForums('newest')">Newest</button>
-      <button (click)="sortForums('oldest')">Oldest</button>
+    <div class="sort-btns-container">
+      <button class="sort-btn sort-newest-btn" (click)="sortForums('newest')">Newest</button>
+      <button class="sort-btn sort-oldest-btn" (click)="sortForums('oldest')">Oldest</button>
     </div>
   </div>
 </div>
@@ -54,6 +51,11 @@
   <hr class="styled-hr">
 </div>
 
+<div class="create-post-btn-container">
+  <div class="create-post-btn-content">
+    <button class="create-post-btn" (click)="createForumPost()">Create a Post</button>
+  </div>
+</div>
 <!-- Display no results message if no forums are found -->
 <div class="profile-content-container" *ngIf="noResults">
   <div class="profile-content">
