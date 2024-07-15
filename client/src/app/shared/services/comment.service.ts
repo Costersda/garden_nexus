@@ -17,22 +17,23 @@ export class CommentService {
   }
 
   getCommentsByBlogId(blogId: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.apiUrl}/${blogId}`);
+    return this.http.get<Comment[]>(`${this.apiUrl}/blog/${blogId}`);
   }
 
   getCommentsByForumId(forumId: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.apiUrl}/${forumId}`);
+    return this.http.get<Comment[]>(`${this.apiUrl}/forum/${forumId}`);
   }
 
-  getCommentById(blogId: string, id: string): Observable<Comment> {
-    return this.http.get<Comment>(`${this.apiUrl}/${blogId}/${id}`);
+  getCommentById(id: string): Observable<Comment> {
+    return this.http.get<Comment>(`${this.apiUrl}/${id}`);
   }
 
-  updateCommentById(blogId: string, id: string, comment: Partial<Comment>): Observable<Comment> {
-    return this.http.patch<Comment>(`${this.apiUrl}/${blogId}/${id}`, comment);
+  updateCommentById(id: string, comment: Partial<Comment>): Observable<Comment> {
+    return this.http.patch<Comment>(`${this.apiUrl}/${id}`, comment);
   }
 
-  deleteCommentById(blogId: string, id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${blogId}/${id}`);
+  deleteCommentById(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
+

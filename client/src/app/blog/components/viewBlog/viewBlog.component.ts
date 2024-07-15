@@ -350,19 +350,19 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   async deleteComment(commentId: string | undefined): Promise<void> {
     console.log('Attempting to delete comment with ID:', commentId);
-
+  
     if (!commentId) {
       console.error('Comment ID is undefined');
       return;
     }
-
+  
     const confirmed = await this.confirmationDialogService.confirm(
       'Confirm Deletion',
       'Are you sure you want to delete this comment?'
     );
-
+  
     if (confirmed) {
-      this.commentService.deleteCommentById(this.blog?._id || '', commentId).subscribe(
+      this.commentService.deleteCommentById(commentId).subscribe(
         () => {
           console.log('Successfully deleted comment with ID:', commentId);
           this.comments = this.comments.filter(comment => {
@@ -377,6 +377,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       );
     }
   }
+  
 
   editComment(comment: Comment): void {
     this.commentBeingEdited = comment;
@@ -398,21 +399,21 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   saveEditedComment(): void {
     if (!this.editCommentText.trim() || !this.commentBeingEdited || this.isEditCommentTooLong) return;
-
+  
     const updatedComment = {
       ...this.commentBeingEdited,
       comment: this.editCommentText,
       isEdited: true
     };
-
+  
     this.comments = this.comments.map(c =>
       c._id === updatedComment._id ? { ...updatedComment, comment: `${updatedComment.comment} ` } : c
     );
     this.commentBeingEdited = null;
     this.editCommentText = '';
     this.cd.detectChanges();
-
-    this.commentService.updateCommentById(this.blog!._id!, updatedComment._id!, updatedComment).subscribe(
+  
+    this.commentService.updateCommentById(updatedComment._id!, updatedComment).subscribe(
       (comment: Comment) => {
         console.log('Updated comment:', comment);
       },

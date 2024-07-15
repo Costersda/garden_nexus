@@ -35,11 +35,12 @@ app.get('/api/users/:id', usersController.getUserById);
 
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);
-app.get("/api/comments/:blogId", commentsController.getAllComments); // Blog Comments
-app.get("/api/comments/:forumId", commentsController.getAllComments); // Forum Comments
-app.get("/api/comments/:blogId/:id", commentsController.getCommentById);
-app.patch("/api/comments/:blogId/:id", authMiddleware, commentsController.updateCommentById);
-app.delete("/api/comments/:blogId/:id", commentsController.deleteCommentById);
+app.get("/api/comments/blog/:blogId", commentsController.getAllCommentsByBlogId); // Blog Comments
+app.get("/api/comments/forum/:forumId", commentsController.getAllCommentsByForumId); // Forum Comments
+app.get("/api/comments/:id", commentsController.getCommentById); // Single Comment
+app.patch("/api/comments/:id", authMiddleware, commentsController.updateCommentById); // Update Comment
+app.delete("/api/comments/:id", commentsController.deleteCommentById); // Delete Comment
+
 
 // Blog routes
 app.post("/api/blogs", authMiddleware, blogController.createBlog);

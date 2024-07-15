@@ -14,6 +14,7 @@ const normalizeComment = (comment: CommentDocument) => {
   return {
     id: comment.id,
     blogId: comment.blogId,
+    forumId: comment.forumId,
     comment: comment.comment,
     createdAt: comment.createdAt,
     isEdited: comment.isEdited, // Include the isEdited field
@@ -36,6 +37,34 @@ export const createComment = async (
     await comment.save();
     const populatedComment = await comment.populate('user', 'username imageFile');
     res.status(201).send(normalizeComment(populatedComment));
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get all comments by blogId
+export const getAllCommentsByBlogId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comments = await Comment.find({ blogId: req.params.blogId }).populate('user', 'username imageFile');
+    res.status(200).send(comments.map(normalizeComment));
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get all comments by forumId
+export const getAllCommentsByForumId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comments = await Comment.find({ forumId: req.params.forumId }).populate('user', 'username imageFile');
+    res.status(200).send(comments.map(normalizeComment));
   } catch (error) {
     next(error);
   }
@@ -86,19 +115,13 @@ export const updateCommentById = async (
   next: NextFunction
 ) => {
   try {
-    const comment = await Comment.findOneAndUpdate(
-      { _id: req.params.id, blogId: req.params.blogId },
-      { ...req.body, isEdited: true }, // Set isEdited to true
-      { new: true, runValidators: true }
-    )
-    .populate('user', 'username imageFile')
-    .exec();
-
+    const comment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    }).populate('user', 'username imageFile');
     if (!comment) {
-      return res.status(404).send();
+      return res.status(404).send({ message: "Comment not found" });
     }
-
-    res.status(200).send(normalizeComment(comment));
+    res.status(200).send(comment);
   } catch (error) {
     next(error);
   }
@@ -111,11 +134,11 @@ export const deleteCommentById = async (
   next: NextFunction
 ) => {
   try {
-    const comment = await Comment.findOneAndDelete({ _id: req.params.id, blogId: req.params.blogId });
+    const comment = await Comment.findByIdAndDelete(req.params.id);
     if (!comment) {
-      return res.status(404).send();
+      return res.status(404).send({ message: "Comment not found" });
     }
-    res.status(200).send(normalizeComment(comment));
+    res.status(200).send({ message: "Comment deleted successfully" });
   } catch (error) {
     next(error);
   }
