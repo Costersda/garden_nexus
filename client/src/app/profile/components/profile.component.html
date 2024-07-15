@@ -57,9 +57,23 @@
   <div class="profile-content">
     <h2 class="profile-content-subheading">Forum Activity</h2>
   </div>
-  <div class="post-content-container">
-    Forum posts go here
+  <div class="profile-content">
+    <div class="forum-list-container">
+      <div class="forum-list-content">
+        <div class="forum-item" *ngFor="let forum of displayedForums">
+          <app-forum-preview [forum]="forum" [source]="'profile'" [username]="profile?.username"></app-forum-preview>
+        </div>
+      </div>
+    </div>
+    <div class="profile-content-container" *ngIf="forums.length > displayedForums.length">
+      <div class="profile-content">
+        <button class="load-more-btn" (click)="loadMoreForums()">
+          <img src="assets/arrow_down.png" alt="Load More">
+        </button>
+      </div>
+    </div>
   </div>
+  
 </div>
 
 <app-footer></app-footer>

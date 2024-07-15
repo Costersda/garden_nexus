@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { BlogService } from '../../shared/services/blog.service';
 import { Blog } from '../../shared/types/blog.interface';
 import { User } from '../../shared/types/user.interface';
+import { Forum } from '../../shared/types/forum.interface';
+import { ForumService } from '../../shared/services/forum.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,11 +18,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profile: User | null = null;
   blogs: Blog[] = [];
   displayedBlogs: Blog[] = [];
+  forums: Forum[] = [];
+  displayedForums: Forum[] = [];
   errorMessage: string | null = null;
   isOwner: boolean = false;
   isModalOpen: boolean = false; // Define the isModalOpen property
   routeSubscription: Subscription | undefined;
   blogSubscription: Subscription | undefined;
+  private forumSubscription!: Subscription | undefined;
+  private initialForumsToShow = 3;
+  private forumsIncrement = 3;
   private initialBlogsToShow = 4; // Number of blogs to show initially
   private blogsIncrement = 4; // Number of blogs to load each time
 
@@ -29,6 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private authService: AuthService,
     private blogService: BlogService,
+    private forumService: ForumService,
     private router: Router
   ) {}
 
@@ -39,6 +47,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.fetchProfile(username);
         this.checkOwnership(username);
         this.fetchBlogsByUser(username);
+        this.fetchForumsByUser(username);
       }
     });
   }
@@ -93,6 +102,34 @@ export class ProfileComponent implements OnInit, OnDestroy {
   viewBlog(blogId: string | undefined): void {
     if (blogId && this.profile?.username) {
       this.router.navigate(['/blog', blogId], { queryParams: { source: 'profile', username: this.profile.username } });
+    }
+  }
+
+
+
+
+  fetchForumsByUser(username: string): void {
+    this.forumSubscription = this.forumService.getForumsByUser(username).subscribe(
+      (forums: Forum[]) => {
+        this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
+        console.log(forums);
+      },
+      (error) => {
+        console.error('Error fetching blogs by user:', error);
+      }
+    );
+  }
+
+  loadMoreForums(): void {
+    const currentLength = this.displayedForums.length;
+    const nextLength = currentLength + this.forumsIncrement;
+    this.displayedForums = this.forums.slice(0, nextLength);
+  }
+
+  viewForum(forumId: string | undefined): void {
+    if (forumId && this.profile?.username) {
+      this.router.navigate(['/forum', forumId], { queryParams: { source: 'profile', username: this.profile.username } });
     }
   }
 
