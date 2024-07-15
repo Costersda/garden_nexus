@@ -141,15 +141,23 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   fetchBlog(blogId: string): void {
     this.blogSubscription = this.blogService.getBlogById(blogId).subscribe(
       (blog: Blog) => {
-        this.blog = blog;
-        this.originalBlog = JSON.parse(JSON.stringify(blog));
-        if (blog.user_id) {
-          this.fetchUser(blog.user_id);
+        if (blog) {
+          this.blog = blog;
+          this.originalBlog = JSON.parse(JSON.stringify(blog));
+          if (blog.user_id) {
+            this.fetchUser(blog.user_id);
+          }
+          this.fetchComments(blogId);
+        } else {
+          // Blog not found, redirect to blogs list
+          console.log('Blog not found, redirecting to blogs list');
+          this.router.navigate(['/blogs']);
         }
-        this.fetchComments(blogId);
       },
       (error) => {
         console.error('Error fetching blog:', error);
+        // In case of error, also redirect to blogs list
+        this.router.navigate(['/blogs']);
       }
     );
   }
@@ -159,16 +167,18 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       console.error('Blog ID is undefined');
       return;
     }
-
+  
     const confirmed = await this.confirmationDialogService.confirm(
       'Confirm Deletion',
       'Are you sure you want to delete this blog?'
     );
-
+  
     if (confirmed) {
       this.blogService.deleteBlog(blogId).subscribe(
         () => {
           console.log('Successfully deleted blog with ID:', blogId);
+          // Replace the current history entry
+          history.replaceState(null, '', '/blogs');
           this.router.navigate(['/blogs']);
         },
         (error) => {

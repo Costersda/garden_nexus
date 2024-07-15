@@ -35,7 +35,8 @@ app.get('/api/users/:id', usersController.getUserById);
 
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);
-app.get("/api/comments/:blogId", commentsController.getAllComments);
+app.get("/api/comments/:blogId", commentsController.getAllComments); // Blog Comments
+app.get("/api/comments/:forumId", commentsController.getAllComments); // Forum Comments
 app.get("/api/comments/:blogId/:id", commentsController.getCommentById);
 app.patch("/api/comments/:blogId/:id", authMiddleware, commentsController.updateCommentById);
 app.delete("/api/comments/:blogId/:id", commentsController.deleteCommentById);

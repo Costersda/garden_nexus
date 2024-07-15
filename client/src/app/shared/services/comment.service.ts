@@ -20,6 +20,10 @@ export class CommentService {
     return this.http.get<Comment[]>(`${this.apiUrl}/${blogId}`);
   }
 
+  getCommentsByForumId(forumId: string): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.apiUrl}/${forumId}`);
+  }
+
   getCommentById(blogId: string, id: string): Observable<Comment> {
     return this.http.get<Comment>(`${this.apiUrl}/${blogId}/${id}`);
   }
