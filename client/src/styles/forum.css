@@ -213,10 +213,12 @@
 
 .forum-background {
   background-color: #eee5d3;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   border: 2px solid #adc178;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 100%;
 }
 
 .forum-categories {

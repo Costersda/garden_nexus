@@ -12,6 +12,10 @@
   margin-bottom: 15px;
 }
 
+.content-subheading {
+  text-align: center;
+}
+
 .form-label,
 .optional-label,
 .file-size-info,
@@ -136,7 +140,4 @@ input[type="file"] {
     width: 100%;
   }
 
-  .profile-content {
-    max-width: 90%;
-  }
 }

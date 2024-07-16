@@ -1,7 +1,7 @@
 .profile-content-container {
   width: 100%;
   background-color: #F0EAD2;
-  padding: 30px;
+  padding: 10px;
   position: relative;
 }
 
@@ -192,6 +192,14 @@ p strong {
   .profile-picture-container {
     width: 150px;
     height: 150px;
+  }
+
+  .profile-content-container {
+    
+  }
+
+  .profile-content {
+    max-width: 100%;
   }
 
   .profile-picture {

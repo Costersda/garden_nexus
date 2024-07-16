@@ -12,7 +12,7 @@
 </div>
 
 <div class="profile-content-container" *ngIf="blog">
-  <div class="profile-content">
+  <div class="blog-content">
     <div class="forum-background">
       <div class="dropdown-placement">
         <div class="blog-author-box">
@@ -186,8 +186,8 @@
             <p>{{ blog.content_section_3 }}</p>
           </div>
         </div>
-        <div class="blog-categories" *ngIf="blog.categories && blog.categories.length > 0">
-          <div class="blog-categories-container">
+        <div class="forum-categories" *ngIf="blog.categories && blog.categories.length > 0">
+          <div class="forum-categories-container">
             <h4>Categories:</h4>
             <div class="category-labels">
               <span class="category-label" *ngFor="let category of blog.categories">
