@@ -4,12 +4,6 @@
 <div class="profile-content-container">
     <div class="profile-content">
       <h1 class="blog-heading">{{ forum?.title | titlecase }}</h1>
-      <div class="blog-author-box">
-        <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
-        <div class="author-info">
-          <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -19,85 +13,95 @@
 
 <div class="profile-content-container" *ngIf="forum">
   <div class="profile-content">
-    <div class="dropdown-placement">
-      <div class="is-edited-container" *ngIf="forum.isEdited && !isEditMode">
-        <h6 class="edited-text">(edited)</h6>
-      </div>
-      <div class="dropdown" *ngIf="currentUser && forum && currentUser._id === forum.user_id && !isEditMode">
-        <button class="dropdown-toggle" (click)="toggleForumDropdown($event)">
-          <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
-        </button>
-        <div class="dropdown-menu" [ngClass]="{'show': showForumDropdown}">
-          <label class="forum-options-label" (click)="toggleEditMode()">Edit</label>
-          <label class="forum-options-label" (click)="forum._id && deleteForum(forum._id)">Delete</label>
-        </div>
-      </div>
-    </div>
-
-    <form *ngIf="isEditMode" (ngSubmit)="saveForumChanges()" #forumForm="ngForm">
-      <!-- Title Input -->
-      <div class="form-element" [class.error]="formSubmitted && (!title.valid || forum.title.length > maxTitleLength)">
-        <label for="title" class="form-label">Title:</label>
-        <div class="input-file-wrapper">
-          <input type="text" id="title" [(ngModel)]="forum.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
-          <div class="word-count" [class.error-text]="forum.title.length > maxTitleLength">
-            Character count: {{ forum.title.length }}/100
+    <div class="forum-background">
+      <div class="dropdown-placement">
+        <div class="forum-author-box" *ngIf="!isEditMode">
+          <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
+          <div class="author-info">
+            <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
           </div>
-          <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
-          <div *ngIf="forum.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
         </div>
-      </div>
-    
-      <!-- Content -->
-      <div class="form-element" [class.error]="formSubmitted && (!content.valid || forum.content.length < minContentLength)">
-        <label for="content" class="form-label">Content:</label>
-        <div class="input-file-wrapper">
-          <textarea id="content" [(ngModel)]="forum.content" name="content" required class="form-input auto-grow" #content="ngModel" maxlength="1000"></textarea>
-          <div class="word-count" [class.error-text]="forum.content.length > maxContentLength">
-            Character count: {{ forum.content.length }}/1000 - Min 200 Characters.
+        <div class="test">
+          <div class="is-edited-container" *ngIf="forum.isEdited && !isEditMode">
+            <h6 class="edited-text">(edited)</h6>
           </div>
-          <div *ngIf="formSubmitted && !content.valid && forum.content.length === 0" class="error-text">Required</div>
-          <div *ngIf="formSubmitted && forum.content.length > 0 && forum.content.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
-          <div *ngIf="forum.content.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
-        </div>
-      </div>
-
-        <!-- Categories -->
-        <div class="form-element">
-            <label for="categories" class="form-label">Categories:</label>
-                <div class="categories-container">
-                    <div class="category-item" *ngFor="let category of categories">
-                        <label>
-                          <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="forum.categories.includes(category.name)"> {{ category.name }}
-                        </label>
-                    </div>
-                </div>
+          <div class="dropdown" *ngIf="currentUser && forum && currentUser._id === forum.user_id && !isEditMode">
+            <button class="dropdown-toggle" (click)="toggleForumDropdown($event)">
+              <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+            </button>
+            <div class="dropdown-menu" [ngClass]="{'show': showForumDropdown}">
+              <label class="forum-options-label" (click)="toggleEditMode()">Edit</label>
+              <label class="forum-options-label" (click)="forum._id && deleteForum(forum._id)">Delete</label>
             </div>
-        
-
-      <!-- Error message displayed if form submission fails -->
-      <div *ngIf="formSubmitted && (!forumForm.valid || forum.content.length < minContentLength)" class="error-text">
-        Please fix any errors before submitting.
-      </div>
-      <div class="forum-btn-bar-container">
-        <div class="forum-btn-bar">
-          <button class="edit-comment-btn cancel-btn" type="button" (click)="cancelEdit()">Cancel</button>
-          <button class="edit-comment-btn save-btn" type="submit">Save</button>
+          </div>
         </div>
       </div>
-    </form>
 
-    <div *ngIf="!isEditMode">
-      <div class="forum-content-container">
-        <p>{{ forum.content }}</p>
-      </div>
-      <div class="forum-categories" *ngIf="forum.categories && forum.categories.length > 0">
-        <div class="forum-categories-container">
-          <h4>Categories:</h4>
-          <div class="category-labels">
-            <span class="category-label" *ngFor="let category of forum.categories">
-              {{ category }}
-            </span>
+      <form *ngIf="isEditMode" (ngSubmit)="saveForumChanges()" #forumForm="ngForm">
+        <!-- Title Input -->
+        <div class="form-element" [class.error]="formSubmitted && (!title.valid || forum.title.length > maxTitleLength)">
+          <label for="title" class="form-label">Title:</label>
+          <div class="input-file-wrapper">
+            <input type="text" id="title" [(ngModel)]="forum.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
+            <div class="word-count" [class.error-text]="forum.title.length > maxTitleLength">
+              Character count: {{ forum.title.length }}/100
+            </div>
+            <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
+            <div *ngIf="forum.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
+          </div>
+        </div>
+      
+        <!-- Content -->
+        <div class="form-element" [class.error]="formSubmitted && (!content.valid || forum.content.length < minContentLength)">
+          <label for="content" class="form-label">Content:</label>
+          <div class="input-file-wrapper">
+            <textarea id="content" [(ngModel)]="forum.content" name="content" required class="form-input auto-grow" #content="ngModel" maxlength="1000"></textarea>
+            <div class="word-count" [class.error-text]="forum.content.length > maxContentLength">
+              Character count: {{ forum.content.length }}/1000 - Min 200 Characters.
+            </div>
+            <div *ngIf="formSubmitted && !content.valid && forum.content.length === 0" class="error-text">Required</div>
+            <div *ngIf="formSubmitted && forum.content.length > 0 && forum.content.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
+            <div *ngIf="forum.content.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+          </div>
+        </div>
+
+          <!-- Categories -->
+          <div class="form-element">
+              <label for="categories" class="form-label">Categories:</label>
+                  <div class="categories-container">
+                      <div class="category-item" *ngFor="let category of categories">
+                          <label>
+                            <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="forum.categories.includes(category.name)"> {{ category.name }}
+                          </label>
+                      </div>
+                  </div>
+              </div>
+          
+
+        <!-- Error message displayed if form submission fails -->
+        <div *ngIf="formSubmitted && (!forumForm.valid || forum.content.length < minContentLength)" class="error-text">
+          Please fix any errors before submitting.
+        </div>
+        <div class="forum-btn-bar-container">
+          <div class="forum-btn-bar">
+            <button class="edit-comment-btn cancel-btn" type="button" (click)="cancelEdit()">Cancel</button>
+            <button class="edit-comment-btn save-btn" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+
+      <div *ngIf="!isEditMode">
+        <div class="forum-content-container">
+          <p>{{ forum.content }}</p>
+        </div>
+        <div class="forum-categories" *ngIf="forum.categories && forum.categories.length > 0">
+          <div class="forum-categories-container">
+            <h4>Categories:</h4>
+            <div class="category-labels">
+              <span class="category-label" *ngFor="let category of forum.categories">
+                {{ category }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -105,13 +109,9 @@
   </div>
 </div>
 
-<div class="profile-content-container">
-  <hr class="styled-hr">
-</div>
 
-<div class="profile-content-container">
+<div class="profile-content-container" *ngIf="!isEditMode">
   <div class="profile-content">
-    <h2 class="content-subheading">Comments</h2>
     <div class="comment-section">
       <div *ngFor="let comment of comments" class="comment">
         <div class="comment-left">
@@ -172,11 +172,11 @@
   </div>
 </div>
 
-<div class="profile-content-container">
+<div class="profile-content-container" *ngIf="!isEditMode">
   <hr class="styled-hr">
 </div>
 
-<div class="profile-content-container">
+<div class="profile-content-container" *ngIf="!isEditMode">
   <div class="back-btn-container">
     <button class="back-btn" (click)="goBack()">Back</button>
   </div>

@@ -4,12 +4,6 @@
 <div class="profile-content-container">
   <div class="profile-content">
     <h1 class="blog-heading">{{ blog?.title | titlecase }}</h1>
-    <div class="blog-author-box">
-      <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
-      <div class="author-info">
-        <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -19,177 +13,187 @@
 
 <div class="profile-content-container" *ngIf="blog">
   <div class="profile-content">
-    <div class="dropdown-placement">
-      <div class="is-edited-container" *ngIf="blog.isEdited && !isEditMode">
-        <h6 class="edited-text">(edited)</h6>
-      </div>
-      <div class="dropdown" *ngIf="currentUser && blog && currentUser._id === blog.user_id && !isEditMode">
-        <button class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
-          <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
-        </button>
-        <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
-          <label class="blog-options-label" (click)="toggleEditMode()">Edit</label>
-          <label class="blog-options-label" (click)="blog._id && deleteBlog(blog._id)">Delete</label>
+    <div class="forum-background">
+      <div class="dropdown-placement">
+        <div class="blog-author-box">
+          <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
+          <div class="author-info">
+            <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
+          </div>
+        </div>
+        <div class="test">
+          <div class="is-edited-container" *ngIf="blog.isEdited && !isEditMode">
+            <h6 class="edited-text">(edited)</h6>
+          </div>
+          <div class="dropdown" *ngIf="currentUser && blog && currentUser._id === blog.user_id && !isEditMode">
+            <button class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
+              <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+            </button>
+            <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
+              <label class="blog-options-label" (click)="toggleEditMode()">Edit</label>
+              <label class="blog-options-label" (click)="blog._id && deleteBlog(blog._id)">Delete</label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <form *ngIf="isEditMode" (ngSubmit)="saveBlogChanges()" #blogForm="ngForm">
-      <!-- Title Input -->
-      <div class="form-element" [class.error]="formSubmitted && (!title.valid || blog.title.length > maxTitleLength)">
-        <label for="title" class="form-label">Title:</label>
-        <div class="input-file-wrapper">
-          <input type="text" id="title" [(ngModel)]="blog.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
-          <div class="word-count" [class.error-text]="blog.title.length > maxTitleLength">
-            Character count: {{ blog.title.length }}/100
-          </div>
-          <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
-          <div *ngIf="blog.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
-        </div>
-      </div>
-    
-      <!-- Content Section 1 -->
-      <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1 || isEditMode">
-        <div class="blog-img" *ngIf="blog.image_1 || isEditMode">
-          <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
-          <!-- <button *ngIf="isEditMode" (click)="uploadImage(1)">Upload Image</button> -->
-        </div>
-        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || blog.content_section_1.length < minContentLength)">
-          <label for="content_section_1" class="form-label">Content Section 1:</label>
+      <form *ngIf="isEditMode" (ngSubmit)="saveBlogChanges()" #blogForm="ngForm">
+        <!-- Title Input -->
+        <div class="form-element" [class.error]="formSubmitted && (!title.valid || blog.title.length > maxTitleLength)">
+          <label for="title" class="form-label">Title:</label>
           <div class="input-file-wrapper">
-            <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
-            <div class="word-count" [class.error-text]="blog.content_section_1.length > maxContentLength">
-              Character count: {{ blog.content_section_1.length }}/1000 - Min 200 Characters.
+            <input type="text" id="title" [(ngModel)]="blog.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
+            <div class="word-count" [class.error-text]="blog.title.length > maxTitleLength">
+              Character count: {{ blog.title.length }}/100
             </div>
-            <div *ngIf="formSubmitted && !content_section_1.valid && blog.content_section_1.length === 0" class="error-text">Required</div>
-            <div *ngIf="formSubmitted && blog.content_section_1.length > 0 && blog.content_section_1.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
-            <div *ngIf="blog.content_section_1.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+            <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
+            <div *ngIf="blog.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
           </div>
         </div>
-      </div>
-    
-      <!-- Content Section 2 -->
-      <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2 || isEditMode">
-        <div class="blog-img" *ngIf="blog.image_2 || isEditMode">
-          <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
-        </div>
-        <div *ngIf="isEditMode">
-          <button class="delete-img-btn" *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
-        </div>
-        <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
-          <div>
-            <label for="image_2" class="form-label">Image 2:</label>
-            <label class="optional-label">(optional)</label>
+      
+        <!-- Content Section 1 -->
+        <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1 || isEditMode">
+          <div class="blog-img" *ngIf="blog.image_1 || isEditMode">
+            <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
+            <!-- <button *ngIf="isEditMode" (click)="uploadImage(1)">Upload Image</button> -->
           </div>
-          <div class="input-file-wrapper">
-            <input type="file" id="image_2" (change)="onFileChange($event, 'image_2')">
-            <div class="file-size-info">Maximum file size: 2 MB</div>
-            <div *ngIf="fileSizeError['image_2']" class="error-text">{{ fileSizeError['image_2'] }}</div>
-            <div *ngIf="fileTypeError['image_2']" class="error-text">{{ fileTypeError['image_2'] }}</div>
-          </div>
-        </div>
-        
-        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || (blog.content_section_2 && blog.content_section_2.length < minContentLength))">
-          <label for="content_section_2" class="form-label">Content Section 2:</label>
-          <div class="input-file-wrapper">
-            <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
-            <div class="word-count" [class.error-text]="blog.content_section_2 && blog.content_section_2.length > maxContentLength">
-              Character count: {{ blog.content_section_2?.length || 0 }}/1000
-            </div>
-            <div *ngIf="blog.content_section_2 && blog.content_section_2.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
-          </div>
-        </div>
-      </div>
-    
-      <!-- Content Section 3 -->
-      <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3 || isEditMode">
-        <div class="blog-img" *ngIf="blog.image_3 || isEditMode">
-          <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
-        </div>
-        <div *ngIf="isEditMode">
-          <button class="delete-img-btn" *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
-        </div>
-        <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
-          <div>
-            <label for="image_3" class="form-label">Image 3:</label>
-            <label class="optional-label">(optional)</label>
-          </div>
-          <div class="input-file-wrapper">
-            <input type="file" id="image_3" (change)="onFileChange($event, 'image_3')">
-            <div class="file-size-info">Maximum file size: 2 MB</div>
-            <div *ngIf="fileSizeError['image_3']" class="error-text">{{ fileSizeError['image_3'] }}</div>
-            <div *ngIf="fileTypeError['image_3']" class="error-text">{{ fileTypeError['image_3'] }}</div>
-          </div>
-        </div>
-          <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || (blog.content_section_3 && blog.content_section_3.length < minContentLength))">
-            <label for="content_section_3" class="form-label">Content Section 3:</label>
+          <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || blog.content_section_1.length < minContentLength)">
+            <label for="content_section_1" class="form-label">Content Section 1:</label>
             <div class="input-file-wrapper">
-              <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
-              <div class="word-count" [class.error-text]="blog.content_section_3 && blog.content_section_3.length > maxContentLength">
-                Character count: {{ blog.content_section_3?.length || 0 }}/1000
+              <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
+              <div class="word-count" [class.error-text]="blog.content_section_1.length > maxContentLength">
+                Character count: {{ blog.content_section_1.length }}/1000 - Min 200 Characters.
               </div>
-              <div *ngIf="blog.content_section_3 && blog.content_section_3.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
-            </div>
-          </div>
-                <!-- Categories -->
-          <div class="form-element">
-            <label for="categories" class="form-label">Categories:</label>
-            <div class="categories-container">
-              <div class="category-item" *ngFor="let category of categories">
-                <label>
-                  <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="blog.categories.includes(category.name)"> {{ category.name }}
-                </label>
-              </div>
+              <div *ngIf="formSubmitted && !content_section_1.valid && blog.content_section_1.length === 0" class="error-text">Required</div>
+              <div *ngIf="formSubmitted && blog.content_section_1.length > 0 && blog.content_section_1.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
+              <div *ngIf="blog.content_section_1.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
             </div>
           </div>
         </div>
+      
+        <!-- Content Section 2 -->
+        <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2 || isEditMode">
+          <div class="blog-img" *ngIf="blog.image_2 || isEditMode">
+            <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
+          </div>
+          <div *ngIf="isEditMode">
+            <button class="delete-img-btn" *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
+          </div>
+          <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
+            <div>
+              <label for="image_2" class="form-label">Image 2:</label>
+              <label class="optional-label">(optional)</label>
+            </div>
+            <div class="input-file-wrapper">
+              <input type="file" id="image_2" (change)="onFileChange($event, 'image_2')">
+              <div class="file-size-info">Maximum file size: 2 MB</div>
+              <div *ngIf="fileSizeError['image_2']" class="error-text">{{ fileSizeError['image_2'] }}</div>
+              <div *ngIf="fileTypeError['image_2']" class="error-text">{{ fileTypeError['image_2'] }}</div>
+            </div>
+          </div>
+          
+          <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || (blog.content_section_2 && blog.content_section_2.length < minContentLength))">
+            <label for="content_section_2" class="form-label">Content Section 2:</label>
+            <div class="input-file-wrapper">
+              <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
+              <div class="word-count" [class.error-text]="blog.content_section_2 && blog.content_section_2.length > maxContentLength">
+                Character count: {{ blog.content_section_2?.length || 0 }}/1000
+              </div>
+              <div *ngIf="blog.content_section_2 && blog.content_section_2.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Content Section 3 -->
+        <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3 || isEditMode">
+          <div class="blog-img" *ngIf="blog.image_3 || isEditMode">
+            <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
+          </div>
+          <div *ngIf="isEditMode">
+            <button class="delete-img-btn" *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
+          </div>
+          <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
+            <div>
+              <label for="image_3" class="form-label">Image 3:</label>
+              <label class="optional-label">(optional)</label>
+            </div>
+            <div class="input-file-wrapper">
+              <input type="file" id="image_3" (change)="onFileChange($event, 'image_3')">
+              <div class="file-size-info">Maximum file size: 2 MB</div>
+              <div *ngIf="fileSizeError['image_3']" class="error-text">{{ fileSizeError['image_3'] }}</div>
+              <div *ngIf="fileTypeError['image_3']" class="error-text">{{ fileTypeError['image_3'] }}</div>
+            </div>
+          </div>
+            <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || (blog.content_section_3 && blog.content_section_3.length < minContentLength))">
+              <label for="content_section_3" class="form-label">Content Section 3:</label>
+              <div class="input-file-wrapper">
+                <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
+                <div class="word-count" [class.error-text]="blog.content_section_3 && blog.content_section_3.length > maxContentLength">
+                  Character count: {{ blog.content_section_3?.length || 0 }}/1000
+                </div>
+                <div *ngIf="blog.content_section_3 && blog.content_section_3.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+              </div>
+            </div>
+                  <!-- Categories -->
+            <div class="form-element">
+              <label for="categories" class="form-label">Categories:</label>
+              <div class="categories-container">
+                <div class="category-item" *ngFor="let category of categories">
+                  <label>
+                    <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="blog.categories.includes(category.name)"> {{ category.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- Error message displayed if form submission fails -->
-      <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors() || blog.content_section_1.length < minContentLength)" class="error-text">
-        Please fix any errors before submitting.
-      </div>
-      <div class="blog-btn-bar-container">
-        <div class="blog-btn-bar">
-          <button class="edit-comment-btn cancel-btn" type="button" (click)="cancelEdit()">Cancel</button>
-          <button class="edit-comment-btn save-btn" type="submit">Save</button>
+        <!-- Error message displayed if form submission fails -->
+        <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors() || blog.content_section_1.length < minContentLength)" class="error-text">
+          Please fix any errors before submitting.
         </div>
-      </div>
-    </form>
+        <div class="blog-btn-bar-container">
+          <div class="blog-btn-bar">
+            <button class="edit-comment-btn cancel-btn" type="button" (click)="cancelEdit()">Cancel</button>
+            <button class="edit-comment-btn save-btn" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
 
-    <div *ngIf="!isEditMode">
-      <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1">
-        <div class="blog-img" *ngIf="blog.image_1">
-          <img [src]="blog.image_1" alt="Blog Image 1">
+      <div *ngIf="!isEditMode">
+        <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1">
+          <div class="blog-img" *ngIf="blog.image_1">
+            <img [src]="blog.image_1" alt="Blog Image 1">
+          </div>
+          <div class="blog-content-container">
+            <p>{{ blog.content_section_1 }}</p>
+          </div>
         </div>
-        <div class="blog-content-container">
-          <p>{{ blog.content_section_1 }}</p>
-        </div>
-      </div>
 
-      <div class="blog-section" *ngIf="blog.image_2">
-        <div class="blog-img" *ngIf="blog.image_2">
-          <img [src]="blog.image_2" alt="Blog Image 2">
+        <div class="blog-section" *ngIf="blog.image_2">
+          <div class="blog-img" *ngIf="blog.image_2">
+            <img [src]="blog.image_2" alt="Blog Image 2">
+          </div>
+          <div class="blog-content-container" *ngIf="blog.content_section_2">
+            <p>{{ blog.content_section_2 }}</p>
+          </div>
         </div>
-        <div class="blog-content-container" *ngIf="blog.content_section_2">
-          <p>{{ blog.content_section_2 }}</p>
-        </div>
-      </div>
 
-      <div class="blog-section" *ngIf="blog.image_3">
-        <div class="blog-img" *ngIf="blog.image_3">
-          <img [src]="blog.image_3" alt="Blog Image 3">
+        <div class="blog-section" *ngIf="blog.image_3">
+          <div class="blog-img" *ngIf="blog.image_3">
+            <img [src]="blog.image_3" alt="Blog Image 3">
+          </div>
+          <div class="blog-content-container" *ngIf="blog.content_section_3">
+            <p>{{ blog.content_section_3 }}</p>
+          </div>
         </div>
-        <div class="blog-content-container" *ngIf="blog.content_section_3">
-          <p>{{ blog.content_section_3 }}</p>
-        </div>
-      </div>
-      <div class="blog-categories" *ngIf="blog.categories && blog.categories.length > 0">
-        <div class="blog-categories-container">
-          <h4>Categories:</h4>
-          <div class="category-labels">
-            <span class="category-label" *ngFor="let category of blog.categories">
-              {{ category }}
-            </span>
+        <div class="blog-categories" *ngIf="blog.categories && blog.categories.length > 0">
+          <div class="blog-categories-container">
+            <h4>Categories:</h4>
+            <div class="category-labels">
+              <span class="category-label" *ngFor="let category of blog.categories">
+                {{ category }}
+              </span>
+            </div>
           </div>
         </div>
       </div>

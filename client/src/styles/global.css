@@ -10,3 +10,11 @@
   overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
   font-family: Roboto, sans-serif !important;
 }
+
+h4 {
+  color: #6C584C;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 800 !important;
+    margin: 10px 0 !important;
+    text-align: left;
+}
