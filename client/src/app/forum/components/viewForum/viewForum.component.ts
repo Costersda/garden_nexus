@@ -63,6 +63,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
         this.fetchCurrentUser();
         this.fetchForum(forumId);
       }
+
     });
   }
 
@@ -127,6 +128,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
             this.fetchUser(forum.user_id);
           }
           this.fetchComments(forumId);
+          console.log("forum:", forum);
         } else {
           // Forum not found, redirect to forums list
           this.router.navigate(['/forum']);

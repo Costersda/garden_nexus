@@ -8,7 +8,7 @@
         <a [routerLink]="['/profile', forumAuthor | lowercase]" class="forum-author">
           By: {{ forumAuthor | titlecase }}
         </a>
-        <span class="forum-replies">Replies: {{ forum.comments.length }}</span>
+        <span class="forum-replies">Replies: {{ commentCount }}</span>
       </div>
     </div>
   </div>

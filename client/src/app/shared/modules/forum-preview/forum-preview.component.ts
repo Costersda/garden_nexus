@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Forum } from '../../../shared/types/forum.interface';
 import { UserService } from '../../../shared/services/user.service';
+import { CommentService } from '../../../shared/services/comment.service';
 
 @Component({
   selector: 'app-forum-preview',
@@ -15,13 +16,26 @@ export class ForumPreviewComponent implements OnInit {
   @Input() source: string = 'forum';
   @Input() username?: string;
   forumAuthor: string = '';
+  commentCount: number = 0; // Variable to hold the number of comments
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(
+    private router: Router, 
+    private userService: UserService,
+    private commentService: CommentService // Inject CommentService
+  ) {}
 
   ngOnInit(): void {
+    console.log(this.forum);
     if (this.forum.user_id) {
       this.userService.getUserById(this.forum.user_id).subscribe(user => {
         this.forumAuthor = user.username;
+      });
+    }
+
+    // Fetch comments for the forum and count them
+    if (this.forum._id) {
+      this.commentService.getCommentsByForumId(this.forum._id).subscribe(comments => {
+        this.commentCount = comments.length;
       });
     }
   }

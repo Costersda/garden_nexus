@@ -1,12 +1,6 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
-<!-- <div class="profile-content-container">
-  <div class="profile-content">
-    <h1 class="profile-heading">Forum</h1>
-  </div>
-</div> -->
-
 <div class="img-spacer">
   <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
 </div>
@@ -70,7 +64,7 @@
     <div class="forum-list-container">
       <div class="forum-list-content">
         <div class="forum-item" *ngFor="let forum of displayedForums">
-          <app-forum-preview [forum]="forum" [routerLink]="['/forum', forum._id]" [queryParams]="{ source: 'forum' }"></app-forum-preview>
+          <app-forum-preview [forum]="forum"></app-forum-preview>
         </div>
       </div>
     </div>
