@@ -24,7 +24,7 @@
   margin: 0;
   font-size: 2.5em;
   text-align: center;
-  font-weight: 450;
+  font-weight: 400 !important;
 }
 
 .sort-btns-container {
@@ -35,7 +35,7 @@
 
 .create-post-btn,
 .sort-btn {
-  padding: 10px 25px;
+  padding: 8px 20px;
   border: none;
   border-radius: 5px;
   background-color: #ADC178;
@@ -51,7 +51,7 @@
 
 .create-post-btn {
   margin-right: 15px;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .sort-btn {
@@ -119,12 +119,12 @@
 }
 
 .blog-heading {
-  font-size: 3.2em !important;
+  font-size: 2.2em !important;
   margin-bottom: 0 !important;
   color: #6C584C;
   font-family: 'Montserrat', sans-serif !important;
   font-weight: 800 !important;
-  margin: 10px 0 !important;
+  margin-top: 10px !important;
 }
 
 .blog-options-label {
@@ -458,11 +458,10 @@
     justify-content: center;
   }
 
-
-
   .blog-heading {
     font-size: 2.2em !important;
     line-height: 1.2em !important;
+    margin: 0;
   }
 
 
@@ -485,10 +484,6 @@
 
   .blog-img img {
     max-width: 100%;
-  }
-
-  .blog-section {
-
   }
   
   .blog-author-box {

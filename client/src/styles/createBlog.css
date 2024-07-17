@@ -11,9 +11,7 @@
 .content-subheading {
   width: 100%;
   color: #6C584C;
-  font-size: 3.2em !important;
-  margin-bottom: 10px !important;
-  font-weight: 400 !important;
+  margin: 10px 0 !important;
   position: relative;
   display: inline-block;
   text-align: center;
@@ -63,6 +61,11 @@ input[type="file"] {
   min-height: 100px;
 }
 
+.blog-submitBtn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .blog-submitBtn {
   background-color: #ADC178;
   color: #ffffff;
@@ -71,7 +74,7 @@ input[type="file"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 20px;
+  margin: 20px 0;
 }
 
 .blog-submitBtn:hover {
@@ -118,6 +121,10 @@ input[type="file"] {
     text-align: left;
   }
 
+  .content-subheading {
+    margin: 0 !important;
+  }
+
   .form-label,
   .optional-label {
     padding-top: 0;
@@ -141,6 +148,10 @@ input[type="file"] {
 
   .category-item {
     width: 100%;
+  }
+
+  .blog-submitBtn {    
+    margin: 10px 0;
   }
 
 }

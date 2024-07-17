@@ -119,7 +119,9 @@
         <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors())" class="error-text">
           Please fix any errors before submitting.
         </div>
-        <button class="blog-submitBtn" type="submit">Create Blog Post</button>
+        <div class="blog-submitBtn-container">
+          <button class="blog-submitBtn" type="submit">Create Blog Post</button>
+        </div>
       </form>
     </div>
   </div>  
