@@ -28,8 +28,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private forumSubscription!: Subscription | undefined;
   private initialForumsToShow = 3;
   private forumsIncrement = 3;
-  private initialBlogsToShow = 4; // Number of blogs to show initially
-  private blogsIncrement = 4; // Number of blogs to load each time
+  private initialBlogsToShow = 3; // Number of blogs to show initially
+  private blogsIncrement = 3; // Number of blogs to load each time
 
   constructor(
     private route: ActivatedRoute,

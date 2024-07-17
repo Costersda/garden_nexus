@@ -19,7 +19,8 @@
 .profile-content {
   text-align: center;
   margin: 0 auto;
-  max-width: 80%;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .profile-container-heading {
@@ -168,6 +169,10 @@ p strong {
   .profile-picture-container {
     left: 10%;
   }
+
+  .profile-content-container {
+    padding: 20px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -194,9 +199,7 @@ p strong {
     height: 150px;
   }
 
-  .profile-content-container {
-    
-  }
+
 
   .profile-content {
     max-width: 100%;

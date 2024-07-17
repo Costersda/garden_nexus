@@ -8,6 +8,13 @@
     border: 2px solid #adc178;
     position: relative;
   }
+
+  .comment-content {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 100%;
+  }
   
   .comment::after {
     content: '';

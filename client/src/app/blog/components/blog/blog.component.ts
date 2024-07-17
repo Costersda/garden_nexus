@@ -16,8 +16,8 @@ export class BlogComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   isDropdownOpen = false;
   private blogSubscription!: Subscription;
-  private initialBlogsToShow = 8;
-  private blogsIncrement = 8;
+  private initialBlogsToShow = 6;
+  private blogsIncrement = 6;
   blogHeader: string = 'Newest Blog Posts';
   noResults: boolean = false;
   isSearchActive: boolean = false;
