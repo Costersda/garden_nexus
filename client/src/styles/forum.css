@@ -219,6 +219,13 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 1200px;
   width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forum-background:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #eee5d3;
 }
 
 .forum-categories {

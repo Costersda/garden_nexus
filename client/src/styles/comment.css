@@ -85,7 +85,7 @@
     background-color: #adc178;
     color: #ffffff;
     font-size: 1.2em;
-    padding: 15px 50px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -206,12 +206,12 @@
     display: block;
     margin: 0;
     padding: 0;
-    border: 2px solid #ADC178;
+    border: 1px solid #ADC178;
   }
   
   .dropdown-menu label {
     display: block;
-    padding: 20px 20px;
+    padding: 10px 10px;
     cursor: pointer;
     white-space: nowrap;
     margin: 0;
