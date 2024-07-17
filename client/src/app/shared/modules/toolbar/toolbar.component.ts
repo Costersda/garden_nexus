@@ -4,7 +4,9 @@ import { Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth.service';
-import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
+import { User } from '../../types/user.interface';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-toolbar',
@@ -19,9 +21,13 @@ import { CurrentUserInterface } from '../../../auth/types/currentUser.interface'
 })
 export class ToolbarComponent implements OnInit {
   authButtonLabel: string = 'Login';
-  currentUser: CurrentUserInterface | null = null;
+  currentUser: User | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
@@ -30,11 +36,24 @@ export class ToolbarComponent implements OnInit {
 
     const token = localStorage.getItem('token');
     if (token) {
-      this.authService.getCurrentUser().subscribe((currentUser: CurrentUserInterface) => {
-        this.authService.setCurrentUser(currentUser);
-        this.currentUser = currentUser;
+      this.authService.getCurrentUser().subscribe((currentUser) => {
+        if (currentUser) {
+          this.fetchProfile(currentUser.username);
+        }
       });
     }
+  }
+
+  fetchProfile(username: string): void {
+    const url = `${environment.apiUrl}/profile/${username}`;
+    this.http.get<User>(url).subscribe({
+      next: (profile) => {
+        this.currentUser = profile;
+      },
+      error: (error) => {
+        console.error('Error fetching profile:', error);
+      }
+    });
   }
 
   onAuthAction(): void {

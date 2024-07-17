@@ -29,6 +29,7 @@
   align-items: flex-start;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  width: 100%;
 }
 
 .profile-content-subheading {
@@ -42,13 +43,16 @@
 }
 
 .profile-username {
-  font-size: 2.5em !important;
   font-weight: 500 !important;
   color: #6C584C;
   margin: 0 !important;
   position: relative;
   display: inline-block;
   padding-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1 !important;
+  max-width: calc(100% - 35px); /* Subtracting the width of the edit icon plus some margin */
 }
 
 .profile-username::after {
@@ -74,6 +78,7 @@
   height: 25px;
   cursor: pointer;
   margin-top: 5px;
+  flex-shrink: 0;
 }
 
 .profile-heading {
@@ -84,11 +89,11 @@
   font-weight: 500 !important;
 }
 
-p {
+/* p {
   font-size: 18px !important;
   color: #555 !important;
   margin: 10px 0 !important;
-}
+} */
 
 p strong {
   font-weight: bold;

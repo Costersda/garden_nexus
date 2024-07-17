@@ -212,7 +212,6 @@
 
 .edited-text {
   margin-bottom: 0 !important;
-  margin-right: 30px !important;
 }
 
 .blog-author-container {
@@ -234,12 +233,12 @@
 .blog-author-box {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 15px 20px;
   background-color: #DDE5B6;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 250px;
   margin-right: auto;
+  min-width: 250px;
 }
 
 .author-profile-image {
@@ -248,11 +247,14 @@
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
+  flex-shrink: 0; /* Prevent the image from shrinking */
 }
 
 .author-info {
   display: flex;
   flex-direction: column;
+  justify-content: center; /* This will vertically center the content */
+  height: 100%; /* Ensure the div takes full height of its parent */
 }
 
 .blog-author a {
@@ -268,6 +270,7 @@
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
+  margin: 0 !important;
 }
 
 .blog-author::before {
@@ -296,6 +299,10 @@
   transform-origin: bottom left;
 }
 
+.is-edited-container {
+  margin-left: 20px;
+}
+
 .delete-img-btn {
   background-color: #6C584C;
   color: #ffffff;
@@ -314,6 +321,10 @@
 .blog-section {
   display: flex;
   flex-direction: column;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .blog-img {
@@ -370,16 +381,7 @@
   margin-bottom: 0 !important;
 }
 
-.blog-categories-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px;
-  background-color: #DDE5B6;
-  border-radius: 10px;
-  border: 2px solid #ADC178;
-  box-sizing: border-box;
-  margin-top: 10px;
-}
+
 
 .back-btn {
   background-color: #ADC178;

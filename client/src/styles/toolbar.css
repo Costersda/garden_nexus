@@ -37,6 +37,30 @@ mat-toolbar.mat-toolbar {
     font-size: 16px;
     opacity: 0.9;
   }
+
+  .profile-picture-link {
+    display: block;
+    margin-right: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 40px;
+    height: 40px;
+
+  }
+  
+  .toolbar-profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #DDE5B6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-picture-link:hover .toolbar-profile-picture {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
   
   /* Style for the login/logout button */
   mat-toolbar .toolbar-login-btn {
@@ -149,6 +173,11 @@ mat-toolbar.mat-toolbar {
     .toolbar-logo {
       font-size: 24px;
     }
+
+    .profile-picture-link {
+      margin-right: 10px;
+    }
+  
   
     .toolbar-logged-in-text {
       font-size: 14px;

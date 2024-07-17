@@ -3,9 +3,11 @@
     Garden Nexus
   </a>
   <span class="spacer"></span>
-  <div class="toolbar-logged-in-text" *ngIf="currentUser">
-    {{ currentUser.username | titlecase }} Logged in
-  </div>
+  <a *ngIf="currentUser" [routerLink]="['/profile', currentUser.username]" class="profile-picture-link">
+    <img [src]="currentUser.imageFile ? 'data:image/jpeg;base64,' + currentUser.imageFile : 'assets/garden-nexus-logo.webp'" 
+         alt="Profile Picture" 
+         class="toolbar-profile-picture">
+  </a>
   <button mat-button class="toolbar-login-btn" (click)="onAuthAction()">
     {{ authButtonLabel }}
   </button>
