@@ -234,6 +234,10 @@
   flex-direction: row;
 }
 
+.create-forum-container {
+  padding: 20px;
+}
+
 /* Responsive styles */
 @media (max-width: 1000px) {
   .forum-preview {
