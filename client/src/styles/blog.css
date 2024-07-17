@@ -167,6 +167,10 @@
   width: 100%;
 }
 
+.load-more-btn-container {
+  margin-top: 20px;
+}
+
 .load-more-btn {
   background: none;
   border: none;

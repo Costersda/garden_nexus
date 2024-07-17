@@ -30,28 +30,30 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .profile-content-subheading {
   width: 100%;
   color: #6C584C;
-  font-size: 2.5em;
-  font-weight: 500 !important;
+  font-size: 2.3em !important;
+  font-weight: 400 !important;
   text-align: center;
   position: relative;
   display: inline-block;
+  margin-bottom: 10 !important;
 }
 
 .profile-username {
-  font-weight: 500 !important;
+  font-weight: 400 !important;
+  font-size: 2.2em !important;
   color: #6C584C;
   margin: 0 !important;
   position: relative;
   display: inline-block;
-  padding-bottom: 10px;
   word-break: break-word;
   overflow-wrap: break-word;
-  line-height: 1 !important;
+  line-height: 1.1 !important;
   max-width: calc(100% - 35px); /* Subtracting the width of the edit icon plus some margin */
 }
 
@@ -130,14 +132,14 @@ p strong {
 
 .profile-picture-container {
   position: absolute;
-  top: 80px; /* Adjust to position the profile picture */
-  left: 20%;
+  top: 100px; /* Adjust to position the profile picture */
+  left: 21%;
   transform: translateX(0%);
   z-index: 10;
   background-color: rgb(255, 255, 255);
   border-radius: 50%;
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #ADC178;
   transition: transform 0.3s ease;
 }
@@ -147,8 +149,8 @@ p strong {
 }
 
 .profile-picture {
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -189,6 +191,10 @@ p strong {
     font-size: 2.2em !important;
     line-height: 1.2em !important;
   }
+  
+  /* .profile-content-subheading {
+    margin-bottom: 0 !important;
+  } */
 
 }
 
@@ -200,8 +206,8 @@ p strong {
   }
 
   .profile-picture-container {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
   }
 
 
@@ -211,7 +217,7 @@ p strong {
   }
 
   .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
   }
 }

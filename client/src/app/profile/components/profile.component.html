@@ -22,9 +22,9 @@
   </div>
 </div>
 
-<div class="profile-content-container">
+<!-- <div class="profile-content-container">
   <hr class="styled-hr">
-</div>
+</div> -->
 
 <div class="profile-content-container">
   <div class="profile-content">
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="profile-content-container" *ngIf="blogs.length > displayedBlogs.length">
+    <div class="load-more-btn-container" *ngIf="blogs.length > displayedBlogs.length">
       <div class="profile-content">
         <button class="load-more-btn" (click)="loadMoreBlogs()">
           <img src="assets/arrow_down.png" alt="Load More">
@@ -65,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div class="profile-content-container" *ngIf="forums.length > displayedForums.length">
+    <div class="load-more-btn-container" *ngIf="forums.length > displayedForums.length">
       <div class="profile-content">
         <button class="load-more-btn" (click)="loadMoreForums()">
           <img src="assets/arrow_down.png" alt="Load More">
