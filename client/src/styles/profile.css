@@ -101,15 +101,7 @@ p strong {
   font-weight: bold;
 }
 
-.styled-hr-left {
-  width: 60%;
-  margin-top: 0;
-  margin-bottom: 20px;
-  border: 0;
-  border-top: 3px solid #6C584C;
-  text-align: left;
-  opacity: 0.8;
-}
+
 
 .img-banner {
   padding: 0;

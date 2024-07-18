@@ -38,18 +38,20 @@ select {
   align-items: center;
   position: relative;
   margin-bottom: 20px;
+  padding: 0;
 }
 
 .modal-header h2 {
   flex-grow: 1;
   margin: 0;
-  font-family: 'Montserrat', sans-serif !important;
+  font-size: 2.2em !important;
+  color: #6C584C;
 }
 
 .close-btn {
   position: absolute;
-  top: 15px;
-  right: 10px;
+  top: 5px;
+  right: 3px;
   width: 34px; /* Adjust the size as needed */
   height: 34px; /* Adjust the size as needed */
   cursor: pointer;

@@ -196,7 +196,6 @@
     display: none;
     position: absolute;
     right: 0;
-    top: 100%;
     background-color: #F0EAD2;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
