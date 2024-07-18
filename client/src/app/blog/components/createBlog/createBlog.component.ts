@@ -16,9 +16,10 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   fileTypeError: { [key: string]: string | null } = {};
   formSubmitted = false;
   imageErrors: { [key: string]: boolean } = {};
-  maxTitleLength = 100; // Example maximum length for title
-  maxContentLength = 1000;
-  minContentLength = 200;
+  maxTitleLength = 100; // Maximum character count for title
+  maxContentWords = 1000;
+  minContentWords = 200;
+  maxWordLength = 50; // Maximum allowed length for a single word
 
   constructor(
     private blogService: BlogService,
@@ -98,8 +99,13 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   createBlog(): void {
     this.formSubmitted = true;
 
-    if (!this.blog.title || !this.blog.content_section_1 || !this.blog.image_1 || this.blog.content_section_1.length < this.minContentLength) {
-      return; // Prevent form submission if required fields are missing or content_section_1 is too short
+    if (!this.blog.title || !this.blog.content_section_1 || !this.blog.image_1 || 
+        this.getContentWordCount('content_section_1') < this.minContentWords ||
+        this.blog.title.length > this.maxTitleLength ||
+        !this.isContentValid('content_section_1') ||
+        !this.isContentValid('content_section_2') ||
+        !this.isContentValid('content_section_3')) {
+      return; // Prevent form submission if there are any issues
     }
 
     this.blogService.createBlog(this.blog).subscribe(() => {
@@ -109,13 +115,44 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getTitleWordCount(): number {
-    return this.blog.title.trim().split(/\s+/).length;
+  getTitleCharCount(): number {
+    return this.blog.title.length;
   }
 
   getContentWordCount(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): number {
     const content = this.blog[section];
-    return content ? content.trim().split(/\s+/).length : 0;
+    return content ? this.countWords(content) : 0;
+  }
+  
+  countWords(text: string): number {
+    return text
+      .trim()
+      .split(/\s+/)
+      .filter(word => word.length > 0 && word.length <= this.maxWordLength)
+      .length;
+  }
+
+  isTitleTooLong(): boolean {
+    return this.getTitleCharCount() > this.maxTitleLength;
+  }
+
+  isContentTooLong(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
+    return this.getContentWordCount(section) > this.maxContentWords;
+  }
+  
+  isContentTooShort(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
+    const wordCount = this.getContentWordCount(section);
+    return wordCount > 0 && wordCount < this.minContentWords;
+  }
+
+  isContentValid(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
+    const content = this.blog[section];
+    if (!content) return true; // Optional sections are always valid if empty
+
+    const words = content.trim().split(/\s+/);
+    const validWords = words.filter(word => word.length > 0 && word.length <= this.maxWordLength);
+    
+    return words.length === validWords.length;
   }
 
   addAutoGrow(): void {
@@ -130,7 +167,10 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     this.style.height = this.scrollHeight + 'px';
   }
 
-  hasImageErrors(): boolean {
-    return Object.values(this.imageErrors).some(error => error);
+  hasErrors(): boolean {
+    return Object.values(this.imageErrors).some(error => error) ||
+           !this.isContentValid('content_section_1') ||
+           !this.isContentValid('content_section_2') ||
+           !this.isContentValid('content_section_3');
   }
 }

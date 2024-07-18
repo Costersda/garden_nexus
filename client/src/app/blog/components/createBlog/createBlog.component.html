@@ -1,12 +1,6 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
-<!-- <div class="profile-content-container">
-  <div class="profile-content">
-    <h1 class="profile-heading">Blogs</h1>
-  </div>
-</div> -->
-
 <div class="img-spacer">
   <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
 </div>
@@ -24,27 +18,28 @@
   <div class="profile-content">
     <div class="create-blog-container">
       <form (ngSubmit)="createBlog()" #blogForm="ngForm">
-        <div class="form-element" [class.error]="formSubmitted && (!title.valid || blog.title.length > maxTitleLength)">
+        <div class="form-element" [class.error]="formSubmitted && (!title.valid || isTitleTooLong())">
           <label for="title" class="form-label">Title:</label>
           <div class="input-file-wrapper">
             <input type="text" id="title" [(ngModel)]="blog.title" name="title" required class="form-input" #title="ngModel" maxlength="100">
-            <div class="word-count" [class.error-text]="blog.title.length > maxTitleLength">
-              Character count: {{ blog.title.length }}/100
+            <div class="word-count" [class.error-text]="isTitleTooLong()">
+              Character count: {{ getTitleCharCount() }}/{{ maxTitleLength }}
             </div>
             <div *ngIf="formSubmitted && !title.valid" class="error-text">Required</div>
-            <div *ngIf="blog.title.length > maxTitleLength" class="error-text">Title exceeds maximum length</div>
+            <div *ngIf="isTitleTooLong()" class="error-text">Title exceeds maximum length</div>
           </div>
         </div>
-        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || blog.content_section_1.length < minContentLength)">
+        <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || isContentTooShort('content_section_1') || !isContentValid('content_section_1'))">
           <label for="content_section_1" class="form-label">Content Section 1:</label>
           <div class="input-file-wrapper">
-            <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel" maxlength="1000"></textarea>
-            <div class="word-count" [class.error-text]="blog.content_section_1.length > maxContentLength">
-              Character count: {{ blog.content_section_1.length }}/1000 - Min 200 Characters.
+            <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel"></textarea>
+            <div class="word-count" [class.error-text]="isContentTooLong('content_section_1')">
+              Word count: {{ getContentWordCount('content_section_1') }}/{{ maxContentWords }} - Min {{ minContentWords }} words.
             </div>
-            <div *ngIf="formSubmitted && !content_section_1.valid && blog.content_section_1.length === 0" class="error-text">Required</div>
-            <div *ngIf="formSubmitted && blog.content_section_1.length > 0 && blog.content_section_1.length < minContentLength" class="error-text">Content must be at least 200 characters</div>
-            <div *ngIf="blog.content_section_1.length > maxContentLength" class="error-text">Content exceeds maximum length</div>
+            <div *ngIf="formSubmitted && !content_section_1.valid && getContentWordCount('content_section_1') === 0" class="error-text">Required</div>
+            <div *ngIf="formSubmitted && isContentTooShort('content_section_1')" class="error-text">Content must be at least {{ minContentWords }} words</div>
+            <div *ngIf="isContentTooLong('content_section_1')" class="error-text">Content exceeds maximum word limit</div>
+            <div *ngIf="!isContentValid('content_section_1')" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
           </div>
         </div>
         <div class="form-element" [class.error]="formSubmitted && (!blog.image_1 || fileSizeError['image_1'] || fileTypeError['image_1'])">
@@ -63,10 +58,11 @@
             <label class="optional-label">(optional)</label>
           </div>
           <div class="input-file-wrapper">
-            <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input auto-grow" maxlength="1000"></textarea>
-            <div class="word-count" [class.error-text]="(blog.content_section_2?.length ?? 0) > maxContentLength">
-              Character count: {{ blog.content_section_2?.length ?? 0 }}/1000
+            <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input auto-grow"></textarea>
+            <div class="word-count" [class.error-text]="isContentTooLong('content_section_2')">
+              Word count: {{ getContentWordCount('content_section_2') }}/{{ maxContentWords }}
             </div>
+            <div *ngIf="!isContentValid('content_section_2')" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
           </div>
         </div>
         <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
@@ -87,10 +83,11 @@
             <label class="optional-label">(optional)</label>
           </div>
           <div class="input-file-wrapper">
-            <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input auto-grow" maxlength="1000"></textarea>
-            <div class="word-count" [class.error-text]="(blog.content_section_3?.length ?? 0) > maxContentLength">
-              Character count: {{ blog.content_section_3?.length ?? 0 }}/1000
+            <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input auto-grow"></textarea>
+            <div class="word-count" [class.error-text]="isContentTooLong('content_section_3')">
+              Word count: {{ getContentWordCount('content_section_3') }}/{{ maxContentWords }}
             </div>
+            <div *ngIf="!isContentValid('content_section_3')" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
           </div>
         </div>
         <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
@@ -116,7 +113,7 @@
           </div>
         </div>
         <!-- Error message displayed if form submission fails -->
-        <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors())" class="error-text">
+        <div *ngIf="formSubmitted && (!blogForm.valid || hasErrors())" class="error-text">
           Please fix any errors before submitting.
         </div>
         <div class="blog-submitBtn-container">
