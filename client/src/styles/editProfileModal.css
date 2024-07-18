@@ -181,7 +181,6 @@ input[type="file"].error {
 .word-count {
   font-size: 14px;
   color: #999;
-  margin-top: 5px;
 }
 
 .error-text {

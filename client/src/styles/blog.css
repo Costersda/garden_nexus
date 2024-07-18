@@ -105,13 +105,13 @@
   justify-content: end;
   margin: 0 auto;
   text-align: center;
-  max-width: 1200px;
+  max-width: 1000px;
   width: 100%;
 }
 
 .styled-hr {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   border: 0;
   height: 2px;
@@ -201,7 +201,7 @@
 }
 
 .blog-content-container {
-  padding: 20px 0;
+  padding: 0;
   margin: 0 auto;
   max-width: 1200px;
   text-align: left;
@@ -211,7 +211,9 @@
 
 .blog-content-container p {
   font-size: 1.2em !important;
-  font-weight: 500;
+  font-weight: 400;
+  margin: 0 !important;
+  margin: 10px 0;
 }
 
 .edited-text {
@@ -335,7 +337,7 @@
 }
 
 .blog-img {
-  margin-bottom: 20px;
+  margin: 20px 0;
   display: flex;
   justify-content: center;
 }
@@ -346,8 +348,8 @@
 }
 
 .blog-img img {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1000px;
   height: auto;
   object-fit: cover;
   border-radius: 10px;
@@ -388,10 +390,8 @@
   margin-bottom: 0 !important;
 }
 
-
-
 .back-btn {
-  background-color: #ADC178;
+  background-color: #8d8888;
   color: #ffffff;
   font-size: 1.2em;
   padding: 10px 35px;
@@ -399,14 +399,42 @@
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
 }
 
-/* @media (max-width: 1700px) {
-  .blog-item {
-    flex: 0 0 calc(50% - 20px);
-    max-width: calc(50% - 20px);
-  }
-} */
+.back-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover::before {
+  left: 100%;
+}
+
+.back-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 @media (max-width: 1200px) {
   .inline-toolbar-content {
@@ -470,7 +498,7 @@
 
 
   .blog-content-container p {
-    font-weight: 400;
+    font-weight: 300;
   }
 
   .blog-categories-container h4 {

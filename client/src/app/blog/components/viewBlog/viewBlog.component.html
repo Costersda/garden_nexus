@@ -201,11 +201,12 @@
   </div>
 </div>
 
-<!-- <div class="profile-content-container">
-  <hr class="styled-hr">
-</div> -->
+
 
 <div class="profile-content-container">
+  <div class="profile-content-container">
+    <hr class="styled-hr">
+  </div>
   <div class="comment-content">
     <h2 class="content-subheading">Comments</h2>
     <div class="comment-section">
@@ -239,7 +240,7 @@
           </div>
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="comment-header">
-              <p class="comment-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
+              <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
               <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
                 <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
                   <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
@@ -273,7 +274,7 @@
 </div>
 
 <div class="profile-content-container">
-  <div class="back-btn-container">
+  <div class="comment-content">
     <button class="back-btn" (click)="goBack()">Back</button>
   </div>
 </div>
