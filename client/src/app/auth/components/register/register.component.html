@@ -7,25 +7,64 @@
   </a>
   <div class="form-container">
     <div class="login-header">Register to Garden Nexus</div>
-    <div class="errors" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="errors" *ngIf="errorMessages.length > 0">
+      <p *ngFor="let error of errorMessages" class="error-message">{{ error }}</p>
+    </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <input
-        formControlName="email"
-        type="email"
-        placeholder="Email"
-        class="login-input"
-      />
-      <input
-        formControlName="username"
-        placeholder="Username"
-        class="login-input"
-      />
-      <input
-        formControlName="password"
-        type="password"
-        placeholder="Password"
-        class="login-input"
-      />
+      <div class="input-container">
+        <input
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+          class="login-input"
+          [ngClass]="{'invalid-input': form.get('email')?.invalid}"
+        />
+      </div>
+      <div class="input-container-no-gap">
+        <input
+          formControlName="username"
+          placeholder="Username"
+          class="login-input"
+          [ngClass]="{'invalid-input': form.get('username')?.invalid}"
+          maxlength="{{ maxUsernameLength }}"
+        />
+        <div class="word-count" [class.error-text]="isUsernameTooLong()">
+          Character count: {{ getUsernameCharCount() }}/{{ maxUsernameLength }}
+        </div>
+      </div>
+      <div class="input-container-no-gap">
+        <input
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+          class="login-input"
+          [ngClass]="{'invalid-input': form.get('password')?.invalid}"
+          [attr.maxlength]="maxPasswordLength"
+        />
+        <div class="word-count">
+          Min. length: {{ minPasswordLength }} characters
+        </div>
+      </div>
+      <div class="input-container">
+        <input
+          formControlName="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          class="login-input"
+          [ngClass]="{'invalid-input': form.get('confirmPassword')?.invalid || form.errors?.['passwordMismatch']}"
+          [attr.maxlength]="maxPasswordLength"
+        />
+      </div>
+      <div class="terms-checkbox">
+        <input
+          type="checkbox"
+          formControlName="agreeToTerms"
+          id="agreeToTerms"
+        />
+        <label for="agreeToTerms">
+          I agree to the <a href="#" (click)="openTermsModal($event)">Terms of Service</a>
+        </label>
+      </div>
       <button type="submit" class="login-submit-button">Register</button>
     </form>
     <div class="bottom-form-links">

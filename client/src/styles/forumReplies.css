@@ -111,6 +111,7 @@
 .error-message {
   color: #dc3545;
   font-size: 0.9em;
+  margin-bottom: 0 !important;
 }
 
 .edit-comment-btn {

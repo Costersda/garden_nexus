@@ -4,7 +4,7 @@
       <h2>Edit Profile</h2>
       <img src="assets/close_icon.png" class="close-btn" (click)="cancel()" alt="Close">
     </div>
-    <form (ngSubmit)="saveProfile()">
+    <form class="edit-profile-form" (ngSubmit)="saveProfile()">
       <div class="form-group">
         <label for="country">Country:</label>
         <select id="country" [(ngModel)]="updatedProfile.country" name="country">

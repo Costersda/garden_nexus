@@ -1,0 +1,101 @@
+<div class="modal" (click)="onModalBackgroundClick($event)" #modalBackground>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Terms of Service</h2>
+      <img src="assets/close_icon.png" class="close-btn" (click)="closeModal()" alt="Close">
+    </div>
+    <div class="modal-body">
+      <div class="tos-section">
+        <h3 class="tos-section-title">Acceptance of Terms</h3>
+        <p class="tos-section-text">By accessing or using Garden Nexus, you agree to these Terms and our Privacy Policy. If you do not agree to any of these Terms, you must not use the Platform.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Eligibility</h3>
+        <p class="tos-section-text">You must be at least 18 years old to use Garden Nexus. By registering for an account, you confirm that you meet this age requirement.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Account Registration</h3>
+        <ul class="tos-section-list">
+          <li class="tos-list-item">You must provide accurate and current information during registration.</li>
+          <li class="tos-list-item">Keep your password secure, and notify us immediately of any unauthorized access or use of your account.</li>
+          <li class="tos-list-item">You are responsible for all activities that occur under your account.</li>
+        </ul>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">User Conduct</h3>
+        <ul class="tos-section-list">
+          <li class="tos-list-item">You agree not to use Garden Nexus for any unlawful purpose.</li>
+          <li class="tos-list-item">You will not post any content that is offensive, obscene, defamatory, or infringes on others' rights.</li>
+          <li class="tos-list-item">Harassment, abuse, or discrimination against other users will not be tolerated.</li>
+        </ul>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Content Ownership</h3>
+        <ul class="tos-section-list">
+          <li class="tos-list-item">You retain ownership of the content you post on Garden Nexus.</li>
+          <li class="tos-list-item">By posting content, you grant Garden Nexus a non-exclusive, worldwide, royalty-free license to use, reproduce, modify, and distribute your content on the Platform.</li>
+        </ul>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Content Guidelines</h3>
+        <ul class="tos-section-list">
+          <li class="tos-list-item">Do not post content that violates intellectual property rights or any applicable laws.</li>
+          <li class="tos-list-item">Respect the privacy of other users and avoid sharing personal information without consent.</li>
+          <li class="tos-list-item">Garden Nexus reserves the right to remove any content that violates these guidelines.</li>
+        </ul>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Changes to the Platform</h3>
+        <p class="tos-section-text">Garden Nexus reserves the right to modify, suspend, or discontinue any part of the Platform at any time without prior notice.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Third-Party Links</h3>
+        <p class="tos-section-text">Garden Nexus may contain links to third-party websites. We do not control or endorse these external sites and are not responsible for their content or practices.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Limitation of Liability</h3>
+        <ul class="tos-section-list">
+          <li class="tos-list-item">Garden Nexus is provided as is, without any warranties of any kind.</li>
+          <li class="tos-list-item">We do not guarantee the accuracy or reliability of the Platform or any content.</li>
+          <li class="tos-list-item">Garden Nexus is not liable for any indirect, incidental, or consequential damages resulting from your use of the Platform.</li>
+        </ul>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Indemnification</h3>
+        <p class="tos-section-text">You agree to indemnify and hold harmless Garden Nexus, its officers, directors, and employees from any claims, losses, or damages arising out of your use of the Platform or violation of these Terms.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Changes to the Terms</h3>
+        <p class="tos-section-text">Garden Nexus reserves the right to modify these Terms at any time. We will notify you of changes via email or through the Platform. Continued use after changes are made constitutes acceptance of the new Terms.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Governing Law</h3>
+        <p class="tos-section-text">These Terms shall be governed by and interpreted under the laws of New Zealand. Any disputes arising from these Terms will be settled in the courts of New Zealand.</p>
+      </div>
+
+      <div class="tos-section">
+        <h3 class="tos-section-title">Termination of Service</h3>
+        <ul class="tos-section-list">
+          <li class="tos-list-item">Garden Nexus reserves the right to terminate or suspend the service at any time without prior notice.</li>
+          <li class="tos-list-item">In the event of termination, you will no longer have access to the Platform, and all content you have posted may be removed.</li>
+          <li class="tos-list-item">Garden Nexus will not be liable for any damages or losses resulting from the termination of service.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="button-group">
+      <button type="button" class="tos-close-btn" (click)="closeModal()">Cancel</button>
+      <button type="button" class="tos-agree-btn" (click)="agreeToTerms()">Agree</button>
+    </div>
+  </div>
+</div>

@@ -23,21 +23,48 @@ export const register = async (
   next: NextFunction
 ) => {
   try {
-    const newUser = new UserModel({
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
+    const { email, username, password } = req.body;
+
+    // Check for existing user
+    const existingUser = await UserModel.findOne({
+      $or: [{ email }, { username }],
     });
+
+    if (existingUser) {
+      const message =
+        existingUser.username === username
+          ? 'Username is already taken'
+          : 'Email is already in use';
+      return res.status(409).json({ message });
+    }
+
+    // Create and save new user
+    const newUser = new UserModel({ email, username, password });
     const savedUser = await newUser.save();
-    res.send(normalizeUser(savedUser));
+
+    res.status(201).json(normalizeUser(savedUser));
   } catch (err) {
-    if (err instanceof Error.ValidationError) {
+    if (isMongoError(err) && err.code === 11000) {
+      const field = Object.keys(err.keyValue)[0];
+      const message = `${field.charAt(0).toUpperCase() + field.slice(1)} is already in use.`;
+      return res.status(409).json({ message });
+    } else if (isValidationError(err)) {
       const messages = Object.values(err.errors).map((err) => err.message);
       return res.status(422).json(messages);
     }
     next(err);
   }
 };
+
+// Type guard for MongoDB errors
+function isMongoError(error: unknown): error is { code: number, keyValue: Record<string, any> } {
+  return typeof error === 'object' && error !== null && 'code' in error && 'keyValue' in error;
+}
+
+// Type guard for Mongoose validation errors
+function isValidationError(error: unknown): error is { errors: Record<string, any> } {
+  return typeof error === 'object' && error !== null && 'errors' in error;
+}
 
 export const login = async (
   req: Request,
@@ -161,5 +188,39 @@ export const getUserById = async (
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user', error });
+  }
+};
+
+export const checkUserCredentialsAvailability = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { username, email } = req.query;
+
+    if (!username && !email) {
+      return res.status(400).json({ message: 'Username or email is required' });
+    }
+
+    const user = await UserModel.findOne({
+      $or: [
+        { username: username ? username : '' },
+        { email: email ? email : '' }
+      ]
+    });
+
+    if (user) {
+      const message = user.username === username ? 'Username is already taken' : 'Email is already in use';
+      return res.json({
+        available: false,
+        message
+      });
+    }
+
+    return res.json({ available: true });
+  } catch (error) {
+    console.error('Error checking credentials availability:', error);
+    res.status(500).json({ message: 'Error checking credentials availability', error });
   }
 };

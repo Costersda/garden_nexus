@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, Observable, of } from 'rxjs';
 import { CurrentUserInterface } from '../types/currentUser.interface';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { RegisterRequestInterface } from '../types/registerRequest.interface';
 import { LoginRequestInterface } from '../types/loginRequest.interface';
@@ -38,6 +38,15 @@ export class AuthService {
         return currentUser;
       })
     );
+  }
+
+  checkCredentialsAvailability(username?: string, email?: string): Observable<{available: boolean, message?: string}> {
+    let params = new HttpParams();
+    if (username) params = params.append('username', username);
+    if (email) params = params.append('email', email);
+  
+    const url = `${environment.apiUrl}/users/check-credentials`;
+    return this.http.get<{available: boolean, message?: string}>(url, { params });
   }
 
   login(loginRequest: LoginRequestInterface): Observable<CurrentUserInterface> {

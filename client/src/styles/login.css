@@ -59,11 +59,14 @@
 .login-input {
   width: 100%;
   padding: 12px;
-  margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1em;
   transition: border-color 0.3s ease;
+}
+
+.input-container {
+  margin-bottom: 20px;
 }
 
 .login-input:focus {
@@ -136,14 +139,83 @@
   text-decoration: underline;
 }
 
+.invalid-input {
+  border: 1px solid red !important;
+}
+
 .errors {
-  color: #e74c3c;
-  font-size: 1em;
-  font-weight: 500;
-  margin-bottom: 15px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
   padding: 10px;
-  background-color: #fadbd8;
-  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.error-message {
+  color: #b71c1c;
+  margin: 5px 0;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.terms-checkbox input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  margin-right: 10px;
+  background-color: #ffffff;
+}
+
+.terms-checkbox input[type="checkbox"]:checked {
+  background-color: #007bff;
+  position: relative;
+}
+
+.terms-checkbox input[type="checkbox"]:checked::before {
+  content: '\2714';
+  font-size: 14px;
+  color: white;
+  position: absolute;
+  right: 3px;
+  top: -2px;
+}
+
+.terms-checkbox label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.terms-checkbox a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.terms-checkbox a:hover {
+  text-decoration: underline;
+}
+
+.available {
+  color: green;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.not-available {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 @media (max-width: 480px) {

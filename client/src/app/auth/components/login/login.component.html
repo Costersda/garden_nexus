@@ -9,18 +9,22 @@
     <div class="login-header">Log in to Garden Nexus</div>
     <div class="errors" *ngIf="errorMessage">{{ errorMessage }}</div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="input-container">
       <input
         formControlName="email"
         type="email"
         placeholder="Email"
         class="login-input"
       />
+      </div>
+      <div class="input-container">
       <input
         formControlName="password"
         type="password"
         placeholder="Password"
         class="login-input"
       />
+      </div>
       <button type="submit" class="login-submit-button">Sign in</button>
     </form>
     <div class="bottom-form-links">
