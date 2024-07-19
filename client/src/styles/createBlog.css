@@ -35,6 +35,8 @@
 .error-text {
   color: red;
   font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .form-input,

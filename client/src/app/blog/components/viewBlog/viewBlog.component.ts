@@ -39,10 +39,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   fileSizeError: { [key: string]: string } = {};
   fileTypeError: { [key: string]: string } = {};
   formSubmitted: boolean = false;
-  maxTitleLength: number = 100;
-  minContentLength: number = 200;
-  maxContentLength: number = 1000;
+  maxTitleLength: number = 100; // This remains as character count
+  minContentWords: number = 200;
+  maxContentWords: number = 1000;
+  maxWordLength: number = 50; // Maximum allowed length for a single word
   categories: Category[] = CATEGORIES;
+  titleError: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -197,7 +199,25 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   saveBlogChanges(): void {
     this.formSubmitted = true;
+    this.titleError = null; // Reset the error
+  
     if (!this.blog || !this.blog._id) return;
+    
+    if (!this.blog.title || this.blog.title.trim().length === 0) {
+      this.titleError = 'Title is required';
+      return;
+    }
+    
+    if (this.blog.title.length > this.maxTitleLength) {
+      this.titleError = 'Title exceeds maximum length';
+      return;
+    }
+  
+    if (!this.blog.image_1) {
+      this.fileSizeError['image_1'] = 'Image 1 is required';
+      return;
+    }
+  
     if (this.hasFormErrors()) return;
   
     // Mark the blog as edited
@@ -210,19 +230,31 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         this.originalBlog = JSON.parse(JSON.stringify(updatedBlog));
         this.isEditMode = false;
         this.formSubmitted = false;
+        this.titleError = null; // Clear the error on successful update
       },
       (error) => {
         console.error('Error updating blog:', error);
-        this.formSubmitted = false; // Reset formSubmitted on error as well
+        this.formSubmitted = false;
       }
     );
   }
-  
-  
 
+  checkTitleValidity(): void {
+    if (this.blog){
+      if (!this.blog.title || this.blog.title.trim().length === 0) {
+        this.titleError = 'Title is required';
+      } else if (this.blog.title.length > this.maxTitleLength) {
+        this.titleError = 'Title exceeds maximum length';
+      } else {
+        this.titleError = null;
+      }
+    }
+  }
+  
   cancelEdit(): void {
     this.blog = JSON.parse(JSON.stringify(this.originalBlog));
     this.isEditMode = false;
+    this.titleError = null; // Clear the title error
   }
 
   deleteImage(section: number): void {
@@ -251,6 +283,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         };
         reader.readAsDataURL(file);
       }
+    } else if (fieldName === 'image_1') {
+      // If no file is selected for image_1, keep the existing image
+      // You might want to show a message to the user that no new image was selected
+      console.log('No new image selected for Image 1. Keeping existing image.');
     }
   }
 
@@ -461,14 +497,44 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   private hasFormErrors(): boolean {
     if (!this.blog) return true;
     const titleValid = this.blog?.title?.length <= this.maxTitleLength;
-    const contentSection1Valid = this.blog?.content_section_1?.length >= this.minContentLength && this.blog?.content_section_1?.length <= this.maxContentLength;
-    if (!this.blog.content_section_2) this.blog.content_section_2 = '';
-    const contentSection2Valid = this.blog?.content_section_2?.length >= this.minContentLength && this.blog?.content_section_2?.length <= this.maxContentLength;
-    if (!this.blog.content_section_3) this.blog.content_section_3 = '';
-    const contentSection3Valid = this.blog?.content_section_3?.length >= this.minContentLength && this.blog?.content_section_3?.length <= this.maxContentLength;
+    const contentSection1Valid = this.isContentValid('content_section_1');
+    const contentSection2Valid = this.isContentValid('content_section_2');
+    const contentSection3Valid = this.isContentValid('content_section_3');
     const image1Valid = !!this.blog?.image_1 && !this.fileSizeError['image_1'] && !this.fileTypeError['image_1'];
     
     return !titleValid || !contentSection1Valid || !image1Valid || this.hasImageErrors();
+  }
+
+  isContentValid(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
+    const content = this.blog![section];
+    if (!content) return true; // Optional sections are always valid if empty
+
+    const wordCount = this.getContentWordCount(content);
+    return wordCount >= this.minContentWords && wordCount <= this.maxContentWords && this.areAllWordsValid(content);
+  }
+
+  getContentWordCount(content: string): number {
+    return content.trim().split(/\s+/).filter(word => word.length > 0).length;
+  }
+
+  areAllWordsValid(content: string): boolean {
+    const words = content.trim().split(/\s+/);
+    return words.every(word => word.length <= this.maxWordLength);
+  }
+
+  // Add this method to check if content is too short
+  isContentTooShort(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
+    const content = this.blog![section];
+    if (!content) return false; // Optional sections are not considered too short if empty
+    const wordCount = this.getContentWordCount(content);
+    return wordCount > 0 && wordCount < this.minContentWords;
+  }
+
+  // Add this method to check if content is too long
+  isContentTooLong(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
+    const content = this.blog![section];
+    if (!content) return false;
+    return this.getContentWordCount(content) > this.maxContentWords;
   }
 
   hasImageErrors(): boolean {

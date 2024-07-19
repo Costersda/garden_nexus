@@ -11,8 +11,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1000px;
   }
   
   .toolbar button,
