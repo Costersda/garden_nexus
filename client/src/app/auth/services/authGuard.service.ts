@@ -5,13 +5,14 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuardService implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
+  
   canActivate(): Observable<boolean> {
     return this.authService.isLogged$.pipe(
       map((isLoggedIn) => {
         if (isLoggedIn) {
           return true;
         }
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/login');
         return false;
       })
     );

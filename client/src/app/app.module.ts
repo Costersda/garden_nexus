@@ -18,11 +18,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './shared/modules/confirmation-dialog/confirmation-dialog.component';
 import { ForumModule } from './forum/forum.module';
 import { ForumPreviewComponent } from './shared/modules/forum-preview/forum-preview.component';
+import { NotFoundComponent } from './404page/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,7 @@ import { ForumPreviewComponent } from './shared/modules/forum-preview/forum-prev
     MatDialogModule,
     BrowserAnimationsModule,
     ForumModule,
-    ForumPreviewComponent
+    ForumPreviewComponent,
   ],
 
   providers: [

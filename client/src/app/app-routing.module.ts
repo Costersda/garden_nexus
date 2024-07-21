@@ -9,17 +9,39 @@ import { CreateBlogComponent } from './blog/components/createBlog/createBlog.com
 import { ForumComponent } from './forum/components/forum/forum.component';
 import { CreateForumComponent } from './forum/components/createForum/createForum.component';
 import { ViewForumComponent } from './forum/components/viewForum/viewForum.component';
+import { NotFoundComponent } from './404page/not-found.component';
+import { RegisterComponent } from './auth/components/register/register.component';
+import { LoggedInAuthGuardService } from './auth/services/LoggedInAuthGuard.service';
+import { AuthGuardService } from './auth/services/authGuard.service';
 
 const routes: Routes = [
   { path: 'profile/:username', component: ProfileComponent },
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
+  { 
+    path: 'login', 
+    component: LoginComponent,
+    canActivate: [LoggedInAuthGuardService]
+  },
+  { 
+    path: 'register', 
+    component: RegisterComponent,
+    canActivate: [LoggedInAuthGuardService]
+  },
   { path: 'blogs', component: BlogComponent },
   { path: 'blog/:id', component: ViewBlogComponent },
-  { path: 'blogs/create', component: CreateBlogComponent },
+  { 
+    path: 'blogs/create', 
+    component: CreateBlogComponent,
+    canActivate: [AuthGuardService]
+  },
   { path: 'forum', component: ForumComponent },
-  { path: 'forum/create', component: CreateForumComponent },
+  { 
+    path: 'forum/create', 
+    component: CreateForumComponent,
+    canActivate: [AuthGuardService]
+  },
   { path: 'forum/:id', component: ViewForumComponent },
+  { path: '**', component: NotFoundComponent, data: { redirectTo: '' } }
 ];
 
 @NgModule({

@@ -9,16 +9,18 @@ import { AuthGuardService } from './services/authGuard.service';
 import { ToolbarComponent } from '../shared/modules/toolbar/toolbar.component';
 import { NavbarComponent } from '../shared/modules/navbar/navbar.component';
 import { FooterComponent } from '../shared/modules/footer/footer.component';
+import { LoggedInAuthGuardService } from './services/LoggedInAuthGuard.service';
 
 const routes: Routes = [
-  {
-    path: 'register',
-    component: RegisterComponent,
+  { 
+    path: 'login', 
+    component: LoginComponent, 
+    canActivate: [LoggedInAuthGuardService]
   },
-  {
-    path: 'login',
-    component: LoginComponent,
-    //canActivate: [AuthGuardService], This line stops the user from going to the login page
+  { 
+    path: 'register', 
+    component: RegisterComponent, 
+    canActivate: [LoggedInAuthGuardService]
   },
 ];
 
@@ -31,7 +33,7 @@ const routes: Routes = [
     NavbarComponent,
     FooterComponent
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService, LoggedInAuthGuardService],
   declarations: [RegisterComponent, LoginComponent],
 })
 export class AuthModule {}
