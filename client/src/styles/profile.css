@@ -160,6 +160,18 @@ p strong {
 }
 
 
+@media (max-width: 1670px) {
+  .profile-picture-container {
+    left: 20%;
+  }
+}
+
+@media (max-width: 1170px) {
+  .profile-picture-container {
+    left: 10%;
+  }
+}
+
 
 @media (max-width: 992px) {
   .profile-container {
