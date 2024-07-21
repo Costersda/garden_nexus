@@ -113,10 +113,10 @@ export class ForumComponent implements OnInit, OnDestroy {
 
   sortForums(order: 'newest' | 'oldest'): void {
     if (order === 'newest') {
-      this.forumHeader = this.isSearchActive ? 'Newest Query Results' : 'Newest Forum Posts';
+      this.forumHeader = this.isSearchActive ? 'Newest Search Results' : 'Newest Forum Posts';
       this.forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     } else {
-      this.forumHeader = this.isSearchActive ? 'Oldest Query Results' : 'Oldest Forum Posts';
+      this.forumHeader = this.isSearchActive ? 'Oldest Search Results' : 'Oldest Forum Posts';
       this.forums.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     }
     this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
