@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private forumsIncrement = 3;
   private initialBlogsToShow = 3; // Number of blogs to show initially
   private blogsIncrement = 3; // Number of blogs to load each time
+  showBlogDropdown: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,6 +60,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.blogSubscription) {
       this.blogSubscription.unsubscribe();
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    this.showBlogDropdown = false;
   }
 
   fetchProfile(username: string): void {
@@ -139,5 +145,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/login']); // Redirect to login if the user is not the owner
     }
+  }
+
+  toggleBlogDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showBlogDropdown = !this.showBlogDropdown;
+  }
+
+  deleteProfile(): void {
+    
   }
 }
