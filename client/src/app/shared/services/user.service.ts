@@ -26,5 +26,11 @@ export class UserService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<User>(`${this.apiUrl}/current`, { headers });
   }
+
+  deleteProfile(): Observable<any> {
+    const url = `${this.apiUrl}/profile`;
+    console.log('Delete profile URL:', url);
+    return this.http.delete(url);
+  }
   
 }

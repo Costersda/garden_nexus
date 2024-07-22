@@ -9,6 +9,7 @@ import { Blog } from '../../shared/types/blog.interface';
 import { User } from '../../shared/types/user.interface';
 import { Forum } from '../../shared/types/forum.interface';
 import { ForumService } from '../../shared/services/forum.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private blogService: BlogService,
     private forumService: ForumService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -153,6 +155,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   deleteProfile(): void {
-    
+    if (confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
+      this.userService.deleteProfile().subscribe({
+        next: () => {
+          this.authService.logout();
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Error deleting profile:', error);
+          this.errorMessage = 'Failed to delete profile. Please try again.';
+        }
+      });
+    }
   }
 }

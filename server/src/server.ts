@@ -33,6 +33,10 @@ app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
 app.put("/api/profile/:username", authMiddleware, usersController.updateProfile); // New update profile route
 app.get('/api/users/:id', usersController.getUserById);
 app.get("/api/users/check-credentials", usersController.checkUserCredentialsAvailability);
+app.delete('/api/users/profile', authMiddleware, (req, res, next) => {
+  console.log("Delete profile route hit");
+  usersController.deleteProfile(req, res, next);
+});
 
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);

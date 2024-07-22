@@ -6,6 +6,9 @@ import { Error } from "mongoose";
 import jwt from "jsonwebtoken";
 import { secret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
+import { Blog } from "../models/blog";
+import { Comment } from "../models/comment";
+import { Forum } from "../models/forum";
 
 const normalizeUser = (user: UserDocument) => {
   const token = jwt.sign({ id: user.id, email: user.email }, secret);
@@ -222,5 +225,48 @@ export const checkUserCredentialsAvailability = async (
   } catch (error) {
     console.error('Error checking credentials availability:', error);
     res.status(500).json({ message: 'Error checking credentials availability', error });
+  }
+};
+
+export const deleteProfile = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const userId = req.user.id;
+
+    // Delete user's blogs
+    await Blog.deleteMany({ user_id: userId });
+
+    // Delete user's forums
+    await Forum.deleteMany({ user_id: userId });
+
+    // Delete user's comments
+    await Comment.deleteMany({ user: userId });
+
+    // Delete comments on user's blogs
+    const userBlogs = await Blog.find({ user_id: userId });
+    for (const blog of userBlogs) {
+      await Comment.deleteMany({ blogId: blog._id });
+    }
+
+    // Delete comments on user's forums
+    const userForums = await Forum.find({ user_id: userId });
+    for (const forum of userForums) {
+      await Comment.deleteMany({ forumId: forum._id });
+    }
+
+    // Delete the user
+    const deletedUser = await UserModel.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile and associated content deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting profile:", error);
+    res.status(500).json({ message: "An error occurred while deleting the profile", error });
   }
 };
