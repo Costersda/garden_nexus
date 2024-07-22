@@ -73,14 +73,37 @@ input[type="file"] {
   color: #ffffff;
   font-size: 1.2em;
   padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
   margin: 20px 0;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-submitBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
 }
 
 .blog-submitBtn:hover {
-  background-color: #8baa5b;
+  background-color: #91A654;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .categories-container {
@@ -152,8 +175,11 @@ input[type="file"] {
     width: 100%;
   }
 
+
+
   .blog-submitBtn {    
     margin: 10px 0;
+    width: 100%;
   }
 
 }
