@@ -1,0 +1,114 @@
+.help-content-container {
+    width: 100%;
+    background-color: #F0EAD2;
+    padding: 10px;
+    position: relative;
+}
+
+.help-content {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.help-section-title {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.help-content-subtitle {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.tab-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.tab-link:hover {
+    text-decoration: underline;
+}
+
+.help-section {
+    background-color: aqua;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 auto 20px auto;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.help-section-container {
+    background-color: blueviolet;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.help-section-container-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.help-section-container-content-image {
+    flex: 0 0 48%;
+}
+
+.help-content-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.help-section-container-content-text {
+    flex: 0 0 48%;
+}
+
+.help-content-text-wrapper {
+    width: 100%;
+    text-align: left;
+}
+
+.help-content-text {
+    font-weight: 450;
+    font-size: 1em;
+    line-height: 1.6;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.help-content-text li {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 992px) {
+    .help-content-container {
+        padding: 20px;
+    }
+
+    .help-section-container-content {
+        flex-direction: column;
+    }
+
+    .help-section-container-content-image,
+    .help-section-container-content-text {
+        flex: 0 0 100%;
+    }
+
+    .help-section-container-content-text {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .help-content {
+        max-width: 100%;
+    }
+}
