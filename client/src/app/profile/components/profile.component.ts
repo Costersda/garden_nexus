@@ -10,6 +10,7 @@ import { User } from '../../shared/types/user.interface';
 import { Forum } from '../../shared/types/forum.interface';
 import { ForumService } from '../../shared/services/forum.service';
 import { UserService } from '../../shared/services/user.service';
+import { ConfirmationDialogService } from '../../shared/modules/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,14 +24,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   displayedForums: Forum[] = [];
   errorMessage: string | null = null;
   isOwner: boolean = false;
-  isModalOpen: boolean = false; // Define the isModalOpen property
+  isModalOpen: boolean = false;
   routeSubscription: Subscription | undefined;
   blogSubscription: Subscription | undefined;
   private forumSubscription!: Subscription | undefined;
   private initialForumsToShow = 3;
   private forumsIncrement = 3;
-  private initialBlogsToShow = 3; // Number of blogs to show initially
-  private blogsIncrement = 3; // Number of blogs to load each time
+  private initialBlogsToShow = 3;
+  private blogsIncrement = 3;
   showBlogDropdown: boolean = false;
 
   constructor(
@@ -40,7 +41,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private blogService: BlogService,
     private forumService: ForumService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private confirmationDialogService: ConfirmationDialogService // Inject the service
   ) {}
 
   ngOnInit(): void {
@@ -113,9 +115,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
   fetchForumsByUser(username: string): void {
     this.forumSubscription = this.forumService.getForumsByUser(username).subscribe(
       (forums: Forum[]) => {
@@ -124,7 +123,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         console.log(forums);
       },
       (error) => {
-        console.error('Error fetching blogs by user:', error);
+        console.error('Error fetching forums by user:', error);
       }
     );
   }
@@ -154,18 +153,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.showBlogDropdown = !this.showBlogDropdown;
   }
 
-  deleteProfile(): void {
-    if (confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
-      this.userService.deleteProfile().subscribe({
-        next: () => {
+  async deleteProfile(): Promise<void> {
+    const confirmed = await this.confirmationDialogService.confirm(
+      'Delete Profile',
+      '***<strong>WARNING</strong>***<br><br>Are you sure you want to delete your profile?<br><br> This action cannot be undone.'
+    );
+    
+
+    if (confirmed) {
+      this.userService.deleteProfile().subscribe(
+        () => {
+          console.log('Successfully deleted profile');
           this.authService.logout();
           this.router.navigate(['/']);
         },
-        error: (error) => {
+        (error) => {
           console.error('Error deleting profile:', error);
           this.errorMessage = 'Failed to delete profile. Please try again.';
         }
-      });
+      );
     }
   }
 }

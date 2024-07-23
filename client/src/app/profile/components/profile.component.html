@@ -12,16 +12,15 @@
   <div class="profile-container" *ngIf="profile">
     <div class="profile-container-heading">
       <h2 class="profile-username">{{ profile.username | titlecase }}</h2>
-      <!-- <img *ngIf="isOwner" src="assets/edit_icon.png" class="edit-icon" (click)="openEditProfileModal()" alt="Edit Profile"> -->
       <div class="dropdown">
-      <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
-        <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
-      </button>
-      <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
-        <label class="forum-options-label" (click)="openEditProfileModal()">Edit Profile</label>
-        <label class="forum-options-label" (click)="deleteProfile()">Delete Profile</label>
+        <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
+          <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+        </button>
+        <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
+          <label class="forum-options-label" (click)="openEditProfileModal()">Edit Profile</label>
+          <label class="forum-options-label" (click)="deleteProfile()">Delete Profile</label>
+        </div>
       </div>
-    </div>
     </div>
     <p><strong>Country:</strong> {{ profile.country || 'Not specified' }}</p>
     <p><strong>Bio:</strong> {{ profile.bio || '(blank)' }}</p>
@@ -55,7 +54,6 @@
       </div>
     </div>
   </div>
-  
 </div>
 
 <div class="profile-content-container">
@@ -82,7 +80,6 @@
       </div>
     </div>
   </div>
-  
 </div>
 
 <app-footer></app-footer>

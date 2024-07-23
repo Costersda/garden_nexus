@@ -1,99 +1,106 @@
 .dialog-container {
-    padding: 20px;
-    background-color: #F0EAD2;
-  }
+  padding: 20px;
+  background-color: #F0EAD2;
+}
 
 .dialog-title {
-    font-size: 2em !important;
-    color: #6C584C;
-    font-weight: 400 !important;
-    margin: 0 !important;
-  }
+  font-size: 2em !important;
+  color: #6C584C;
+  font-weight: 400 !important;
+  margin: 0 !important;
+}
 
-  .styled-hr-left {
-    width: 60%;
-    margin-top: 0;
-    margin-bottom: 0px;
-    border: 0;
-    border-top: 3px solid #6C584C;
-    text-align: left;
-    opacity: 0.8;
-  }
-  
-  .dialog-content {
-    font-size: 1.2em !important;
-    color: #6C584C;
-    margin: 20px 0 30px 0;
-  }
-  
-  .dialog-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .dialog-btn {
-    padding: 10px 25px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .dialog-cancel-btn {
-    background-color: #8d8888;
-    color: #ffffff;
-    margin-right: 10px;
-  }
-  
-  .dialog-confirm-btn {
-    background-color: #ADC178;
-    color: #ffffff;
-  }
-  
-  .dialog-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      120deg,
-      transparent,
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
-    transition: all 0.4s ease;
-  }
-  
-  .dialog-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .dialog-cancel-btn:hover {
-    background-color: #968f8f;
-  }
-  
-  .dialog-confirm-btn:hover {
-    background-color: #91A654;
-  }
-  
-  .dialog-btn:hover::before {
-    left: 100%;
-  }
-  
-  .dialog-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-    
-  .custom-dialog-container .mat-mdc-dialog-surface {
-    border-radius: 10px; /* Or whatever value you prefer */
-    border: 2px solid #abafa0;
-  }
+.styled-hr-left {
+  width: 60%;
+  margin-top: 0;
+  margin-bottom: 0px;
+  border: 0;
+  border-top: 3px solid #6C584C;
+  text-align: left;
+  opacity: 0.8;
+}
+
+.dialog-content {
+  font-size: 1.2em !important;
+  color: #6C584C;
+  margin: 20px 0 30px 0;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialog-btn {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  min-width: 150px;
+}
+
+.dialog-cancel-btn {
+  background-color: #8d8888;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+.dialog-confirm-btn {
+  background-color: #ADC178;
+  color: #ffffff;
+}
+
+.dialog-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
+}
+
+.dialog-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-cancel-btn:hover {
+  background-color: #968f8f;
+}
+
+.dialog-confirm-btn:hover {
+  background-color: #91A654;
+}
+
+.dialog-btn:hover::before {
+  left: 100%;
+}
+
+.dialog-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-confirm-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.custom-dialog-container .mat-mdc-dialog-surface {
+  border-radius: 10px; /* Or whatever value you prefer */
+  border: 2px solid #abafa0;
+}
