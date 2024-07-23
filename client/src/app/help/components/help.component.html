@@ -1,19 +1,36 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
+<div class="img-banner">
+    <img class="img-banner-image" src="assets/spacer-img-9.webp" alt="User banner image">
+</div>
 
+<div class="help-content-container">
+    <h1>Help</h1>
+    
+    <nav class="help-tabs">
+        <button (click)="scrollTo('profile')">Profile</button>
+        <button (click)="scrollTo('blog')">Blog</button>
+        <button (click)="scrollTo('forum')">Forum</button>
+    </nav>
 
+    <div class="help-content">
+        <section id="profile">
+            <h2>Profile</h2>
+            <!-- Add profile help content here -->
+        </section>
 
+        <section id="blog">
+            <h2>Blog</h2>
+            <!-- Add blog help content here -->
+        </section>
 
-
-
-
-
-
-
-
-
-
+        <section id="forum">
+            <h2>Forum</h2>
+            <!-- Add forum help content here -->
+        </section>
+    </div>
+</div>
 
 <router-outlet></router-outlet>
 <app-footer></app-footer>
