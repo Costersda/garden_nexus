@@ -4,7 +4,7 @@ import { CurrentUserInterface } from '../types/currentUser.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { RegisterRequestInterface } from '../types/registerRequest.interface';
-import { LoginRequestInterface } from '../types/loginRequest.interface';
+import { LoginRequestInterface, LoginError } from '../types/loginRequest.interface';
 
 @Injectable()
 export class AuthService {
@@ -49,12 +49,16 @@ export class AuthService {
     return this.http.get<{available: boolean, message?: string}>(url, { params });
   }
 
-  login(loginRequest: LoginRequestInterface): Observable<CurrentUserInterface> {
+  login(loginRequest: LoginRequestInterface): Observable<CurrentUserInterface | LoginError> {
     const url = environment.apiUrl + '/users/login';
     return this.http.post<CurrentUserInterface>(url, loginRequest).pipe(
       map((currentUser) => {
         this.setCurrentUser(currentUser);
         return currentUser;
+      }),
+      catchError((error) => {
+        // Handle the error and return a custom error object
+        return of({ error: 'Incorrect email or password' } as LoginError);
       })
     );
   }

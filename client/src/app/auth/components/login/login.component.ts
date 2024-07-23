@@ -23,16 +23,23 @@ export class LoginComponent {
 
   onSubmit(): void {
     this.authService.login(this.form.getRawValue()).subscribe({
-      next: (currentUser) => {
-        console.log('currentUser', currentUser);
-        this.authService.setToken(currentUser);
-        this.authService.setCurrentUser(currentUser);
-        this.errorMessage = null;
-        this.router.navigateByUrl('/profile/'+currentUser.username);
+      next: (response) => {
+        if ('error' in response) {
+          // This is our custom error
+          this.errorMessage = response.error;
+        } else {
+          // This is a successful login
+          console.log('currentUser', response);
+          this.authService.setToken(response);
+          this.authService.setCurrentUser(response);
+          this.errorMessage = null;
+          this.router.navigateByUrl('/profile/' + response.username);
+        }
       },
       error: (err: HttpErrorResponse) => {
-        console.log('err', err.error);
-        this.errorMessage = err.error.emailOrPassword;
+        // This will catch any other unexpected errors
+        console.log('err', err);
+        this.errorMessage = 'An unexpected error occurred. Please try again.';
       },
     });
   }
