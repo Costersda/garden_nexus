@@ -5,7 +5,7 @@
         <h2><a [routerLink]="['/forum', forum._id]" class="forum-title">{{ forum.title | titlecase }}</a></h2>
       </div>
       <div class="forum-meta">
-        <a [routerLink]="['/profile', forumAuthor | lowercase]" class="forum-author">
+        <a [routerLink]="['/profile', forumAuthor]" class="forum-author">
           By: {{ forumAuthor | titlecase }}
         </a>
         <span class="forum-replies">Replies: {{ commentCount }}</span>
