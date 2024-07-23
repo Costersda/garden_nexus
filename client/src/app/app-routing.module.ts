@@ -13,6 +13,7 @@ import { NotFoundComponent } from './404page/not-found.component';
 import { RegisterComponent } from './auth/components/register/register.component';
 import { LoggedInAuthGuardService } from './auth/services/LoggedInAuthGuard.service';
 import { AuthGuardService } from './auth/services/authGuard.service';
+import { HelpComponent } from './help/components/help.component';
 
 const routes: Routes = [
   { path: 'profile/:username', component: ProfileComponent },
@@ -41,7 +42,9 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: 'forum/:id', component: ViewForumComponent },
-  { path: '**', component: NotFoundComponent, data: { redirectTo: '' } }
+  { path: 'help', component: HelpComponent },
+  { path: '**', component: NotFoundComponent, data: { redirectTo: '' } },
+
 ];
 
 @NgModule({

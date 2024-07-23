@@ -19,6 +19,7 @@ import { ConfirmationDialogComponent } from './shared/modules/confirmation-dialo
 import { ForumModule } from './forum/forum.module';
 import { ForumPreviewComponent } from './shared/modules/forum-preview/forum-preview.component';
 import { NotFoundComponent } from './404page/not-found.component';
+import { HelpModule } from './help/help.module';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { NotFoundComponent } from './404page/not-found.component';
     BrowserAnimationsModule,
     ForumModule,
     ForumPreviewComponent,
+    HelpModule
   ],
 
   providers: [
