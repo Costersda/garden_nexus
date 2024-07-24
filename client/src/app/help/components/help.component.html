@@ -7,7 +7,7 @@
 
 <div class="help-content-container">
     <div class="help-content">
-        <h1>Help</h1>
+        <h1 class="help-page-heading">Help</h1>
         
         <nav class="help-tabs">
             <span (click)="scrollTo('profile')" class="tab-link">Profile</span>
@@ -19,6 +19,7 @@
         <hr class="styled-hr">
     </div>
     <div class="help-section">
+        <!-- Profile Section -->
         <section id="profile">
             <h2 class="help-section-title">Profile</h2>
             <div class="help-section-container">
@@ -27,7 +28,7 @@
                 </div>
                 <div class="help-section-container-content">
                     <div class="help-section-container-content-image">
-                        <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                        <img class="help-content-image" src="assets/help-page/profileUpdate.webp" alt="Profile Page Example" loading="lazy">
                     </div>
                     <div class="help-section-container-content-text">
                         <div class="help-content-text-wrapper">
@@ -49,7 +50,7 @@
                 </div>
                 <div class="help-section-container-content">
                     <div class="help-section-container-content-image">
-                        <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                        <img class="help-content-image" src="assets/help-page/profileActivity.webp" alt="Profile Page Example" loading="lazy">
                     </div>
                     <div class="help-section-container-content-text">
                         <div class="help-content-text-wrapper">
@@ -66,7 +67,7 @@
                 </div>
                 <div class="help-section-container-content">
                     <div class="help-section-container-content-image">
-                        <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                        <img class="help-content-image" src="assets/help-page/profileDelete.webp" alt="Profile Page Example" loading="lazy">
                     </div>
                     <div class="help-section-container-content-text">
                         <div class="help-content-text-wrapper">
@@ -76,6 +77,7 @@
                                 <li>Wait for the confirmation timer to count down</li>
                                 <li>Click "Confirm"</li>
                             </ul>
+                            <br>
                             <p class="help-content-text"> This deletes your profile as well as any blogs, posts, and comments that you have made. This cannot be undone!</p>
                         </div>
                     </div>
@@ -83,6 +85,10 @@
             </div>
         </section>
     </div>
+    <div class="help-content-container">
+        <hr class="styled-hr">
+    </div>
+        <!-- Blog Section -->
         <div class="help-section">
             <section id="blog">
                 <h2 class="help-section-title">Blog</h2>
@@ -92,7 +98,7 @@
                     </div>
                     <div class="help-section-container-content">
                         <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                            <img class="help-content-image" src="assets/help-page/blogCreate.webp" alt="Profile Page Example" loading="lazy">
                         </div>
                         <div class="help-section-container-content-text">
                             <div class="help-content-text-wrapper">
@@ -113,14 +119,14 @@
                     </div>
                     <div class="help-section-container-content">
                         <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                            <img class="help-content-image" src="assets/help-page/blogComment.webp" alt="Profile Page Example" loading="lazy">
                         </div>
                         <div class="help-section-container-content-text">
                             <div class="help-content-text-wrapper">
                                 <ul class="help-content-text">
                                     <li>Open any blog post and scroll to the bottom to find the comments section</li>
                                     <li>Type your comment in the text input</li>
-                                    <li>Click the "Submit"</li>
+                                    <li>Click the "Post Comment" button</li>
                                 </ul>
                             </div>
                         </div>
@@ -132,7 +138,7 @@
                     </div>
                     <div class="help-section-container-content">
                         <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                            <img class="help-content-image" src="assets/help-page/blogSearch.webp" alt="Profile Page Example" loading="lazy">
                         </div>
                         <div class="help-section-container-content-text">
                             <div class="help-content-text-wrapper">
@@ -153,7 +159,7 @@
                     </div>
                     <div class="help-section-container-content">
                         <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                            <img class="help-content-image" src="assets/help-page/blogEdit.webp" alt="Profile Page Example" loading="lazy">
                         </div>
                         <div class="help-section-container-content-text">
                             <div class="help-content-text-wrapper">
@@ -173,7 +179,7 @@
                     </div>
                     <div class="help-section-container-content">
                         <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/profilePage.webp" alt="Profile Page Example" loading="lazy">
+                            <img class="help-content-image" src="assets/help-page/blogDelete.webp" alt="Profile Page Example" loading="lazy">
                         </div>
                         <div class="help-section-container-content-text">
                             <div class="help-content-text-wrapper">
@@ -190,24 +196,111 @@
                 </div>
             </section>
         </div>
+        <div class="help-content-container">
+            <hr class="styled-hr">
+        </div>
+        <!-- Forum Section -->
         <div class="help-section">
             <section id="forum">
                 <h2 class="help-section-title">Forum</h2>
                 <div class="help-section-container">
                     <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Engage in Discussions</h4>
+                        <h4 class="help-content-subtitle">Create a New Forum Post</h4>
                     </div>
                     <div class="help-section-container-content">
                         <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/forumPage.webp" alt="Forum Page Example" loading="lazy">
+                            <img class="help-content-image" src="assets/help-page/forumCreate.webp" alt="Profile Page Example" loading="lazy">
                         </div>
                         <div class="help-section-container-content-text">
                             <div class="help-content-text-wrapper">
-                                <p class="help-content-text">
-                                    The Forum is your go-to place for asking questions, seeking advice, and participating in discussions about all things gardening. 
-                                    Browse through different categories, start new threads, or contribute to existing conversations. 
-                                    Share your knowledge, learn from others, and connect with gardeners from around the world in this interactive community space.
-                                </p>
+                                <ul class="help-content-text">
+                                    <li>On the Forum page click the "Create a Post" button</li>
+                                    <li>Add a catchy title and write your content in the editor.</li>
+                                    <li>Select categories to classify your post.</li>
+                                    <li>Click "Create Post" to share your post .</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="help-section-container">
+                    <div class="help-content-container-heading">
+                        <h4 class="help-content-subtitle">Reply to a Forum Post</h4>
+                    </div>
+                    <div class="help-section-container-content">
+                        <div class="help-section-container-content-image">
+                            <img class="help-content-image" src="assets/help-page/forumReply.webp" alt="Profile Page Example" loading="lazy">
+                        </div>
+                        <div class="help-section-container-content-text">
+                            <div class="help-content-text-wrapper">
+                                <ul class="help-content-text">
+                                    <li>Open any Forum post and scroll to the bottom to find the replies section</li>
+                                    <li>Type your message in the text input</li>
+                                    <li>Click the "Post Comment" button</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="help-section-container">
+                    <div class="help-content-container-heading">
+                        <h4 class="help-content-subtitle">Search and Filter Forum Posts</h4>
+                    </div>
+                    <div class="help-section-container-content">
+                        <div class="help-section-container-content-image">
+                            <img class="help-content-image" src="assets/help-page/forumSearch.webp" alt="Profile Page Example" loading="lazy">
+                        </div>
+                        <div class="help-section-container-content-text">
+                            <div class="help-content-text-wrapper">
+                                <ul class="help-content-text">
+                                    <li>On the Forum page use the search bar to find posts by keywords or categories.</li>
+                                    <li>Click the category dropdown and select categories from the menu.</li>
+                                    <li>Enter keywords into the search box.</li>
+                                    <li>Click the "Search" button and the results will be displayed below.</li>
+                                    <li>Clicking the "Reset" button will clear the search and any selected categories.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="help-section-container">
+                    <div class="help-content-container-heading">
+                        <h4 class="help-content-subtitle">Edit a Forum Post</h4>
+                    </div>
+                    <div class="help-section-container-content">
+                        <div class="help-section-container-content-image">
+                            <img class="help-content-image" src="assets/help-page/forumEdit.webp" alt="Profile Page Example" loading="lazy">
+                        </div>
+                        <div class="help-section-container-content-text">
+                            <div class="help-content-text-wrapper">
+                                <ul class="help-content-text">
+                                    <li>On a Forum post you created click on the ellipsis icon</li>
+                                    <li>Click "Edit" from the menu.</li>
+                                    <li>Make your changes to the Title, Content, and Categories.</li>
+                                    <li>Click the "Save" button to confirm the changes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="help-section-container">
+                    <div class="help-content-container-heading">
+                        <h4 class="help-content-subtitle">Delete a Forum Post</h4>
+                    </div>
+                    <div class="help-section-container-content">
+                        <div class="help-section-container-content-image">
+                            <img class="help-content-image" src="assets/help-page/forumDelete.webp" alt="Profile Page Example" loading="lazy">
+                        </div>
+                        <div class="help-section-container-content-text">
+                            <div class="help-content-text-wrapper">
+                                <ul class="help-content-text">
+                                    <li>On a Forum post you created click on the ellipsis icon</li>
+                                    <li>Click "Delete" from the menu.</li>
+                                    <li>Wait for the confirmation timer to count down</li>
+                                    <li>Click "Confirm"</li>
+                                </ul>
+                                <br>
+                                <p class="help-content-text"> This deletes your Forum post and cannot be undone!</p>
                             </div>
                         </div>
                     </div>
