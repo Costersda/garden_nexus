@@ -9,13 +9,13 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       required: [true, "Email is required"],
       validate: [validator.isEmail, "Invalid email"],
-      unique: true, // Ensure the email is unique
+      unique: true,
       select: false,
     },
     username: {
       type: String,
       required: [true, "Username is required"],
-      unique: true, // Ensure the username is unique
+      unique: true,
     },
     password: {
       type: String,
@@ -33,6 +33,15 @@ const userSchema = new Schema<UserDocument>(
     imageFile: {
       type: Buffer,
       required: false,
+    },
+    verificationToken: {
+      type: String,
+      required: false,
+      select: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -4,14 +4,25 @@ import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
 import { Error } from "mongoose";
 import jwt from "jsonwebtoken";
-import { secret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
 import { Comment } from "../models/comment";
 import { Forum } from "../models/forum";
+import crypto from 'crypto';
+import { sendVerificationEmail } from "../services/emailService";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined in the environment variables');
+}
 
 const normalizeUser = (user: UserDocument) => {
-  const token = jwt.sign({ id: user.id, email: user.email }, secret);
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    process.env.JWT_SECRET as string
+  );
   return {
     email: user.email,
     username: user.username,
@@ -41,11 +52,26 @@ export const register = async (
       return res.status(409).json({ message });
     }
 
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+
     // Create and save new user
-    const newUser = new UserModel({ email, username, password });
+    const newUser = new UserModel({ 
+      email, 
+      username, 
+      password, 
+      verificationToken,
+      isVerified: false 
+    });
     const savedUser = await newUser.save();
 
-    res.status(201).json(normalizeUser(savedUser));
+    // Send verification email
+    await sendVerificationEmail(email, verificationToken);
+
+    res.status(201).json({ 
+      message: 'User registered. Please check your email to verify your account.',
+      user: normalizeUser(savedUser) 
+    });
   } catch (err) {
     if (isMongoError(err) && err.code === 11000) {
       const field = Object.keys(err.keyValue)[0];
@@ -58,6 +84,30 @@ export const register = async (
     next(err);
   }
 };
+
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { token } = req.params;
+    const user = await UserModel.findOne({ verificationToken: token });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired verification token' });
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Email verified successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 // Type guard for MongoDB errors
 function isMongoError(error: unknown): error is { code: number, keyValue: Record<string, any> } {
@@ -84,6 +134,10 @@ export const login = async (
       return res.status(422).json(errors);
     }
 
+    if (!user.isVerified) {
+      return res.status(403).json({ message: "Please verify your email before logging in" });
+    }
+
     const isSamePassword = await user.validatePassword(req.body.password);
 
     if (!isSamePassword) {
@@ -105,8 +159,9 @@ export const currentUser = async (req: ExpressRequestInterface, res: Response) =
     if (!user) {
       return res.sendStatus(404);
     }
-    res.send(normalizeUser(user));
+    res.json(normalizeUser(user));
   } catch (error) {
+    console.error('Error in currentUser:', error);
     res.status(500).json({ message: 'Error fetching user', error });
   }
 };

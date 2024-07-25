@@ -7,6 +7,8 @@ export interface User {
   country?: string;
   bio?: string;
   imageFile?: Buffer;
+  verificationToken?: string;
+  isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

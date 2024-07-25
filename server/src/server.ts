@@ -10,10 +10,13 @@ import bodyParser from "body-parser";
 import authMiddleware from "./middlewares/auth";
 import cors from "cors";
 import path from 'path';
+import dotenv from 'dotenv';
+
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
+dotenv.config();
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -26,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/users", usersController.register);
+app.get("/api/verify/:token", usersController.verifyEmail);
 app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);
 app.get('/api/user/current', authMiddleware, usersController.currentUser);
