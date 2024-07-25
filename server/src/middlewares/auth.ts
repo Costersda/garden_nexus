@@ -7,6 +7,8 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
+//test
+
 // Check if JWT_SECRET is defined
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
