@@ -7,8 +7,6 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-//test
-
 // Check if JWT_SECRET is defined
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
@@ -17,7 +15,7 @@ if (!jwtSecret) {
 
 interface JwtPayload {
   id: string;
-  email: string;
+  iat?: number;
 }
 
 export default async (
@@ -31,15 +29,14 @@ export default async (
     if (!authHeader) {
       return res.sendStatus(401);
     }
+
     const token = authHeader.split(" ")[1];
-    
     const decoded = jwt.verify(token, jwtSecret);
     
-    // Type guard to check if decoded is JwtPayload
-    if (typeof decoded === 'object' && decoded !== null && 'id' in decoded && 'email' in decoded) {
+    if (typeof decoded === 'object' && decoded !== null && 'id' in decoded) {
       const data = decoded as JwtPayload;
 
-      const user = await UserModel.findById(data.id);
+      const user = await UserModel.findOne({ _id: data.id }).select('+email +username +isVerified');
       if (!user) {
         return res.sendStatus(401);
       }
