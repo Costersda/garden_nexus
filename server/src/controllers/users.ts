@@ -68,10 +68,11 @@ export const register = async (
     // Send verification email
     await sendVerificationEmail(email, verificationToken);
 
-    res.status(201).json({ 
-      message: 'User registered. Please check your email to verify your account.',
-      user: normalizeUser(savedUser) 
-    });
+    // Generate token and return user info
+    const normalizedUser = normalizeUser(savedUser);
+
+    // Return only the normalized user data
+    res.status(201).json(normalizedUser);
   } catch (err) {
     if (isMongoError(err) && err.code === 11000) {
       const field = Object.keys(err.keyValue)[0];
@@ -132,10 +133,6 @@ export const login = async (
 
     if (!user) {
       return res.status(422).json(errors);
-    }
-
-    if (!user.isVerified) {
-      return res.status(403).json({ message: "Please verify your email before logging in" });
     }
 
     const isSamePassword = await user.validatePassword(req.body.password);

@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
           console.log('currentUser', currentUser);
           this.authService.setToken(currentUser);
           this.authService.setCurrentUser(currentUser);
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/profile/' + currentUser.username);
         },
         error: (err: HttpErrorResponse) => {
           this.handleError(err, true);
