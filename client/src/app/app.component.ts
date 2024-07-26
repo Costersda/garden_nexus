@@ -14,16 +14,22 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Existing authentication logic
-    this.authService.getCurrentUser().subscribe({
-      next: (currentUser) => {
-        this.authService.setCurrentUser(currentUser);
-      },
-      error: (err) => {
-        console.log('err', err);
-        this.authService.setCurrentUser(null);
-      },
-    });
+    // Check if a token exists before trying to get the current user
+    if (this.authService.hasToken()) {
+      this.authService.getCurrentUser().subscribe({
+        next: (currentUser) => {
+          this.authService.setCurrentUser(currentUser);
+        },
+        error: (err) => {
+          console.log('Error getting current user:', err);
+          this.authService.setCurrentUser(null);
+          this.authService.clearToken(); // Clear the invalid token
+        },
+      });
+    } else {
+      // No token, so no user is logged in
+      this.authService.setCurrentUser(null);
+    }
 
     // New scroll-to-top logic
     this.router.events.pipe(

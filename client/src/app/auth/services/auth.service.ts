@@ -85,4 +85,13 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
   }
+
+  hasToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  clearToken(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+  }
 }
