@@ -16,7 +16,16 @@ export class AuthService {
     map(Boolean)
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const storedUser = this.getCurrentUserFromStorage();
+    this.currentUser$.next(storedUser);
+  }
+
+  isUserVerified(): Observable<boolean> {
+    return this.currentUser$.pipe(
+      map(user => user?.isVerified ?? false)
+    );
+  }
 
   getCurrentUser(): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/user';
@@ -69,11 +78,26 @@ export class AuthService {
 
   setCurrentUser(currentUser: CurrentUserInterface | null): void {
     if (currentUser) {
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      const userToStore = {
+        id: currentUser.id,
+        token: currentUser.token,
+        username: currentUser.username,
+        email: currentUser.email,
+        isVerified: currentUser.isVerified
+      };
+      localStorage.setItem('currentUser', JSON.stringify(userToStore));
     } else {
       localStorage.removeItem('currentUser');
     }
     this.currentUser$.next(currentUser);
+  }
+
+  getCurrentUserFromStorage(): CurrentUserInterface | null {
+    const userString = localStorage.getItem('currentUser');
+    if (userString) {
+      return JSON.parse(userString) as CurrentUserInterface;
+    }
+    return null;
   }
 
   isLoggedIn(): Observable<boolean> {

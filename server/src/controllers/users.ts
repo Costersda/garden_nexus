@@ -28,6 +28,7 @@ const normalizeUser = (user: UserDocument) => {
     username: user.username,
     id: user.id,
     token: `Bearer ${token}`,
+    isVerified: user.isVerified  // Add this line
   };
 };
 
@@ -189,7 +190,7 @@ export const currentUser = async (req: ExpressRequestInterface, res: Response) =
     if (!user) {
       return res.sendStatus(404);
     }
-    res.json(normalizeUser(user));
+    res.json(normalizeUser(user));  // This will now include isVerified
   } catch (error) {
     console.error('Error in currentUser:', error);
     res.status(500).json({ message: 'Error fetching user', error });
