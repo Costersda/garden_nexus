@@ -23,6 +23,10 @@
 @import './styles/help.css';
 
 
+.toast-container {
+    z-index: 1000000;
+  }
+
 html, body { height: 100%; }
 body { 
     margin: 0; 

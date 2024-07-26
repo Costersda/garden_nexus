@@ -11,6 +11,8 @@ import { NavbarComponent } from '../shared/modules/navbar/navbar.component';
 import { FooterComponent } from '../shared/modules/footer/footer.component';
 import { BlogPreviewComponent } from '../shared/modules/blog-preview/blog-preview.component';
 import { ForumPreviewComponent } from '../shared/modules/forum-preview/forum-preview.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 const routes: Routes = [
   { 
@@ -34,7 +36,9 @@ const routes: Routes = [
     NavbarComponent,
     FooterComponent,
     BlogPreviewComponent,
-    ForumPreviewComponent
+    ForumPreviewComponent,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   exports: [
     ProfileComponent,

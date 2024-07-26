@@ -159,7 +159,7 @@ p strong {
 
 .verify-profile-container {
   background-color: #fdccd4; /* Soft red background */
-  border: 1.5px solid #4d3d33; /* Slightly darker red border */
+  border: 3px solid #4d3d33; /* Slightly darker red border */
   border-radius: 8px;
   padding: 20px;
   margin: 0px auto; /* Changed from margin: 20px 0 */

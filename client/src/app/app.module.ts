@@ -20,6 +20,7 @@ import { ForumModule } from './forum/forum.module';
 import { ForumPreviewComponent } from './shared/modules/forum-preview/forum-preview.component';
 import { NotFoundComponent } from './404page/not-found.component';
 import { HelpModule } from './help/help.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,9 @@ import { HelpModule } from './help/help.module';
     BrowserAnimationsModule,
     ForumModule,
     ForumPreviewComponent,
-    HelpModule
+    HelpModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
 
   providers: [

@@ -13,6 +13,7 @@ import { Forum } from '../../shared/types/forum.interface';
 import { ForumService } from '../../shared/services/forum.service';
 import { UserService } from '../../shared/services/user.service';
 import { ConfirmationDialogService } from '../../shared/modules/confirmation-dialog/confirmation-dialog.service';
+import { ToastrService } from 'ngx-toastr'; 
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private initialBlogsToShow = 3;
   private blogsIncrement = 3;
   showBlogDropdown: boolean = false;
+  private cooldownPeriod = 60000; // 1 minute in milliseconds
+  private lastEmailSentTime: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +48,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private viewportScroller: ViewportScroller,
-    private confirmationDialogService: ConfirmationDialogService // Inject the service
+    private confirmationDialogService: ConfirmationDialogService, // Inject the service
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -193,19 +197,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   resendVerificationEmail() {
-    if (this.profile && this.profile.email) {
-      this.userService.resendVerificationEmail(this.profile.email).subscribe(
-        response => {
-          console.log('Verification email resent successfully');
-          // Refresh the profile data
-          if (this.profile) {
-            this.fetchProfile(this.profile.username);
-          }
-        },
-        error => {
-          console.error('Error resending verification email', error);
-        }
-      );
+    console.log('Resend verification email method called');
+    if (!this.profile || !this.profile.email) {
+      this.toastr.error('User profile not available');
+      return;
     }
+  
+    const currentTime = Date.now();
+    if (currentTime - this.lastEmailSentTime < this.cooldownPeriod) {
+      const remainingTime = Math.ceil((this.cooldownPeriod - (currentTime - this.lastEmailSentTime)) / 1000);
+      this.toastr.info(`Please wait ${remainingTime} seconds before requesting another email.`);
+      return;
+    }
+  
+    this.userService.resendVerificationEmail(this.profile.email).subscribe(
+      response => {
+        this.toastr.success('Verification email sent successfully. Please check your inbox.');
+        this.lastEmailSentTime = Date.now();
+        if (this.profile){
+                  this.fetchProfile(this.profile.username);
+        }
+      },
+      error => {
+        console.error('Error resending verification email', error);
+        this.toastr.error('Failed to send verification email. Please try again later.');
+      }
+    );
   }
 }
