@@ -10,7 +10,6 @@ const userSchema = new Schema<UserDocument>(
       required: [true, "Email is required"],
       validate: [validator.isEmail, "Invalid email"],
       unique: true,
-      select: false,
     },
     username: {
       type: String,

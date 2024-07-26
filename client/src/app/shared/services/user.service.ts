@@ -32,5 +32,9 @@ export class UserService {
     console.log('Delete profile URL:', url);
     return this.http.delete(url);
   }
+
+  resendVerificationEmail(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/resend-verification`, { email });
+  }
   
 }

@@ -109,6 +109,39 @@ export const verifyEmail = async (
   }
 };
 
+export const resendVerificationEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.body;
+
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: 'User is already verified' });
+    }
+
+    // Generate a new verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    user.verificationToken = verificationToken;
+    await user.save();
+
+    // Send the new verification email
+    await sendVerificationEmail(email, verificationToken);
+
+    res.status(200).json({ message: 'Verification email resent successfully' });
+  } catch (error) {
+    console.error('Error resending verification email:', error);
+    res.status(500).json({ message: 'Error resending verification email', error });
+  }
+};
+
 
 // Type guard for MongoDB errors
 function isMongoError(error: unknown): error is { code: number, keyValue: Record<string, any> } {
@@ -177,13 +210,14 @@ export const getProfile = async (
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const { email, country, bio, imageFile } = user;
+    const { email, country, bio, imageFile, isVerified } = user;
     res.status(200).json({
       email,
       username,
       country,
       bio,
-      imageFile: imageFile ? imageFile.toString('base64') : null, // Convert image buffer to base64 string
+      imageFile: imageFile ? imageFile.toString('base64') : null,
+      isVerified // Include this field
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching profile', error });

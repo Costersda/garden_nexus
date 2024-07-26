@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/users", usersController.register);
 app.get("/api/verify/:token", usersController.verifyEmail);
+app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
 app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);
 app.get('/api/user/current', authMiddleware, usersController.currentUser);

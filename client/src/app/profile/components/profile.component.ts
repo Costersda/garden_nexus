@@ -77,6 +77,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
+        console.log('Profile fetched:', profile); // Log the profile to check isVerified status
       },
       error: (error) => {
         this.errorMessage = 'Error fetching profile';
@@ -170,6 +171,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
         (error) => {
           console.error('Error deleting profile:', error);
           this.errorMessage = 'Failed to delete profile. Please try again.';
+        }
+      );
+    }
+  }
+
+  resendVerificationEmail() {
+    if (this.profile && this.profile.email) {
+      this.userService.resendVerificationEmail(this.profile.email).subscribe(
+        response => {
+          console.log('Verification email resent successfully');
+          // Refresh the profile data
+          if (this.profile) {
+            this.fetchProfile(this.profile.username);
+          }
+        },
+        error => {
+          console.error('Error resending verification email', error);
         }
       );
     }
