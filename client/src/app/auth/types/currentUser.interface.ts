@@ -3,4 +3,5 @@ export interface CurrentUserInterface {
   token: string;
   username: string;
   email: string;
+  isVerified: boolean;
 }

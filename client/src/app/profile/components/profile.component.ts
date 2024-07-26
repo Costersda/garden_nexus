@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
@@ -42,6 +44,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private forumService: ForumService,
     private userService: UserService,
     private router: Router,
+    private viewportScroller: ViewportScroller,
     private confirmationDialogService: ConfirmationDialogService // Inject the service
   ) {}
 
@@ -53,6 +56,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.checkOwnership(username);
         this.fetchBlogsByUser(username);
         this.fetchForumsByUser(username);
+      }
+    });
+
+    // Handle scrolling to verification box if needed
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const tree = this.router.parseUrl(this.router.url);
+      if (tree.fragment === 'verification-box') {
+        // Wait for the view to be fully rendered
+        setTimeout(() => {
+          this.viewportScroller.scrollToAnchor('verification-box');
+        }, 100);
       }
     });
   }

@@ -13,6 +13,7 @@ import { NotFoundComponent } from './404page/not-found.component';
 import { RegisterComponent } from './auth/components/register/register.component';
 import { LoggedInAuthGuardService } from './auth/services/LoggedInAuthGuard.service';
 import { AuthGuardService } from './auth/services/authGuard.service';
+import { VerifiedAuthGuardService } from './auth/services/verifiedGuard.service';
 import { HelpComponent } from './help/components/help.component';
 
 const routes: Routes = [
@@ -33,13 +34,13 @@ const routes: Routes = [
   { 
     path: 'blogs/create', 
     component: CreateBlogComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService, VerifiedAuthGuardService]
   },
   { path: 'forum', component: ForumComponent },
   { 
     path: 'forum/create', 
     component: CreateForumComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService, VerifiedAuthGuardService]
   },
   { path: 'forum/:id', component: ViewForumComponent },
   { path: 'help', component: HelpComponent },
