@@ -32,9 +32,11 @@
 
 <div id="verification-box" class="profile-content-container" *ngIf="isOwner && profile && profile.isVerified === false">
   <div class="profile-content">
-    <p>You must verify your account to use the Blog and Forum</p>
-    <p>Check your email for the verification link or click below to resend it</p>
-    <button (click)="resendVerificationEmail()">Resend Verification Email</button>
+    <div class="verify-profile-container">
+      <p>You must verify your account to use the Blog and Forum</p>
+      <p>Check your email for the verification link or click below to resend it</p>
+      <button class="resend-verification-btn" (click)="resendVerificationEmail()">Resend Verification Email</button>
+    </div>
   </div>
 </div>
 
