@@ -19,7 +19,10 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
@@ -30,7 +33,13 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/users", usersController.register);
-app.get("/api/verify/:token", usersController.verifyEmail);
+app.get("/api/verify/:token", (req, res) => {
+  usersController.verifyEmail(req, res, (err) => {
+    if (err) {
+      res.redirect(`${process.env.FRONTEND_URL}/verify-error`);
+    }
+  });
+});
 app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
 app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);

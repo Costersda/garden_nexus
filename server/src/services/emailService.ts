@@ -3,7 +3,7 @@ import AWS from 'aws-sdk';
 import dotenv from 'dotenv';
 
 dotenv.config();
-//
+
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -13,6 +13,12 @@ AWS.config.update({
 const ses = new AWS.SES({ apiVersion: '2010-12-01' });
 
 export const sendVerificationEmail = async (to: string, verificationToken: string) => {
+  const backendUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://api.gardennexus.com'  // Use your actual production API URL here
+    : 'http://localhost:4001';  // Use your local backend port
+
+  const verificationLink = `${backendUrl}/api/verify/${verificationToken}`;
+
   const params = {
     Source: 'Garden Nexus <noreply@gardennexus.com>',
     Destination: {
@@ -25,7 +31,7 @@ export const sendVerificationEmail = async (to: string, verificationToken: strin
       Body: {
         Html: {
           Data: `
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -50,10 +56,10 @@ export const sendVerificationEmail = async (to: string, verificationToken: strin
             <p>Thank you for joining our community. We're excited to have you on board!</p>
             <p>To complete your registration, please verify your email address by clicking the button below:</p>
             <p style="text-align: center;">
-                <a href="https://gardennexus.com/verify/${verificationToken}" class="button" style="color: #6C584C;">Verify My Email</a>
+                <a href="${verificationLink}" class="button" style="color: #6C584C;">Verify My Email</a>
             </p>
             <p>If the button above doesn't work, you can also copy and paste the following link into your browser:</p>
-            <p>https://gardennexus.com/verify/${verificationToken}</p>
+            <p>${verificationLink}</p>
             <p>This link will expire in 24 hours for security reasons.</p>
             <p>If you didn't create an account with Garden Nexus, please ignore this email.</p>
             <p>Happy Gardening!</p>
@@ -66,7 +72,6 @@ export const sendVerificationEmail = async (to: string, verificationToken: strin
     </div>
 </body>
 </html>
-
           `
         }
       }

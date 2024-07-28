@@ -10,6 +10,8 @@ import { ToolbarComponent } from '../shared/modules/toolbar/toolbar.component';
 import { NavbarComponent } from '../shared/modules/navbar/navbar.component';
 import { FooterComponent } from '../shared/modules/footer/footer.component';
 import { LoggedInAuthGuardService } from './services/LoggedInAuthGuard.service';
+import { VerifyFailedComponent } from './components/verify-failed/verify-failed.component';
+import { VerifySuccessComponent } from './components/verify-success/verify-success.component';
 
 const routes: Routes = [
   { 
@@ -34,6 +36,6 @@ const routes: Routes = [
     FooterComponent
   ],
   providers: [AuthService, AuthGuardService, LoggedInAuthGuardService],
-  declarations: [RegisterComponent, LoginComponent],
+  declarations: [RegisterComponent, LoginComponent, VerifyFailedComponent, VerifySuccessComponent],
 })
 export class AuthModule {}

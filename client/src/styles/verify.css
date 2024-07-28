@@ -1,0 +1,23 @@
+.verify-success {
+    background-color: #DDE5B6;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.verify-heading {
+    width: 100%;
+    color: #6C584C;
+    font-size: 2.2em !important;
+    margin-bottom: 10px !important;
+    padding-bottom: 10px;
+    font-weight: 500 !important;
+    text-align: left;
+    position: relative;
+    display: inline-block;
+}
+
+.verify-content-text {
+    font-size: 1.2em !important;
+    font-weight: 400;
+    margin: 0 !important;
+}

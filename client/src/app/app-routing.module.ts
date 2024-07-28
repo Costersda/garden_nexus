@@ -15,6 +15,8 @@ import { LoggedInAuthGuardService } from './auth/services/LoggedInAuthGuard.serv
 import { AuthGuardService } from './auth/services/authGuard.service';
 import { VerifiedAuthGuardService } from './auth/services/verifiedGuard.service';
 import { HelpComponent } from './help/components/help.component';
+import { VerifySuccessComponent } from './auth/components/verify-success/verify-success.component';
+import { VerifyFailedComponent } from './auth/components/verify-failed/verify-failed.component';
 
 const routes: Routes = [
   { path: 'profile/:username', component: ProfileComponent },
@@ -44,6 +46,8 @@ const routes: Routes = [
   },
   { path: 'forum/:id', component: ViewForumComponent },
   { path: 'help', component: HelpComponent },
+  { path: 'verify-success', component: VerifySuccessComponent },
+  { path: 'verify-failed', component: VerifyFailedComponent },
   { path: '**', component: NotFoundComponent, data: { redirectTo: '' } },
 
 ];
