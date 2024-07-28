@@ -11,6 +11,7 @@ import authMiddleware from "./middlewares/auth";
 import cors from "cors";
 import path from 'path';
 import dotenv from 'dotenv';
+import { startScheduledTasks } from "./services/scheduledTasks";
 
 
 const app = express();
@@ -80,6 +81,10 @@ io.on("connection", () => {
 
 mongoose.connect("mongodb://localhost:27017/garden_nexus").then(() => {
   console.log("connected to mongodb");
+
+   // Start the scheduled tasks
+  startScheduledTasks();
+
   httpServer.listen(4001, () => {
     console.log(`API is listening on port 4001`);
   });
