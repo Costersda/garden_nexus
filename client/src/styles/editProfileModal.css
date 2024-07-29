@@ -8,7 +8,7 @@
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
@@ -31,6 +31,10 @@ select {
   max-width: 600px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
+  max-height: 90vh; /* Adjust as needed */
+  overflow-y: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f1f1f1; /* For Firefox */
 }
 
 .modal-header {
