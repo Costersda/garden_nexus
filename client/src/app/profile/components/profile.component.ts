@@ -96,15 +96,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   fetchProfile(username: string): void {
-    const url = `${environment.apiUrl}/profile/${username}`;
-    this.http.get<User>(url).subscribe({
+    this.userService.getUserByUsername(username).subscribe({
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
-        // console.log('Profile fetched:', profile); 
       },
       error: (error) => {
-        this.errorMessage = 'Error fetching profile';
+        if (error.status === 404) {
+          this.errorMessage = 'Profile not found';
+        } else {
+          this.errorMessage = 'Error fetching profile. Please try again later.';
+        }
         console.error('Error fetching profile:', error);
       }
     });

@@ -16,6 +16,10 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
+  getUserByUsername(username: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/profile/${username}`);
+  }
+
   getCurrentUser(): Observable<User> {
     const token = localStorage.getItem('token');
     if (!token) {
