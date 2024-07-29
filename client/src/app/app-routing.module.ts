@@ -20,7 +20,10 @@ import { VerifyFailedComponent } from './auth/components/verify-failed/verify-fa
 import { VerificationPageGuardService } from './auth/services/verificationPageGuard.service';
 
 const routes: Routes = [
-  { path: 'profile/:username', component: ProfileComponent },
+  { path: 'profile/:username', 
+    component: ProfileComponent,
+    canActivate: [AuthGuardService] 
+  },
   { path: '', component: HomeComponent },
   { 
     path: 'login', 
