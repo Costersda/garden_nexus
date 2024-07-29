@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { User } from '../types/user.interface';
 import { environment } from '../../../environments/environment';
 
@@ -16,15 +16,21 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
-  getUserByUsername(username: string): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/api/profile/${username}`);
+  getProfileByUsername(username: string): Observable<User> {
+    const url = `${environment.apiUrl}/profile/${username}`;
+    return this.http.get<User>(url).pipe(
+      catchError((error) => {
+        console.error('Error fetching profile:', error);
+        return throwError(() => new Error('Error fetching profile'));
+      })
+    );
   }
 
   getCurrentUser(): Observable<User> {
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('Token not found in local storage');
-      return throwError('Token not found');
+      return throwError(() => new Error('Token not found'));
     }
     
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
