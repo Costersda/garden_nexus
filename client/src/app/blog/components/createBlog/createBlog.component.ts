@@ -109,7 +109,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     }
 
     this.blogService.createBlog(this.blog).subscribe(() => {
-      this.router.navigate(['/blogs']);
+      this.router.navigate(['/blogs'], { replaceUrl: true });
     }, error => {
       console.error('Error creating blog:', error);
     });

@@ -68,7 +68,7 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
     }
 
     this.forumService.createForum(this.forum).subscribe(() => {
-      this.router.navigate(['/forum']);
+      this.router.navigate(['/forum'], { replaceUrl: true });
     }, error => {
       console.error('Error creating forum:', error);
     });
