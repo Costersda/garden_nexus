@@ -63,16 +63,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Handle scrolling to verification box if needed
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe(() => {
       const tree = this.router.parseUrl(this.router.url);
       if (tree.fragment === 'verification-box') {
-        // Wait for the view to be fully rendered
+        // Increase timeout and add error handling
         setTimeout(() => {
-          this.viewportScroller.scrollToAnchor('verification-box');
-        }, 100);
+          const element = document.getElementById('verification-box');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            console.error('Element with id "verification-box" not found');
+          }
+        }, 50);
       }
     });
   }
