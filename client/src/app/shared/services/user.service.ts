@@ -17,7 +17,7 @@ export class UserService {
   }
 
   getUserByUsername(username: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/profile/${username}`);
+    return this.http.get<User>(`${environment.apiUrl}/api/profile/${username}`);
   }
 
   getCurrentUser(): Observable<User> {

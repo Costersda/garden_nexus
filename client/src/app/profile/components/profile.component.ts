@@ -96,17 +96,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   fetchProfile(username: string): void {
-    this.userService.getUserByUsername(username).subscribe({
+    const url = `${environment.apiUrl}/profile/${username}`;
+    this.http.get<User>(url).subscribe({
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
+        console.log('Profile fetched:', profile); // Log the profile to check isVerified status
       },
       error: (error) => {
-        if (error.status === 404) {
-          this.errorMessage = 'Profile not found';
-        } else {
-          this.errorMessage = 'Error fetching profile. Please try again later.';
-        }
+        this.errorMessage = 'Error fetching profile';
         console.error('Error fetching profile:', error);
       }
     });
@@ -114,7 +112,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   checkOwnership(username: string): void {
     this.authService.getCurrentUser().subscribe((currentUser) => {
-      // console.log(currentUser);
       this.isOwner = currentUser ? currentUser.username === username : false;
     });
   }
@@ -148,6 +145,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       (forums: Forum[]) => {
         this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
+        console.log(forums);
       },
       (error) => {
         console.error('Error fetching forums by user:', error);
