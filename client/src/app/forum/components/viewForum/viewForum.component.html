@@ -144,7 +144,7 @@
           <div class="reply-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="reply-header">
               <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
-              <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
+              <div class="dropdown" *ngIf="currentUser && comment.user && currentUserMatchesCommentUser(comment.user, currentUser)">
                 <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
                   <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
                 </button>

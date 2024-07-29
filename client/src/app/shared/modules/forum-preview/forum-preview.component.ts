@@ -25,7 +25,6 @@ export class ForumPreviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.forum);
     if (this.forum.user_id) {
       this.userService.getUserById(this.forum.user_id).subscribe(user => {
         this.forumAuthor = user.username;

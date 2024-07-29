@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForumService } from '../../../shared/services/forum.service';
@@ -62,8 +62,11 @@ export class ViewForumComponent implements OnInit, OnDestroy {
       if (forumId) {
         this.fetchCurrentUser();
         this.fetchForum(forumId);
+        // Add this line
+        this.commentService.getCommentsByForumId(forumId).subscribe(
+          comments => console.log('Initial comments:', JSON.stringify(comments, null, 2))
+        );
       }
-
     });
   }
 
@@ -108,7 +111,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       this.currentUser = JSON.parse(storedUser);
-      console.log('Fetched current user from local storage:', this.currentUser);
+      console.log('Current User:', this.currentUser);
       if (this.currentUser && !this.currentUser._id) {
         this.currentUser._id = (this.currentUser as any).id || this.currentUser._id;
         console.log('Updated currentUser with _id:', this.currentUser._id);
@@ -245,14 +248,28 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     this.commentSubscription = this.commentService.getCommentsByForumId(forumId).subscribe(
       (comments: Comment[]) => {
         this.comments = comments.map(comment => {
-          const user = comment.user as User;
-          const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
-          const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+          const commentId = comment._id ?? comment.id ?? '';
+          
+          if (!comment.user) {
+            console.warn(`Comment ${commentId} has no user`);
+            return {
+              ...comment,
+              _id: commentId,
+              user: {
+                _id: '',
+                username: 'Unknown User',
+                imageFile: undefined
+              }
+            };
+          }
+  
+          const userId = comment.user._id || comment.user._id || '';
+          
           return {
             ...comment,
             _id: commentId,
             user: {
-              ...user,
+              ...comment.user,
               _id: userId
             }
           };
@@ -410,5 +427,22 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     } else {
       this.forum!.categories.splice(index, 1);
     }
+  }
+
+  currentUserMatchesCommentUser(commentUser: any, currentUser: any): boolean {
+    if (!commentUser || !currentUser) return false;
+  
+    const commentUserId = (commentUser._id || commentUser.id || '').toString().trim();
+    const currentUserId = (currentUser._id || currentUser.id || '').toString().trim();
+  
+    console.log('Comment User ID:', commentUserId);
+    console.log('Current User ID:', currentUserId);
+  
+    if (!commentUserId) {
+      console.warn('Comment user ID is missing');
+      return false;
+    }
+  
+    return commentUserId === currentUserId;
   }
 }

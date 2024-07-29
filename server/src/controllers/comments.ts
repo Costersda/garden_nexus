@@ -4,9 +4,10 @@ import { Comment } from "../models/comment";
 import { CommentDocument } from "../types/comment.interface";
 
 const normalizeComment = (comment: CommentDocument) => {
-  const user = comment.user as any; // Cast to any to handle the populated user
+  const user = comment.user as any;
   let userImage = null;
-  if (user.imageFile && Buffer.isBuffer(user.imageFile)) {
+  
+  if (user && user.imageFile && Buffer.isBuffer(user.imageFile)) {
     const base64String = user.imageFile.toString('base64');
     userImage = `data:image/jpeg;base64,${base64String}`;
   }
@@ -17,12 +18,12 @@ const normalizeComment = (comment: CommentDocument) => {
     forumId: comment.forumId,
     comment: comment.comment,
     createdAt: comment.createdAt,
-    isEdited: comment.isEdited, // Include the isEdited field
-    user: {
+    isEdited: comment.isEdited,
+    user: user ? {
       id: user._id,
       username: user.username,
       imageFile: userImage
-    }
+    } : null
   };
 };
 
@@ -63,8 +64,20 @@ export const getAllCommentsByForumId = async (
   next: NextFunction
 ) => {
   try {
-    const comments = await Comment.find({ forumId: req.params.forumId }).populate('user', 'username imageFile');
-    res.status(200).send(comments.map(normalizeComment));
+    const comments = await Comment.find({ forumId: req.params.forumId })
+      .populate('user', 'username imageFile')
+      .exec();
+    
+    const normalizedComments = comments.map(comment => {
+      try {
+        return normalizeComment(comment);
+      } catch (error) {
+        console.error('Error normalizing comment:', error);
+        return null;
+      }
+    }).filter(comment => comment !== null);
+    
+    res.status(200).send(normalizedComments);
   } catch (error) {
     next(error);
   }

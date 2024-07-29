@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
-        console.log('Profile fetched:', profile); // Log the profile to check isVerified status
+        // console.log('Profile fetched:', profile); 
       },
       error: (error) => {
         this.errorMessage = 'Error fetching profile';
@@ -112,6 +112,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   checkOwnership(username: string): void {
     this.authService.getCurrentUser().subscribe((currentUser) => {
+      // console.log(currentUser);
       this.isOwner = currentUser ? currentUser.username === username : false;
     });
   }
@@ -145,7 +146,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       (forums: Forum[]) => {
         this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
-        console.log(forums);
       },
       (error) => {
         console.error('Error fetching forums by user:', error);
