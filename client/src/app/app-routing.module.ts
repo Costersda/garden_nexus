@@ -18,6 +18,7 @@ import { HelpComponent } from './help/components/help.component';
 import { VerifySuccessComponent } from './auth/components/verify-success/verify-success.component';
 import { VerifyFailedComponent } from './auth/components/verify-failed/verify-failed.component';
 import { VerificationPageGuardService } from './auth/services/verificationPageGuard.service';
+import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'profile/:username', 
@@ -35,6 +36,9 @@ const routes: Routes = [
     component: RegisterComponent,
     canActivate: [LoggedInAuthGuardService]
   },
+  { path: 'forgot-password', 
+    component: ForgotPasswordComponent,
+    canActivate: [LoggedInAuthGuardService] },
   { path: 'blogs', component: BlogComponent },
   { path: 'blog/:id', component: ViewBlogComponent },
   { 
