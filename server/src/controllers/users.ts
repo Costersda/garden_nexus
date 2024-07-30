@@ -182,6 +182,33 @@ export const forgotPassword = async (
   }
 };
 
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await UserModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
+    }
+
+    // Set the new password
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ message: 'An error occurred while resetting the password.' });
+  }
+};
+
 
 // Type guard for MongoDB errors
 function isMongoError(error: unknown): error is { code: number, keyValue: Record<string, any> } {

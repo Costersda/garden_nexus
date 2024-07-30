@@ -13,6 +13,7 @@ import { LoggedInAuthGuardService } from './services/LoggedInAuthGuard.service';
 import { VerifyFailedComponent } from './components/verify-failed/verify-failed.component';
 import { VerifySuccessComponent } from './components/verify-success/verify-success.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
   { 
@@ -37,6 +38,6 @@ const routes: Routes = [
     FooterComponent
   ],
   providers: [AuthService, AuthGuardService, LoggedInAuthGuardService],
-  declarations: [RegisterComponent, LoginComponent, VerifyFailedComponent, VerifySuccessComponent, ForgotPasswordComponent],
+  declarations: [RegisterComponent, LoginComponent, VerifyFailedComponent, VerifySuccessComponent, ForgotPasswordComponent, ResetPasswordComponent],
 })
 export class AuthModule {}

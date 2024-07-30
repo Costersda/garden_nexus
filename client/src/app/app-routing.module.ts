@@ -19,6 +19,7 @@ import { VerifySuccessComponent } from './auth/components/verify-success/verify-
 import { VerifyFailedComponent } from './auth/components/verify-failed/verify-failed.component';
 import { VerificationPageGuardService } from './auth/services/verificationPageGuard.service';
 import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: 'profile/:username', 
@@ -39,6 +40,10 @@ const routes: Routes = [
   { path: 'forgot-password', 
     component: ForgotPasswordComponent,
     canActivate: [LoggedInAuthGuardService] },
+  { path: 'reset-password/:token', 
+    component: ResetPasswordComponent,
+    // canActivate: [LoggedInAuthGuardService] 
+  },
   { path: 'blogs', component: BlogComponent },
   { path: 'blog/:id', component: ViewBlogComponent },
   { 

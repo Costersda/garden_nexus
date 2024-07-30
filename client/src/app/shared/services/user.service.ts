@@ -50,5 +50,9 @@ export class UserService {
   requestPasswordReset(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/forgot-password`, { email });
   }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password/${token}`, { password: newPassword });
+  }
   
 }
