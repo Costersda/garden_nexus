@@ -31,6 +31,7 @@
   object-fit: cover;
   border: 2px solid #DDE5B6;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
 }
 
 .reply-left:hover .reply-profile-image {
