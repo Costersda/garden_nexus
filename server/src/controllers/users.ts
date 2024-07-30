@@ -2,7 +2,7 @@
 import { NextFunction, Request, Response } from "express";
 import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
-import { Error } from "mongoose";
+import mongoose, { Error, Types } from "mongoose";
 import jwt from "jsonwebtoken";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
@@ -264,11 +264,7 @@ export const currentUser = async (req: ExpressRequestInterface, res: Response) =
 };
 
 
-export const getProfile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getProfile = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
     const user = await UserModel.findOne({ username });
@@ -277,14 +273,15 @@ export const getProfile = async (
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const { email, country, bio, imageFile, isVerified } = user;
+    const { _id, email, country, bio, imageFile, isVerified } = user;
     res.status(200).json({
+      id: _id,  // Include the ID here
       email,
       username,
       country,
       bio,
       imageFile: imageFile ? imageFile.toString('base64') : null,
-      isVerified // Include this field
+      isVerified
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching profile', error });
@@ -378,6 +375,149 @@ export const checkUserCredentialsAvailability = async (
   } catch (error) {
     console.error('Error checking credentials availability:', error);
     res.status(500).json({ message: 'Error checking credentials availability', error });
+  }
+};
+
+export const followUser = async (req: ExpressRequestInterface, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const userToFollowId = req.params.id;
+    const currentUserId = req.user.id;
+
+    if (currentUserId === userToFollowId) {
+      return res.status(400).json({ message: "You cannot follow yourself" });
+    }
+
+    const userToFollow = await UserModel.findById(userToFollowId);
+    const currentUser = await UserModel.findById(currentUserId);
+
+    if (!userToFollow || !currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (currentUser.following.includes(new Types.ObjectId(userToFollowId))) {
+      return res.status(400).json({ message: "You are already following this user" });
+    }
+
+    currentUser.following.push(new Types.ObjectId(userToFollowId));
+    userToFollow.followers.push(new Types.ObjectId(currentUserId));
+
+    await currentUser.save();
+    await userToFollow.save();
+
+    res.status(200).json({ message: "Successfully followed user" });
+  } catch (error) {
+    console.error("Error following user:", error);
+    res.status(500).json({ message: "Error following user", error });
+  }
+};
+
+export const unfollowUser = async (req: ExpressRequestInterface, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const userToUnfollowId = req.params.id;
+    const currentUserId = req.user.id;
+
+    if (currentUserId === userToUnfollowId) {
+      return res.status(400).json({ message: "You cannot unfollow yourself" });
+    }
+
+    const userToUnfollow = await UserModel.findById(userToUnfollowId);
+    const currentUser = await UserModel.findById(currentUserId);
+
+    if (!userToUnfollow || !currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!currentUser.following.includes(new Types.ObjectId(userToUnfollowId))) {
+      return res.status(400).json({ message: "You are not following this user" });
+    }
+
+    currentUser.following = currentUser.following.filter(id => id.toString() !== userToUnfollowId);
+    userToUnfollow.followers = userToUnfollow.followers.filter(id => id.toString() !== currentUserId);
+
+    await currentUser.save();
+    await userToUnfollow.save();
+
+    res.status(200).json({ message: "Successfully unfollowed user" });
+  } catch (error) {
+    console.error("Error unfollowing user:", error);
+    res.status(500).json({ message: "Error unfollowing user", error });
+  }
+};
+
+export const getFollowers = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const user = await UserModel.findById(userId).populate('followers', 'username');
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user.followers);
+  } catch (error) {
+    console.error("Error fetching followers:", error);
+    res.status(500).json({ message: "Error fetching followers", error });
+  }
+};
+
+export const getFollowing = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const user = await UserModel.findById(userId).populate('following', 'username imageFile');
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const followingWithImages = user.following.map((followedUser: any) => ({
+      username: followedUser.username,
+      imageFile: followedUser.imageFile ? followedUser.imageFile.toString('base64') : null
+    }));
+
+    res.status(200).json(followingWithImages);
+  } catch (error) {
+    console.error("Error fetching following:", error);
+    res.status(500).json({ message: "Error fetching following", error });
+  }
+};
+
+export const checkIfFollowing = async (req: ExpressRequestInterface, res: Response) => {
+  try {
+    const userToCheckId = req.params.id;
+    const currentUser = req.user;
+
+    if (!currentUser) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Convert string to ObjectId
+    let userToCheckObjectId: mongoose.Types.ObjectId;
+    try {
+      userToCheckObjectId = new mongoose.Types.ObjectId(userToCheckId);
+    } catch (err) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    // Check if the ObjectId exists in the following array
+    const isFollowing = currentUser.following.some((id) => id.equals(userToCheckObjectId));
+
+    res.json(isFollowing);
+  } catch (error: unknown) {
+    console.error("Error checking if following:", error);
+    
+    if (error instanceof Error) {
+      res.status(500).json({ message: "Error checking if following", error: error.message });
+    } else {
+      res.status(500).json({ message: "An unknown error occurred" });
+    }
   }
 };
 

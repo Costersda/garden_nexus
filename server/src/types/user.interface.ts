@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface User {
   email: string;
@@ -13,6 +13,8 @@ export interface User {
   resetPasswordExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
+  following: Types.ObjectId[];
+  followers: Types.ObjectId[];
 }
 
 export interface UserDocument extends User, Document {

@@ -228,6 +228,93 @@ p strong {
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.5); /* Soft red focus ring */
 }
 
+.loading-indicator {
+  text-align: center;
+  color: #757575;
+  font-size: 14px;
+  margin: 20px 0;
+}
+
+.following-list-container {
+  margin-top: 15px;
+}
+
+.following-list-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.following-item {
+  flex: 0 0 calc(20% - 16px);
+  margin-bottom: 20px;
+  background-color: #DDE5B6;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid #6C584C;
+}
+
+.following-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.following-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 20px 10px 20px;
+}
+
+.following-user-picture {
+  width: 100%;
+  padding-bottom: 80%; /* This creates a square aspect ratio */
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #f0f0f0;
+  background-color: #ffffff;
+}
+
+.following-user-picture img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.following-username {
+  color: #6C584C;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+  transition: color 0.2s ease;
+  text-align: center;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.following-username::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #ADC178;
+  transition: width 0.3s ease;
+}
+
+.following-item:hover .following-username::after {
+  width: 100%;
+}
+
 
 @media (max-width: 1670px) {
   .profile-picture-container {
@@ -265,10 +352,10 @@ p strong {
     font-size: 2.2em !important;
     line-height: 1.2em !important;
   }
-  
-  /* .profile-content-subheading {
-    margin-bottom: 0 !important;
-  } */
+
+  .following-item {
+    flex: 0 0 calc(33.333% - 10px);
+  }
 
 }
 
@@ -284,6 +371,9 @@ p strong {
     height: 100px;
   }
 
+  .following-item {
+    flex: 0 0 calc(50% - 10px);
+  }
 
 
   .profile-content {

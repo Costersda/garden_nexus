@@ -12,6 +12,9 @@
   <div class="profile-container" *ngIf="profile">
     <div class="profile-container-heading">
       <h2 class="profile-username">{{ profile.username | titlecase }}</h2>
+      <button (click)="toggleFollow()" *ngIf="!isOwner" [disabled]="isOwner">
+        {{ isFollowing ? 'Unfollow' : 'Follow' }}
+      </button>
       <div class="dropdown">
         <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
           <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
@@ -85,6 +88,40 @@
     <div class="load-more-btn-container" *ngIf="forums.length > displayedForums.length">
       <div class="profile-content">
         <button class="load-more-btn" (click)="loadMoreForums()">
+          <img src="assets/arrow_down.png" alt="Load More">
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="profile-content-container">
+  <hr class="styled-hr">
+</div>
+
+<div class="profile-content-container">
+  <div class="profile-content">
+    <h2 class="profile-content-subheading">Following</h2>
+  </div>
+  <div class="profile-content">
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="isLoadingFollowing" class="loading-indicator">Loading...</div>
+    <div class="following-list-container" *ngIf="!errorMessage && !isLoadingFollowing">
+      <div class="following-list-content">
+        <div class="following-item" *ngFor="let user of displayedFollowing">
+          <div class="following-user-info">
+            <div class="following-user-picture">
+              <img [src]="user.imageFile ? 'data:image/jpeg;base64,' + user.imageFile : 'assets/garden-nexus-logo.webp'" 
+                   alt="User profile picture">
+            </div>
+            <a [routerLink]="['/profile', user.username]" class="following-username">{{ user.username }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="load-more-btn-container" *ngIf="following.length > displayedFollowing.length">
+      <div class="profile-content">
+        <button class="load-more-btn" (click)="loadMoreFollowing()">
           <img src="assets/arrow_down.png" alt="Load More">
         </button>
       </div>

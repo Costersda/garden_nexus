@@ -54,5 +54,21 @@ export class UserService {
   resetPassword(token: string, newPassword: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/reset-password/${token}`, { password: newPassword });
   }
+
+  followUser(userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/follow`, {});
+  }
+
+  unfollowUser(userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/unfollow`, {});
+  }
+
+  checkIfFollowing(userId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/${userId}/is-following`);
+  }
+
+  getFollowing(userId: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/${userId}/following`);
+  }
   
 }

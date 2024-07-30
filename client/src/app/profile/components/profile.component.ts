@@ -25,6 +25,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   displayedBlogs: Blog[] = [];
   forums: Forum[] = [];
   displayedForums: Forum[] = [];
+  following: User[] = [];
+  displayedFollowing: User[] = [];
   errorMessage: string | null = null;
   isOwner: boolean = false;
   isModalOpen: boolean = false;
@@ -35,9 +37,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private forumsIncrement = 3;
   private initialBlogsToShow = 3;
   private blogsIncrement = 3;
+  private initialFollowingToShow = 3;
+  private followingIncrement = 3;
   showBlogDropdown: boolean = false;
   private cooldownPeriod = 60000; // 1 minute in milliseconds
   private lastEmailSentTime: number = 0;
+  isFollowing: boolean = false;
+  followingPageSize = 10;
+  isLoadingFollowing: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +67,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.checkOwnership(username);
         this.fetchBlogsByUser(username);
         this.fetchForumsByUser(username);
+        this.fetchFollowing();
       }
     });
 
@@ -100,7 +108,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
-        console.log('Profile fetched:', profile); // Log the profile to check isVerified status
+        console.log('Profile fetched:', profile);
+        this.checkIfFollowing();
+        this.fetchFollowing(); // Add this line here
       },
       error: (error) => {
         this.errorMessage = 'Error fetching profile';
@@ -226,5 +236,85 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.toastr.error('Failed to send verification email. Please try again later.');
       }
     );
+  }
+
+  loadMoreFollowing(): void {
+    const currentLength = this.displayedFollowing.length;
+    const nextLength = currentLength + this.followingIncrement;
+    this.displayedFollowing = this.following.slice(0, nextLength);
+  }
+
+  toggleFollow() {
+    if (this.isFollowing) {
+      this.unfollowUser();
+    } else {
+      this.followUser();
+    }
+  }
+
+  fetchFollowing() {
+    if (this.profile && this.profile.id) {
+      this.isLoadingFollowing = true;
+      this.userService.getFollowing(this.profile.id).subscribe({
+        next: (following) => {
+          this.following = following;
+          this.displayedFollowing = this.following.slice(0, this.initialFollowingToShow);
+          console.log('Fetched following:', following);
+          this.isLoadingFollowing = false;
+        },
+        error: (error) => {
+          console.error('Error fetching following:', error);
+          this.errorMessage = 'Failed to fetch following users. Please try again.';
+          this.isLoadingFollowing = false;
+        }
+      });
+    }
+  }
+
+  checkIfFollowing() {
+    if (this.profile && this.profile.id) {
+      this.userService.checkIfFollowing(this.profile.id).subscribe(
+        isFollowing => {
+          this.isFollowing = isFollowing;
+        },
+        error => {
+          console.error('Error checking if following:', error);
+        }
+      );
+    }
+  }
+
+  followUser() {
+    if (this.profile && this.profile.id) {
+      this.userService.followUser(this.profile.id).subscribe(
+        () => {
+          this.isFollowing = true;
+        },
+        error => {
+          console.error('Error following user:', error);
+          this.errorMessage = 'Failed to follow user. Please try again.';
+        }
+      );
+    } else {
+      this.errorMessage = 'Unable to follow user. Profile ID is missing.';
+      console.error('Profile object:', this.profile);
+    }
+  }
+  
+  unfollowUser() {
+    if (this.profile && this.profile.id) {
+      this.userService.unfollowUser(this.profile.id).subscribe(
+        () => {
+          this.isFollowing = false;
+        },
+        error => {
+          console.error('Error unfollowing user:', error);
+          this.errorMessage = 'Failed to unfollow user. Please try again.';
+        }
+      );
+    } else {
+      this.errorMessage = 'Unable to unfollow user. Profile ID is missing.';
+      console.error('Profile object:', this.profile);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { UserDocument } from "../types/user.interface";
 import validator from "validator";
 import bcryptjs from "bcryptjs";
@@ -52,6 +52,14 @@ const userSchema = new Schema<UserDocument>(
       required: false,
       select: false,
     },
+    following: [{
+      type: Types.ObjectId,
+      ref: 'User'
+    }],
+    followers: [{
+      type: Types.ObjectId,
+      ref: 'User'
+    }],  
   },
   {
     timestamps: true,

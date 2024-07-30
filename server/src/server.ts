@@ -32,6 +32,26 @@ app.get("/", (req, res) => {
   res.send("API is UP");
 });
 
+// Specific user routes should come before the general /:id route
+app.get("/api/users/check-credentials", usersController.checkUserCredentialsAvailability);
+app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
+app.post("/api/users/forgot-password", usersController.forgotPassword);
+app.post("/api/users/reset-password/:token", usersController.resetPassword);
+app.post("/api/users/login", usersController.login);
+app.delete('/api/users/profile', authMiddleware, (req, res, next) => {
+  console.log("Delete profile route hit");
+  usersController.deleteProfile(req, res, next);
+});
+
+// Routes with :id parameter
+app.get("/api/users/:id/is-following", authMiddleware, usersController.checkIfFollowing);
+app.post("/api/users/:id/follow", authMiddleware, usersController.followUser);
+app.post("/api/users/:id/unfollow", authMiddleware, usersController.unfollowUser);
+app.get("/api/users/:id/followers", authMiddleware, usersController.getFollowers);
+app.get("/api/users/:id/following", authMiddleware, usersController.getFollowing);
+app.get('/api/users/:id', usersController.getUserById);
+
+// Other routes
 app.post("/api/users", usersController.register);
 app.get("/api/verify/:token", (req, res) => {
   usersController.verifyEmail(req, res, (err) => {
@@ -40,20 +60,11 @@ app.get("/api/verify/:token", (req, res) => {
     }
   });
 });
-app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
-app.post("/api/users/forgot-password", usersController.forgotPassword);
-app.post("/api/users/reset-password/:token", usersController.resetPassword);
-app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);
 app.get('/api/user/current', authMiddleware, usersController.currentUser);
 app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
-app.put("/api/profile/:username", authMiddleware, usersController.updateProfile); // New update profile route
-app.get('/api/users/:id', usersController.getUserById);
-app.get("/api/users/check-credentials", usersController.checkUserCredentialsAvailability);
-app.delete('/api/users/profile', authMiddleware, (req, res, next) => {
-  console.log("Delete profile route hit");
-  usersController.deleteProfile(req, res, next);
-});
+app.put("/api/profile/:username", authMiddleware, usersController.updateProfile);
+
 
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);
