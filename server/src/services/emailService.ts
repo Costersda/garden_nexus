@@ -131,7 +131,7 @@ export const sendPasswordResetEmail = async (to: string, resetUrl: string) => {
             <p>If the button above doesn't work, you can also copy and paste the following link into your browser:</p>
             <p>${resetUrl}</p>
             <p>This link will expire in 1 hour for security reasons.</p>
-            <p>If you didn't request a password reset, please ignore this email or contact our support team if you have any concerns.</p>
+            <p>If you didn't request a password reset, please ignore this email.</p>
             <p>Best regards,<br>The Garden Nexus Team</p>
         </div>
         <div class="footer">
