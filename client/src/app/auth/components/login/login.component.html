@@ -10,20 +10,23 @@
     <div class="errors" *ngIf="errorMessage">{{ errorMessage }}</div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="input-container">
-      <input
-        formControlName="email"
-        type="email"
-        placeholder="Email"
-        class="login-input"
-      />
+        <input
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+          class="login-input"
+        />
       </div>
-      <div class="input-container">
-      <input
-        formControlName="password"
-        type="password"
-        placeholder="Password"
-        class="login-input"
-      />
+      <div class="password-input-container">
+        <input
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+          class="login-input"
+        />
+      </div>
+      <div class="forgot-password-container">
+        <a routerLink="/forgot-password" class="bottom-form-links forgot-password-link">Forgot password?</a>
       </div>
       <button type="submit" class="login-submit-button">Sign in</button>
     </form>

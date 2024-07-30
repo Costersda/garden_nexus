@@ -69,6 +69,10 @@
   margin-bottom: 20px;
 }
 
+.password-input-container {
+  margin-bottom: 10px;
+}
+
 .login-input:focus {
   border-color: #ADC178;
   outline: none;
@@ -216,6 +220,22 @@
   color: red;
   font-size: 12px;
   margin-top: 5px;
+}
+
+.forgot-password-container {
+  text-align: right;
+  margin-bottom: 15px; /* Adjust as needed for spacing */
+}
+
+.forgot-password-link {
+  margin-right: 5px;
+  color: #5b93e6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
