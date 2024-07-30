@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -9,22 +10,35 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
+  isLoading: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService
+  ) {
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.forgotPasswordForm.valid) {
-      // Here you would typically call a service to handle the password reset
-      console.log('Password reset requested for:', this.forgotPasswordForm.value.email);
-      this.successMessage = 'Password reset instructions have been sent to your email.';
-      this.errorMessage = '';
+      this.isLoading = true;
+      this.userService.requestPasswordReset(this.forgotPasswordForm.value.email)
+        .subscribe({
+          next: (response) => {
+            this.successMessage = 'Password reset instructions have been sent to your email.';
+            this.errorMessage = '';
+            this.isLoading = false;
+          },
+          error: (error) => {
+            this.errorMessage = error.error.message || 'An error occurred. Please try again.';
+            this.successMessage = '';
+            this.isLoading = false;
+          }
+        });
     } else {
       this.errorMessage = 'Please enter a valid email address.';
       this.successMessage = '';
