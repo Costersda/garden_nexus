@@ -41,6 +41,7 @@ app.get("/api/verify/:token", (req, res) => {
   });
 });
 app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
+app.post("/api/users/forgot-password", usersController.forgotPassword);
 app.post("/api/users/login", usersController.login);
 app.get('/api/user', authMiddleware, usersController.currentUser);
 app.get('/api/user/current', authMiddleware, usersController.currentUser);

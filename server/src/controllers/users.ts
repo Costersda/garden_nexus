@@ -9,7 +9,7 @@ import { Blog } from "../models/blog";
 import { Comment } from "../models/comment";
 import { Forum } from "../models/forum";
 import crypto from 'crypto';
-import { sendVerificationEmail } from "../services/emailService";
+import { sendPasswordResetEmail, sendVerificationEmail } from "../services/emailService";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -142,6 +142,43 @@ export const resendVerificationEmail = async (
   } catch (error) {
     console.error('Error resending verification email:', error);
     res.status(500).json({ message: 'Error resending verification email', error });
+  }
+};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.body;
+
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      // Don't reveal that the user doesn't exist
+      return res.status(200).json({ message: 'If a user with that email exists, a password reset link has been sent.' });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
+
+    // Save reset token and expiration to user document
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = new Date(resetTokenExpiration);
+    await user.save();
+
+    // Create reset URL
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    // Send email
+    await sendPasswordResetEmail(user.email, resetUrl);
+
+    res.status(200).json({ message: 'If a user with that email exists, a password reset link has been sent.' });
+  } catch (error) {
+    console.error('Error in forgotPassword:', error);
+    res.status(500).json({ message: 'An error occurred while processing your request' });
   }
 };
 

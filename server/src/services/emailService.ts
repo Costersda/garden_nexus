@@ -87,3 +87,72 @@ export const sendVerificationEmail = async (to: string, verificationToken: strin
     throw error;
   }
 };
+
+export const sendPasswordResetEmail = async (to: string, resetUrl: string) => {
+  const params = {
+    Source: 'Garden Nexus <noreply@gardennexus.com>',
+    Destination: {
+      ToAddresses: [to]
+    },
+    Message: {
+      Subject: {
+        Data: 'Garden Nexus - Password Reset Request'
+      },
+      Body: {
+        Html: {
+          Data: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset for GardenNexus</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; font-size: 16px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #DDE5B6; color: #6C584C; text-align: center; padding: 20px; font-size: 20px; }
+        .content { background-color: #f4f4f4; padding: 20px; border-radius: 5px; color: #000000; font-size: 16px; }
+        .button { display: inline-block; background-color: #DDE5B6; color: #6C584C; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; }
+        .footer { text-align: center; margin-top: 20px; font-size: 14px; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Password Reset Request</h1>
+        </div>
+        <div class="content">
+            <p>Dear Garden Nexus Member,</p>
+            <p>We received a request to reset the password for your Garden Nexus account. If you didn't make this request, you can safely ignore this email.</p>
+            <p>To reset your password, please click the button below:</p>
+            <p style="text-align: center;">
+                <a href="${resetUrl}" class="button" style="color: #6C584C;">Reset My Password</a>
+            </p>
+            <p>If the button above doesn't work, you can also copy and paste the following link into your browser:</p>
+            <p>${resetUrl}</p>
+            <p>This link will expire in 1 hour for security reasons.</p>
+            <p>If you didn't request a password reset, please ignore this email or contact our support team if you have any concerns.</p>
+            <p>Best regards,<br>The Garden Nexus Team</p>
+        </div>
+        <div class="footer">
+            <p>© 2024 GardenNexus. All rights reserved.</p>
+            <p>This is an automated message, please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>
+          `
+        }
+      }
+    }
+  };
+
+  try {
+    const result = await ses.sendEmail(params).promise();
+    console.log('Password reset email sent:', result.MessageId);
+    return result;
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    throw error;
+  }
+};

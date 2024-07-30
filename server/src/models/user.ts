@@ -42,6 +42,16 @@ const userSchema = new Schema<UserDocument>(
       type: Boolean,
       default: false,
     },
+    resetPasswordToken: {
+      type: String,
+      required: false,
+      select: false,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      required: false,
+      select: false,
+    },
   },
   {
     timestamps: true,

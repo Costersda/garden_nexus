@@ -9,6 +9,8 @@ export interface User {
   imageFile?: Buffer;
   verificationToken?: string;
   isVerified: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
