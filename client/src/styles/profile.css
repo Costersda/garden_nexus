@@ -27,7 +27,7 @@
 .profile-container-heading {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
   width: 100%;
@@ -49,7 +49,8 @@
   font-weight: 400 !important;
   font-size: 2.2em !important;
   color: #6C584C;
-  margin: 0 !important;
+  margin-right: auto !important;
+  margin-bottom: 0 !important;
   position: relative;
   display: inline-block;
   word-break: break-word;
@@ -228,6 +229,76 @@ p strong {
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.5); /* Soft red focus ring */
 }
 
+.follow-btn {
+  margin-left: auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.follow-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
+}
+
+.follow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.follow-btn:hover::before {
+  left: 100%;
+}
+
+.follow-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.follow-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Follow state */
+.follow-btn:not(.following) {
+  background-color: #ADC178;
+  color: #ffffff;
+}
+
+.follow-btn:not(.following):hover {
+  background-color: #91A654;
+}
+
+/* Unfollow state */
+.follow-btn.following {
+  background-color: #a1a1a1;
+  color: #000000;
+}
+
+/* Optional: change color on hover for unfollow */
+.follow-btn.following:hover {
+  color: white;
+}
+
 .loading-indicator {
   text-align: center;
   color: #757575;
@@ -383,5 +454,11 @@ p strong {
   .profile-picture {
     width: 100px;
     height: 100px;
+  }
+
+  .follow-btn {
+    padding: 10px 15px;
+    font-size: 1.0em;
+    font-weight: 500;
   }
 }

@@ -12,8 +12,8 @@
   <div class="profile-container" *ngIf="profile">
     <div class="profile-container-heading">
       <h2 class="profile-username">{{ profile.username | titlecase }}</h2>
-      <button (click)="toggleFollow()" *ngIf="!isOwner" [disabled]="isOwner">
-        {{ isFollowing ? 'Unfollow' : 'Follow' }}
+      <button class="follow-btn" [class.following]="isFollowing" (click)="toggleFollow()" *ngIf="!isOwner" [disabled]="isOwner">
+        {{ isFollowing ? 'Following' : 'Follow' }}
       </button>
       <div class="dropdown">
         <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">

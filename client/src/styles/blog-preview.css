@@ -79,7 +79,7 @@
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
-  width: 100%;
+  /* width: 100%; */
   max-width: 100%;
   text-align: left;
 }
