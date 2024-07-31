@@ -563,4 +563,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       this.blog!.categories.splice(index, 1);
     }
   }
+
+  quoteComment(): void {}
 }

@@ -265,6 +265,9 @@
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="comment-header">
               <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
+              <button class="quote-icon-container" (click)="quoteComment()">
+                <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
+              </button>
               <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
                 <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
                   <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">

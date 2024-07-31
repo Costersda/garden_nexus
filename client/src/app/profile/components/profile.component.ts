@@ -108,7 +108,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
-        console.log('Profile fetched:', profile);
+        // console.log('Profile fetched:', profile);
         this.checkIfFollowing();
         this.fetchFollowing(); // Add this line here
       },
@@ -154,7 +154,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       (forums: Forum[]) => {
         this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
-        console.log(forums);
+        // console.log(forums);
       },
       (error) => {
         console.error('Error fetching forums by user:', error);
@@ -197,7 +197,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (confirmed) {
       this.userService.deleteProfile().subscribe(
         () => {
-          console.log('Successfully deleted profile');
+          // console.log('Successfully deleted profile');
           this.authService.logout();
           this.router.navigate(['/']);
         },
@@ -210,7 +210,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   resendVerificationEmail() {
-    console.log('Resend verification email method called');
+    // console.log('Resend verification email method called');
     if (!this.profile || !this.profile.email) {
       this.toastr.error('User profile not available');
       return;
@@ -259,7 +259,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         next: (following) => {
           this.following = following;
           this.displayedFollowing = this.following.slice(0, this.initialFollowingToShow);
-          console.log('Fetched following:', following);
+          // console.log('Fetched following:', following);
           this.isLoadingFollowing = false;
         },
         error: (error) => {
