@@ -369,19 +369,29 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   
       this.commentService.createComment(commentData).subscribe(
         (comment: Comment) => {
-          const user = comment.user as User;
-          const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
-          const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+          // Create a new comment object with all the necessary properties
           const newComment: Comment = {
             ...comment,
-            _id: commentId,
+            _id: comment._id || comment.id,
             user: {
-              ...user,
-              _id: userId
-            }
+              _id: comment.user._id || (comment.user as any).id,
+              username: comment.user.username,
+              imageFile: comment.user.imageFile
+            },
+            replyingTo: this.replyingToComment ? {
+              id: this.replyingToComment._id || '',
+              user: {
+                _id: this.replyingToComment.user?._id || '',
+                username: this.replyingToComment.user?.username || ''
+              },
+              comment: this.replyingToComment.comment
+            } : undefined,
+            replyText: this.replyingToComment ? this.replyText : ''
           };
+    
           // Add the new comment to the end of the array
           this.comments = [...this.comments, newComment];
+          
           this.newComment = '';
           this.isNewCommentTooLong = false;
           this.replyingToComment = null;

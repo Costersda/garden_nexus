@@ -264,22 +264,28 @@
           </div>
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="comment-header">
-              <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
-              <button class="quote-icon-container" (click)="quoteComment(comment)">
-                <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
-              </button>
-              <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
-                <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
-                  <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
-                </button>
-                <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">
-                  <label (click)="editComment(comment)">Edit</label>
-                  <label (click)="deleteComment(comment._id)">Delete</label>
+              <div class="comment-header-left">
+                <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
+              </div>
+              <div class="comment-header-right">
+                <div class="icon-container">
+                  <button class="quote-icon-container" (click)="quoteComment(comment)">
+                    <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
+                  </button>
+                  <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
+                    <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
+                      <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+                    </button>
+                    <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">
+                      <label (click)="editComment(comment)">Edit</label>
+                      <label (click)="deleteComment(comment._id)">Delete</label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div *ngIf="comment.replyingTo" class="reply-text">
-              <p><strong>Replying to {{ comment.user.username || 'a comment' }}:</strong></p>
+            <div *ngIf="comment.replyingTo" class="comment-reply-text">
+              <p><strong>Replying to {{ (comment.user.username | titlecase) || 'a comment' }}:</strong></p>
               <p>"{{ comment.replyingTo.comment }}"</p>
             </div>
             <p class="comment-text">{{ comment.comment }} <span *ngIf="comment.isEdited">(edited)</span></p>
@@ -293,7 +299,7 @@
         <p>"{{ replyText }}"</p>
         <button (click)="cancelReply()">Cancel Reply</button>
       </div>
-      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}"></textarea>
+      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}" maxlength="600"></textarea>
       <div class="word-count-container">
         <div class="word-count" [class.error-text]="newComment.length > maxCommentLength">
           Character count: {{ newComment.length }}/{{ maxCommentLength }}

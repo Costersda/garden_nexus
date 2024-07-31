@@ -206,6 +206,15 @@
   height: 40px;
   margin-bottom: 10px;
 }
+.comment-header-left {
+  flex-grow: 1;
+}
+
+.comment-header-right {
+  display: flex;
+  justify-content: flex-start;
+  width: 80px; /* Adjust this width as needed */
+}
 
 .dropdown-toggle {
   background: none;
@@ -219,6 +228,10 @@
 .ellipsis-icon {
   width: 25px;
   height: 25px;
+}
+
+.dropdown {
+  margin-left: auto;
 }
 
 .dropdown-menu {
@@ -276,6 +289,12 @@
   color: #dc3545;
 }
 
+.icon-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
 .quote-icon-container {
   background: none;
   border: none;
@@ -294,6 +313,14 @@
 .quote-icon {
   width: 25px;
   height: 25px;
+}
+
+.comment-reply-text {
+  background-color: #F0EAD2;
+  width: 85%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
 @media (max-width: 768px) {
