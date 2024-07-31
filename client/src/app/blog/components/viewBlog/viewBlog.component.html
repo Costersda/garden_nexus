@@ -297,7 +297,7 @@
       <div *ngIf="replyingToComment" class="quoted-comment">
         <p>Replying to {{ replyingToComment.user.username || 'a comment' }}:</p>
         <p>"{{ replyText }}"</p>
-        <button (click)="cancelReply()">Cancel Reply</button>
+        <button class="cancel-reply-btn" (click)="cancelReply()">Cancel Reply</button>
       </div>
       <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}" maxlength="600"></textarea>
       <div class="word-count-container">

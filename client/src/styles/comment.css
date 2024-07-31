@@ -323,6 +323,74 @@
   border-radius: 8px;
 }
 
+.quoted-comment {
+  background-color: #DDE5B6;
+  border-left: 4px solid #ADC178;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quoted-comment p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #495057;
+}
+
+.quoted-comment p:first-child {
+  font-weight: 600;
+  color: #343a40;
+}
+
+.quoted-comment p:nth-child(2) {
+  font-style: italic;
+}
+
+.cancel-reply-btn {
+  background-color: #ADC178;
+  color: #ffffff;
+  font-size: 1.1em !important;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cancel-reply-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.4s ease;
+}
+
+.cancel-reply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-reply-btn:hover::before {
+  left: 100%;
+}
+
+.cancel-reply-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 768px) {
   .comment-left {
     flex: 0 0 120px;
