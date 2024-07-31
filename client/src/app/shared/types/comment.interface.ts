@@ -11,5 +11,14 @@ export interface Comment {
   comment: string;
   createdAt: Date;
   isEdited?: boolean;
-  showDropdown?: boolean;  
+  showDropdown?: boolean;
+  replyingTo?: {
+    id: string;
+    user: {
+      _id: string;
+      username: string;
+    };
+    comment: string;
+  } | null;
+  replyText: string;
 }

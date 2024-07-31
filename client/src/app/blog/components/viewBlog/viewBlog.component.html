@@ -265,7 +265,7 @@
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="comment-header">
               <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
-              <button class="quote-icon-container" (click)="quoteComment()">
+              <button class="quote-icon-container" (click)="quoteComment(comment)">
                 <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
               </button>
               <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
@@ -278,12 +278,21 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="comment.replyingTo" class="reply-text">
+              <p><strong>Replying to {{ comment.user.username || 'a comment' }}:</strong></p>
+              <p>"{{ comment.replyingTo.comment }}"</p>
+            </div>
             <p class="comment-text">{{ comment.comment }} <span *ngIf="comment.isEdited">(edited)</span></p>
           </div>
         </div>
       </div>
     </div>
     <div *ngIf="currentUser && currentUser.isVerified" class="add-comment-section">
+      <div *ngIf="replyingToComment" class="quoted-comment">
+        <p>Replying to {{ replyingToComment.user.username || 'a comment' }}:</p>
+        <p>"{{ replyText }}"</p>
+        <button (click)="cancelReply()">Cancel Reply</button>
+      </div>
       <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}"></textarea>
       <div class="word-count-container">
         <div class="word-count" [class.error-text]="newComment.length > maxCommentLength">

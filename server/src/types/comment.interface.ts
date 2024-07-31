@@ -1,4 +1,4 @@
-import { Document, ObjectId } from "mongoose";
+import { Document, ObjectId, Types } from "mongoose";
 import { User } from "./user.interface"; // Import the User interface from the user model
 
 export interface Comment {
@@ -7,6 +7,8 @@ export interface Comment {
   forumId?: ObjectId;
   comment: string;
   isEdited?: boolean;
+  replyingTo?: Types.ObjectId | null;
+  replyText: string;
   createdAt: Date;
 }
 

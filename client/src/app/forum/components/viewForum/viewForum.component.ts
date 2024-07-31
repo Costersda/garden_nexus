@@ -291,48 +291,48 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     }
   }
 
-  addComment(): void {
-    if (!this.newComment.trim() || this.isNewCommentTooLong) return;
+  // addComment(): void {
+  //   if (!this.newComment.trim() || this.isNewCommentTooLong) return;
 
-    if (this.currentUser && this.currentUser._id) {
-      const commentData: Comment = {
-        user: {
-          _id: this.currentUser._id,
-          username: this.currentUser.username,
-          imageFile: this.currentUser.imageFile || 'assets/garden-nexus-logo.webp'
-        },
-        forumId: this.forum?._id || '',
-        comment: this.newComment,
-        createdAt: new Date()
-      };
+  //   if (this.currentUser && this.currentUser._id) {
+  //     const commentData: Comment = {
+  //       user: {
+  //         _id: this.currentUser._id,
+  //         username: this.currentUser.username,
+  //         imageFile: this.currentUser.imageFile || 'assets/garden-nexus-logo.webp'
+  //       },
+  //       forumId: this.forum?._id || '',
+  //       comment: this.newComment,
+  //       createdAt: new Date()
+  //     };
 
-      this.commentService.createComment(commentData).subscribe(
-        (comment: Comment) => {
-          const user = comment.user as User;
-          const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
-          const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
-          const newComment: Comment = {
-            ...comment,
-            _id: commentId,
-            user: {
-              ...user,
-              _id: userId
-            }
-          };
-          this.comments = [...this.comments, newComment];
-          this.newComment = '';
-          this.isNewCommentTooLong = false;
-          console.log('Added Comment:', newComment);
-          this.cd.detectChanges();
-        },
-        (error) => {
-          console.error('Error adding comment:', error);
-        }
-      );
-    } else {
-      console.error('Current user not found in local storage');
-    }
-  }
+  //     this.commentService.createComment(commentData).subscribe(
+  //       (comment: Comment) => {
+  //         const user = comment.user as User;
+  //         const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
+  //         const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
+  //         const newComment: Comment = {
+  //           ...comment,
+  //           _id: commentId,
+  //           user: {
+  //             ...user,
+  //             _id: userId
+  //           }
+  //         };
+  //         this.comments = [...this.comments, newComment];
+  //         this.newComment = '';
+  //         this.isNewCommentTooLong = false;
+  //         console.log('Added Comment:', newComment);
+  //         this.cd.detectChanges();
+  //       },
+  //       (error) => {
+  //         console.error('Error adding comment:', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('Current user not found in local storage');
+  //   }
+  // }
 
   async deleteComment(commentId: string | undefined): Promise<void> {
     console.log('Attempting to delete comment with ID:', commentId);

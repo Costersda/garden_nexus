@@ -23,6 +23,15 @@ const commentSchema = new Schema<CommentDocument>(
     isEdited: {
         type: Boolean,
         default: false
+    },
+    replyingTo: {
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+        default: null
+    },
+    replyText: {
+      type: String,
+      default: null
     }
   },
   {

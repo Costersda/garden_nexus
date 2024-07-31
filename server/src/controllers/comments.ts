@@ -19,6 +19,7 @@ const normalizeComment = (comment: CommentDocument) => {
     comment: comment.comment,
     createdAt: comment.createdAt,
     isEdited: comment.isEdited,
+    replyingTo: comment.replyingTo,
     user: user ? {
       id: user._id,
       username: user.username,
@@ -34,7 +35,15 @@ export const createComment = async (
   next: NextFunction
 ) => {
   try {
-    const comment = new Comment(req.body);
+    const commentData = req.body;
+    
+    if (commentData.replyingTo && commentData.replyingTo.id) {
+      commentData.replyingTo = commentData.replyingTo.id;
+    } else {
+      delete commentData.replyingTo;
+    }
+
+    const comment = new Comment(commentData);
     await comment.save();
     const populatedComment = await comment.populate('user', 'username imageFile');
     res.status(201).send(normalizeComment(populatedComment));
@@ -50,7 +59,10 @@ export const getAllCommentsByBlogId = async (
   next: NextFunction
 ) => {
   try {
-    const comments = await Comment.find({ blogId: req.params.blogId }).populate('user', 'username imageFile');
+    const comments = await Comment.find({ blogId: req.params.blogId })
+      .populate('user', 'username imageFile')
+      .populate('replyingTo', 'id user comment')
+      .exec();
     res.status(200).send(comments.map(normalizeComment));
   } catch (error) {
     next(error);
@@ -66,6 +78,7 @@ export const getAllCommentsByForumId = async (
   try {
     const comments = await Comment.find({ forumId: req.params.forumId })
       .populate('user', 'username imageFile')
+      .populate('replyingTo', 'id user comment')
       .exec();
     
     const normalizedComments = comments.map(comment => {
@@ -92,6 +105,7 @@ export const getAllComments = async (
   try {
     const comments = await Comment.find({ blogId: req.params.blogId })
       .populate('user', 'username imageFile')
+      .populate('replyingTo', 'id user comment')
       .exec();
     const normalizedComments = comments.map(normalizeComment);
     res.status(200).send(normalizedComments);
@@ -109,6 +123,7 @@ export const getCommentById = async (
   try {
     const comment = await Comment.findOne({ _id: req.params.id, blogId: req.params.blogId })
       .populate('user', 'username imageFile')
+      .populate('replyingTo', 'id user comment')
       .exec();
 
     if (!comment) {
@@ -130,11 +145,13 @@ export const updateCommentById = async (
   try {
     const comment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    }).populate('user', 'username imageFile');
+    })
+      .populate('user', 'username imageFile')
+      .populate('replyingTo', 'id user comment');
     if (!comment) {
       return res.status(404).send({ message: "Comment not found" });
     }
-    res.status(200).send(comment);
+    res.status(200).send(normalizeComment(comment));
   } catch (error) {
     next(error);
   }

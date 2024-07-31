@@ -45,6 +45,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   maxWordLength: number = 50; // Maximum allowed length for a single word
   categories: Category[] = CATEGORIES;
   titleError: string | null = null;
+  replyingToComment: Comment | null = null;
+  replyText: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -130,10 +132,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       this.currentUser = JSON.parse(storedUser);
-      console.log('Fetched current user from local storage:', this.currentUser);
+      // console.log('Fetched current user from local storage:', this.currentUser);
       if (this.currentUser && !this.currentUser._id) {
         this.currentUser._id = (this.currentUser as any).id || this.currentUser._id;
-        console.log('Updated currentUser with _id:', this.currentUser._id);
+        // console.log('Updated currentUser with _id:', this.currentUser._id);
       }
     } else {
       console.error('Current user not found in local storage');
@@ -152,7 +154,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           this.fetchComments(blogId);
         } else {
           // Blog not found, redirect to blogs list
-          console.log('Blog not found, redirecting to blogs list');
+          // console.log('Blog not found, redirecting to blogs list');
           this.router.navigate(['/blogs']);
         }
       },
@@ -178,7 +180,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     if (confirmed) {
       this.blogService.deleteBlog(blogId).subscribe(
         () => {
-          console.log('Successfully deleted blog with ID:', blogId);
+          // console.log('Successfully deleted blog with ID:', blogId);
           // Replace the current history entry
           history.replaceState(null, '', '/blogs');
           this.router.navigate(['/blogs']);
@@ -225,7 +227,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   
     this.blogService.updateBlog(this.blog._id, this.blog).subscribe(
       (updatedBlog: Blog) => {
-        console.log('Blog updated successfully:', updatedBlog);
+        // console.log('Blog updated successfully:', updatedBlog);
         this.blog = updatedBlog;
         this.originalBlog = JSON.parse(JSON.stringify(updatedBlog));
         this.isEditMode = false;
@@ -286,7 +288,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     } else if (fieldName === 'image_1') {
       // If no file is selected for image_1, keep the existing image
       // You might want to show a message to the user that no new image was selected
-      console.log('No new image selected for Image 1. Keeping existing image.');
+      // console.log('No new image selected for Image 1. Keeping existing image.');
     }
   }
 
@@ -294,8 +296,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.userSubscription = this.userService.getUserById(userId).subscribe(
       (user: User) => {
         this.user = user;
-        console.log('User:', user);
-        console.log('User image file:', user.imageFile);
+        // console.log('User:', user);
+        // console.log('User image file:', user.imageFile);
       },
       (error) => {
         console.error('Error fetching user:', error);
@@ -322,7 +324,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         console.log('Comments:', this.comments);
         if (this.currentUser) {
           this.comments.forEach(comment => {
-            console.log(`Comparing: comment.user._id (${comment.user._id}) === currentUser._id (${this.currentUser!._id})`);
+            // console.log(`Comparing: comment.user._id (${comment.user._id}) === currentUser._id (${this.currentUser!._id})`);
           });
         }
         this.cd.detectChanges();
@@ -343,7 +345,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   addComment(): void {
     if (!this.newComment.trim() || this.isNewCommentTooLong) return;
-
+  
     if (this.currentUser && this.currentUser._id) {
       const commentData: Comment = {
         user: {
@@ -353,9 +355,18 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         },
         blogId: this.blog?._id || '',
         comment: this.newComment,
-        createdAt: new Date()
+        createdAt: new Date(),
+        replyingTo: this.replyingToComment ? {
+          id: this.replyingToComment._id || '',
+          user: {
+            _id: this.replyingToComment.user?._id || '',
+            username: this.replyingToComment.user?.username || ''
+          },
+          comment: this.replyingToComment.comment
+        } : undefined,
+        replyText: this.replyingToComment ? this.replyText : ''
       };
-
+  
       this.commentService.createComment(commentData).subscribe(
         (comment: Comment) => {
           const user = comment.user as User;
@@ -369,9 +380,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
               _id: userId
             }
           };
+          // Add the new comment to the end of the array
           this.comments = [...this.comments, newComment];
           this.newComment = '';
           this.isNewCommentTooLong = false;
+          this.replyingToComment = null;
+          this.replyText = '';
           console.log('Added Comment:', newComment);
           this.cd.detectChanges();
         },
@@ -564,5 +578,19 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
   }
 
-  quoteComment(): void {}
+  quoteComment(comment: Comment) {
+    this.replyingToComment = comment;
+    this.replyText = `"${comment.comment}"`;
+    // Scroll to the comment input area
+    const commentInput = document.querySelector('.add-comment-section textarea');
+    if (commentInput) {
+      (commentInput as HTMLElement).focus();
+      commentInput.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  cancelReply() {
+    this.replyingToComment = null;
+    this.replyText = '';
+  }
 }
