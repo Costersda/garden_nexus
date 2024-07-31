@@ -12,16 +12,18 @@
   <div class="profile-container" *ngIf="profile">
     <div class="profile-container-heading">
       <h2 class="profile-username">{{ profile.username | titlecase }}</h2>
-      <button class="follow-btn" [class.following]="isFollowing" (click)="toggleFollow()" *ngIf="!isOwner" [disabled]="isOwner">
-        {{ isFollowing ? 'Following' : 'Follow' }}
-      </button>
-      <div class="dropdown">
-        <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
-          <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+      <div class="profile-actions">
+        <button class="follow-btn" [class.following]="isFollowing" (click)="toggleFollow()" *ngIf="!isOwner" [disabled]="isOwner">
+          {{ isFollowing ? 'Following' : 'Follow' }}
         </button>
-        <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
-          <label class="forum-options-label" (click)="openEditProfileModal()">Edit Profile</label>
-          <label class="forum-options-label" (click)="deleteProfile()">Delete Profile</label>
+        <div class="dropdown">
+          <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
+            <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+          </button>
+          <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
+            <label class="forum-options-label" (click)="openEditProfileModal()">Edit Profile</label>
+            <label class="forum-options-label" (click)="deleteProfile()">Delete Profile</label>
+          </div>
         </div>
       </div>
     </div>
