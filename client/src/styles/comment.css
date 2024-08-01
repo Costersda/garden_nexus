@@ -348,7 +348,7 @@
 }
 
 .cancel-reply-btn {
-  background-color: #ADC178;
+  background-color: #8d8888 !important;
   color: #ffffff;
   font-size: 1.1em !important;
   padding: 8px 16px;

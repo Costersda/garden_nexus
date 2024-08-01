@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,7 @@ export class ResetPasswordComponent implements OnInit {
   isLoading: boolean = false;
   minPasswordLength = 8;
   maxPasswordLength = 64;
+  isPasswordReset: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,7 +29,8 @@ export class ResetPasswordComponent implements OnInit {
       password: ['', [
         Validators.required, 
         Validators.minLength(this.minPasswordLength),
-        Validators.maxLength(this.maxPasswordLength)
+        Validators.maxLength(this.maxPasswordLength),
+        this.passwordStrengthValidator
       ]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.checkPasswords });
@@ -36,6 +38,16 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.token = this.route.snapshot.params['token'];
+  }
+
+  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const value: string = control.value || '';
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    
+    const valid = hasUpperCase && hasNumber;
+    
+    return valid ? null : { passwordStrength: true };
   }
 
   checkPasswords(group: FormGroup) {
@@ -53,7 +65,8 @@ export class ResetPasswordComponent implements OnInit {
             this.successMessage = 'Password successfully reset. You can now login with your new password.';
             this.errorMessage = '';
             this.isLoading = false;
-            setTimeout(() => this.router.navigate(['/login']), 3000);
+            this.isPasswordReset = true; // Set this to true on success
+            setTimeout(() => this.router.navigate(['/login'], { replaceUrl: true }), 3000);
           },
           error: (error) => {
             this.errorMessage = error.error.message || 'An error occurred. Please try again.';
@@ -68,6 +81,8 @@ export class ResetPasswordComponent implements OnInit {
         this.errorMessage = `Password must be at least ${this.minPasswordLength} characters long.`;
       } else if (this.resetForm.get('password')?.hasError('maxlength')) {
         this.errorMessage = `Password cannot be longer than ${this.maxPasswordLength} characters.`;
+      } else if (this.resetForm.get('password')?.hasError('passwordStrength')) {
+        this.errorMessage = 'Password must contain at least one capital letter and one number.';
       } else {
         this.errorMessage = 'Please enter a valid password and confirm it.';
       }

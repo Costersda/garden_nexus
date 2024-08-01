@@ -23,7 +23,12 @@ export class RegisterComponent implements OnInit {
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required, Validators.maxLength(this.maxUsernameLength)]],
-    password: ['', [Validators.required, Validators.minLength(this.minPasswordLength), Validators.maxLength(this.maxPasswordLength)]],
+    password: ['', [
+      Validators.required, 
+      Validators.minLength(this.minPasswordLength), 
+      Validators.maxLength(this.maxPasswordLength),
+      this.passwordStrengthValidator
+    ]],
     confirmPassword: ['', Validators.required],
     agreeToTerms: [false, Validators.requiredTrue]
   }, { validators: this.passwordMatchValidator });
@@ -46,6 +51,16 @@ export class RegisterComponent implements OnInit {
     return password && confirmPassword && password.value !== confirmPassword.value
       ? { 'passwordMismatch': true }
       : null;
+  }
+
+  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const value: string = control.value || '';
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    
+    const valid = hasUpperCase && hasNumber;
+    
+    return valid ? null : { passwordStrength: true };
   }
 
   onSubmit(): void {
@@ -102,6 +117,8 @@ export class RegisterComponent implements OnInit {
       this.errorMessages.push(`Password must be at least ${this.minPasswordLength} characters long.`);
     } else if (passwordControl?.errors?.['maxlength']) {
       this.errorMessages.push(`Password must not exceed ${this.maxPasswordLength} characters.`);
+    } else if (passwordControl?.errors?.['passwordStrength']) {
+      this.errorMessages.push('Password must contain at least one capital letter and one number.');
     }
 
     if (this.form.errors?.['passwordMismatch']) {
