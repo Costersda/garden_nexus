@@ -4,22 +4,26 @@ import { FormBuilder, Validators, AbstractControl, ValidationErrors } from '@ang
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TermsOfServiceModalComponent } from '../termsOfServiceModal/termsOfServiceModal.component';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'auth-register',
   templateUrl: './register.component.html',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+  // Array to store error messages
   errorMessages: string[] = [];
+  
+  // Constants for form validation
   maxUsernameLength = 12;
   minPasswordLength = 8;
   maxPasswordLength = 64;
+  
+  // Flags for form validation
   usernameAlreadyTaken = false;
   emailAlreadyTaken = false;
   formSubmitted = false;
 
+  // Define the registration form structure
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required, Validators.maxLength(this.maxUsernameLength)]],
@@ -41,10 +45,7 @@ export class RegisterComponent implements OnInit {
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
-  ngOnInit() {
-    //maybe not needed
-  }
-
+  // Custom validator to check if passwords match
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
@@ -53,6 +54,7 @@ export class RegisterComponent implements OnInit {
       : null;
   }
 
+  // Custom validator to check password strength
   passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value || '';
     const hasUpperCase = /[A-Z]/.test(value);
@@ -63,6 +65,7 @@ export class RegisterComponent implements OnInit {
     return valid ? null : { passwordStrength: true };
   }
 
+  // Handle form submission
   onSubmit(): void {
     this.errorMessages = [];
     this.formSubmitted = true;
@@ -85,6 +88,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Handle username input to enforce max length
   onUsernameInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.value.length > this.maxUsernameLength) {
@@ -94,6 +98,7 @@ export class RegisterComponent implements OnInit {
     this.usernameAlreadyTaken = false;
   }
 
+  // Handle errors from HTTP requests
   private handleError(err: HttpErrorResponse, displayErrors: boolean): void {
     console.log('err', err.error);
     if (displayErrors) {
@@ -109,6 +114,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Validate form and set error messages
   validateForm(): void {
     const passwordControl = this.form.get('password');
     if (passwordControl?.errors?.['required']) {
@@ -142,6 +148,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Open terms of service modal
   openTermsModal(event: Event): void {
     event.preventDefault();
     const factory = this.componentFactoryResolver.resolveComponentFactory(TermsOfServiceModalComponent);
@@ -157,22 +164,27 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  // Get the current character count of the username
   getUsernameCharCount(): number {
     return this.form.get('username')?.value?.length || 0;
   }
 
+  // Check if the username is too long
   isUsernameTooLong(): boolean {
     return this.getUsernameCharCount() > this.maxUsernameLength;
   }
 
+  // Get the current character count of the password
   getPasswordCharCount(): number {
     return this.form.get('password')?.value?.length || 0;
   }
 
+  // Check if the password is too long
   isPasswordTooLong(): boolean {
     return this.getPasswordCharCount() > this.maxPasswordLength;
   }
 
+  // Handle password input to enforce max length
   onPasswordInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.value.length > this.maxPasswordLength) {

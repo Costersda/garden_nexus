@@ -2,13 +2,20 @@
 <app-navbar></app-navbar>
 
 <div class="login-page">
+  <!-- Logo with link to home page -->
   <a routerLink="/">
     <img src="/assets/garden-nexus-logo.webp" class="main-logo" />
   </a>
+  
   <div class="form-container">
     <div class="login-header">Log in to Garden Nexus</div>
+    
+    <!-- Error message display -->
     <div class="errors" *ngIf="errorMessage">{{ errorMessage }}</div>
+    
+    <!-- Login form -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Email input -->
       <div class="input-container">
         <input
           formControlName="email"
@@ -17,6 +24,8 @@
           class="login-input"
         />
       </div>
+      
+      <!-- Password input -->
       <div class="password-input-container">
         <input
           formControlName="password"
@@ -25,11 +34,17 @@
           class="login-input"
         />
       </div>
+      
+      <!-- Forgot password link -->
       <div class="forgot-password-container">
         <a routerLink="/forgot-password" class="bottom-form-links forgot-password-link">Forgot password?</a>
       </div>
+      
+      <!-- Submit button -->
       <button type="submit" class="login-submit-button">Sign in</button>
     </form>
+    
+    <!-- Sign up link -->
     <div class="bottom-form-links">
       <a routerLink="/register" class="register-link">Sign up for an account</a>
     </div>

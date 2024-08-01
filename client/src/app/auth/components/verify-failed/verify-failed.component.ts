@@ -1,4 +1,3 @@
-// In verify-failed.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentUserInterface } from '../../types/currentUser.interface';
@@ -16,12 +15,14 @@ export class VerifyFailedComponent implements OnInit, OnDestroy{
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    // Subscribe to current user updates
     this.isLoggedInSubscription = this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user || null; // Ensure null if user is undefined
+      this.currentUser = user || null;
     });
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe to prevent memory leaks
     this.isLoggedInSubscription?.unsubscribe();
   }
 

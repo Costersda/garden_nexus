@@ -8,9 +8,7 @@ import { LoginRequestInterface, LoginError } from '../types/loginRequest.interfa
 
 @Injectable()
 export class AuthService {
-  currentUser$ = new BehaviorSubject<CurrentUserInterface | null | undefined>(
-    undefined
-  );
+  currentUser$ = new BehaviorSubject<CurrentUserInterface | null | undefined>(undefined);
   isLogged$ = this.currentUser$.pipe(
     filter((currentUser) => currentUser !== undefined),
     map(Boolean)
@@ -21,12 +19,14 @@ export class AuthService {
     this.currentUser$.next(storedUser);
   }
 
+  // Check if user is verified
   isUserVerified(): Observable<boolean> {
     return this.currentUser$.pipe(
       map(user => user?.isVerified ?? false)
     );
   }
 
+  // Get current user from API
   getCurrentUser(): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/user';
     return this.http.get<CurrentUserInterface>(url).pipe(
@@ -37,9 +37,8 @@ export class AuthService {
     );
   }
 
-  register(
-    registerRequest: RegisterRequestInterface
-  ): Observable<CurrentUserInterface> {
+  // Register new user
+  register(registerRequest: RegisterRequestInterface): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/users';
     return this.http.post<CurrentUserInterface>(url, registerRequest).pipe(
       map((currentUser) => {
@@ -49,6 +48,7 @@ export class AuthService {
     );
   }
 
+  // Check if username or email is available
   checkCredentialsAvailability(username?: string, email?: string): Observable<{available: boolean, message?: string}> {
     let params = new HttpParams();
     if (username) params = params.append('username', username);
@@ -58,6 +58,7 @@ export class AuthService {
     return this.http.get<{available: boolean, message?: string}>(url, { params });
   }
 
+  // Login user
   login(loginRequest: LoginRequestInterface): Observable<CurrentUserInterface | LoginError> {
     const url = environment.apiUrl + '/users/login';
     return this.http.post<CurrentUserInterface>(url, loginRequest).pipe(
@@ -66,16 +67,17 @@ export class AuthService {
         return currentUser;
       }),
       catchError((error) => {
-        // Handle the error and return a custom error object
         return of({ error: 'Incorrect email or password' } as LoginError);
       })
     );
   }
 
+  // Set token in localStorage
   setToken(currentUser: CurrentUserInterface): void {
     localStorage.setItem('token', currentUser.token);
   }
 
+  // Set current user in localStorage and BehaviorSubject
   setCurrentUser(currentUser: CurrentUserInterface | null): void {
     if (currentUser) {
       const userToStore = {
@@ -92,6 +94,7 @@ export class AuthService {
     this.currentUser$.next(currentUser);
   }
 
+  // Get current user from localStorage
   getCurrentUserFromStorage(): CurrentUserInterface | null {
     const userString = localStorage.getItem('currentUser');
     if (userString) {
@@ -100,20 +103,24 @@ export class AuthService {
     return null;
   }
 
+  // Check if user is logged in
   isLoggedIn(): Observable<boolean> {
     return this.isLogged$;
   }
 
+  // Logout user
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
   }
 
+  // Check if token exists
   hasToken(): boolean {
     return !!localStorage.getItem('token');
   }
 
+  // Clear token and user data
   clearToken(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');

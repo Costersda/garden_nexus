@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
-import { ToastrService } from 'ngx-toastr'; // Make sure to install and import ngx-toastr
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-forgot-password',
@@ -20,6 +20,7 @@ export class ForgotPasswordComponent implements OnInit {
     private userService: UserService,
     private toastr: ToastrService
   ) {
+    // Initialize the form with email field and validators
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -29,6 +30,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit(): void {
     if (this.forgotPasswordForm.valid) {
+      // Check if the cooldown period has passed
       const currentTime = Date.now();
       if (currentTime - this.lastEmailSentTime < this.cooldownPeriod) {
         const remainingTime = Math.ceil((this.cooldownPeriod - (currentTime - this.lastEmailSentTime)) / 1000);
@@ -37,13 +39,14 @@ export class ForgotPasswordComponent implements OnInit {
       }
 
       this.isLoading = true;
+      // Call the user service to request password reset
       this.userService.requestPasswordReset(this.forgotPasswordForm.value.email)
         .subscribe({
           next: (response) => {
             this.successMessage = 'Password reset instructions have been sent to your email.';
             this.errorMessage = '';
             this.isLoading = false;
-            this.lastEmailSentTime = Date.now();
+            this.lastEmailSentTime = Date.now(); // Update the last email sent time
           },
           error: (error) => {
             this.errorMessage = error.error.message || 'An error occurred. Please try again.';

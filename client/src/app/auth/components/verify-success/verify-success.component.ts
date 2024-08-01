@@ -1,4 +1,3 @@
-// In verify-success.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -10,10 +9,12 @@ export class VerifySuccessComponent {
 
   constructor(private router: Router) {}
 
+  // Navigate to blogs page
   goToBlogs(): void {
     this.router.navigate(['/blogs']);
   }
 
+  // Navigate to forum page
   goToForum(): void {
     this.router.navigate(['/forum']);
   }

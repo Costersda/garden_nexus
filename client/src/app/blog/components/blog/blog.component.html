@@ -1,16 +1,12 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
-<!-- <div class="profile-content-container">
-  <div class="profile-content">
-    <h1 class="profile-heading">Blogs</h1>
-  </div>
-</div> -->
-
+<!-- Banner image -->
 <div class="img-spacer">
   <img class="img-banner-image" src="assets/spacer-img-2.webp" alt="Placeholder Image">
 </div>
 
+<!-- Toolbar with category dropdown and search -->
 <div class="toolbar">
   <div class="toolbar-content">
     <div class="left">
@@ -35,6 +31,7 @@
   </div>
 </div>
 
+<!-- Secondary toolbar with blog header and sort buttons -->
 <div class="inline-toolbar">
   <div class="inline-toolbar-content">
     <div class="blog-header-container">
@@ -51,13 +48,13 @@
   <hr class="styled-hr">
 </div>
 
-
+<!-- Create post button -->
 <div class="create-post-btn-container">
   <div class="create-post-btn-content">
     <button class="create-post-btn" (click)="createBlogPost()">Create a Post</button>
   </div>
 </div>
-<!-- Display no results message if no blogs are found -->
+<!-- No results message -->
 <div class="profile-content-container" *ngIf="noResults">
   <div class="profile-content">
     <div class="search-error-message">
@@ -66,6 +63,7 @@
   </div>
 </div>
 
+<!-- Blog list -->
 <div class="profile-content-container">
   <div class="profile-content">
     <div class="blog-list-container">
@@ -78,7 +76,7 @@
   </div>
 </div>
 
-
+<!-- Load more button -->
 <div class="profile-content-container" *ngIf="blogs.length > displayedBlogs.length">
   <div class="profile-content">
     <button class="load-more-btn" (click)="loadMoreBlogs()">

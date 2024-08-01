@@ -25,6 +25,7 @@ export class ResetPasswordComponent implements OnInit {
     private userService: UserService,
     private toastr: ToastrService
   ) {
+    // Initialize form with validators
     this.resetForm = this.formBuilder.group({
       password: ['', [
         Validators.required, 
@@ -37,9 +38,11 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Get token from URL parameters
     this.token = this.route.snapshot.params['token'];
   }
 
+  // Custom validator for password strength
   passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value || '';
     const hasUpperCase = /[A-Z]/.test(value);
@@ -50,6 +53,7 @@ export class ResetPasswordComponent implements OnInit {
     return valid ? null : { passwordStrength: true };
   }
 
+  // Custom validator to check if passwords match
   checkPasswords(group: FormGroup) {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
@@ -59,13 +63,15 @@ export class ResetPasswordComponent implements OnInit {
   onSubmit(): void {
     if (this.resetForm.valid) {
       this.isLoading = true;
+      // Call API to reset password
       this.userService.resetPassword(this.token, this.resetForm.value.password)
         .subscribe({
           next: (response) => {
             this.successMessage = 'Password successfully reset. You can now login with your new password.';
             this.errorMessage = '';
             this.isLoading = false;
-            this.isPasswordReset = true; // Set this to true on success
+            this.isPasswordReset = true;
+            // Redirect to login page after 3 seconds
             setTimeout(() => this.router.navigate(['/login'], { replaceUrl: true }), 3000);
           },
           error: (error) => {
@@ -75,6 +81,7 @@ export class ResetPasswordComponent implements OnInit {
           }
         });
     } else {
+      // Handle form validation errors
       if (this.resetForm.hasError('notSame')) {
         this.errorMessage = 'Passwords do not match.';
       } else if (this.resetForm.get('password')?.hasError('minlength')) {

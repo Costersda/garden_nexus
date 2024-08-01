@@ -1,6 +1,7 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
+<!-- Blog Title -->
 <div class="profile-content-container">
   <div class="profile-content">
     <h1 class="blog-heading">{{ blog?.title | titlecase }}</h1>
@@ -14,7 +15,8 @@
         <div class="blog-author-box">
           <img [src]="getImageUrl(user?.imageFile)" alt="Author's profile picture" class="author-profile-image">
           <div class="author-info">
-            <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By: {{ user?.username | titlecase }}</a></p>
+            <p class="blog-author"><a [routerLink]="['/profile', user?.username]">By:
+                {{ user?.username | titlecase }}</a></p>
           </div>
         </div>
         <div class="test">
@@ -34,27 +36,20 @@
       </div>
 
       <form *ngIf="isEditMode" (ngSubmit)="saveBlogChanges()" #blogForm="ngForm">
-        <!-- Title Input -->
+        <!-- Edit Title Input -->
         <div class="form-element" [class.error]="titleError">
           <label for="title" class="form-label">Title:</label>
           <div class="input-file-wrapper">
-            <input type="text" 
-                   id="title" 
-                   [(ngModel)]="blog.title" 
-                   name="title" 
-                   required 
-                   #title="ngModel"
-                   class="form-input" 
-                   maxlength="100"
-                   (blur)="checkTitleValidity()">
+            <input type="text" id="title" [(ngModel)]="blog.title" name="title" required #title="ngModel"
+              class="form-input" maxlength="100" (blur)="checkTitleValidity()">
             <div class="word-count" [class.error-text]="blog.title.length > maxTitleLength">
               Character count: {{ blog.title.length }}/{{ maxTitleLength }}
             </div>
             <div *ngIf="titleError" class="error-text">{{ titleError }}</div>
           </div>
         </div>
-      
-                <!-- Content Section 1 -->
+
+        <!-- Edit Content Section 1 -->
         <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1 || isEditMode">
           <div class="blog-img" *ngIf="blog.image_1">
             <img [src]="blog.image_1" alt="Blog Image 1">
@@ -72,107 +67,127 @@
               </div>
             </div>
           </div>
-          <div class="form-element" [class.error]="formSubmitted && (!isContentValid('content_section_1') || isContentTooShort('content_section_1'))">
+          <div class="form-element"
+            [class.error]="formSubmitted && (!isContentValid('content_section_1') || isContentTooShort('content_section_1'))">
             <label for="content_section_1" class="form-label">Content Section 1:</label>
             <div class="input-file-wrapper">
-              <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required class="form-input auto-grow" #content_section_1="ngModel"></textarea>
+              <textarea id="content_section_1" [(ngModel)]="blog.content_section_1" name="content_section_1" required
+                class="form-input auto-grow" #content_section_1="ngModel"></textarea>
               <div class="word-count" [class.error-text]="isContentTooLong('content_section_1')">
-                Word count: {{ getContentWordCount(blog.content_section_1) }}/{{ maxContentWords }} - Min {{ minContentWords }} words.
+                Word count: {{ getContentWordCount(blog.content_section_1) }}/{{ maxContentWords }} - Min
+                {{ minContentWords }} words.
               </div>
-              <div *ngIf="formSubmitted && !content_section_1.valid && getContentWordCount(blog.content_section_1) === 0" class="error-text">Required</div>
-              <div *ngIf="formSubmitted && isContentTooShort('content_section_1')" class="error-text">Content must be at least {{ minContentWords }} words</div>
-              <div *ngIf="isContentTooLong('content_section_1')" class="error-text">Content exceeds maximum word limit</div>
-              <div *ngIf="!areAllWordsValid(blog.content_section_1)" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
+              <div
+                *ngIf="formSubmitted && !content_section_1.valid && getContentWordCount(blog.content_section_1) === 0"
+                class="error-text">Required</div>
+              <div *ngIf="formSubmitted && isContentTooShort('content_section_1')" class="error-text">Content must be at
+                least {{ minContentWords }} words</div>
+              <div *ngIf="isContentTooLong('content_section_1')" class="error-text">Content exceeds maximum word limit
+              </div>
+              <div *ngIf="!areAllWordsValid(blog.content_section_1)" class="error-text">One or more words exceed the
+                maximum length of {{ maxWordLength }} characters</div>
             </div>
           </div>
         </div>
-      
-<!-- Content Section 2 -->
-<div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2 || isEditMode">
-  <div class="blog-img" *ngIf="blog.image_2 || isEditMode">
-    <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
-  </div>
-  <div *ngIf="isEditMode">
-    <div class="delete-img-button-container">
-      <button class="delete-img-btn" *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
-    </div>
-  </div>
-  <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
-    <div>
-      <label for="image_2" class="form-label">Image 2:</label>
-      <label class="optional-label">(optional)</label>
-    </div>
-    <div class="input-file-wrapper">
-      <input type="file" id="image_2" (change)="onFileChange($event, 'image_2')">
-      <div class="file-size-info">Maximum file size: 2 MB</div>
-      <div *ngIf="fileSizeError['image_2']" class="error-text">{{ fileSizeError['image_2'] }}</div>
-      <div *ngIf="fileTypeError['image_2']" class="error-text">{{ fileTypeError['image_2'] }}</div>
-    </div>
-  </div>
-  
-  <div class="form-element" [class.error]="formSubmitted && blog.content_section_2 && (!isContentValid('content_section_2') || isContentTooShort('content_section_2'))">
-    <label for="content_section_2" class="form-label">Content Section 2:</label>
-    <div class="input-file-wrapper">
-      <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2" class="form-input auto-grow" #content_section_2="ngModel"></textarea>
-      <div class="word-count" [class.error-text]="isContentTooLong('content_section_2')">
-        Word count: {{ getContentWordCount(blog.content_section_2 ?? '') }}/{{ maxContentWords }}
-      </div>
-      <div *ngIf="formSubmitted && isContentTooShort('content_section_2')" class="error-text">Content must be at least {{ minContentWords }} words</div>
-      <div *ngIf="isContentTooLong('content_section_2')" class="error-text">Content exceeds maximum word limit</div>
-      <div *ngIf="blog.content_section_2 && !areAllWordsValid(blog.content_section_2)" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
-    </div>
-  </div>
-</div>
 
-<!-- Content Section 3 -->
-<div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3 || isEditMode">
-  <div class="blog-img" *ngIf="blog.image_3 || isEditMode">
-    <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
-  </div>
-  <div *ngIf="isEditMode">
-    <div class="delete-img-button-container">
-      <button class="delete-img-btn" *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
-    </div>
-  </div>
-  <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
-    <div>
-      <label for="image_3" class="form-label">Image 3:</label>
-      <label class="optional-label">(optional)</label>
-    </div>
-    <div class="input-file-wrapper">
-      <input type="file" id="image_3" (change)="onFileChange($event, 'image_3')">
-      <div class="file-size-info">Maximum file size: 2 MB</div>
-      <div *ngIf="fileSizeError['image_3']" class="error-text">{{ fileSizeError['image_3'] }}</div>
-      <div *ngIf="fileTypeError['image_3']" class="error-text">{{ fileTypeError['image_3'] }}</div>
-    </div>
-  </div>
-  <div class="form-element" [class.error]="formSubmitted && blog.content_section_3 && (!isContentValid('content_section_3') || isContentTooShort('content_section_3'))">
-    <label for="content_section_3" class="form-label">Content Section 3:</label>
-    <div class="input-file-wrapper">
-      <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3" class="form-input auto-grow" #content_section_3="ngModel"></textarea>
-      <div class="word-count" [class.error-text]="isContentTooLong('content_section_3')">
-        Word count: {{ getContentWordCount(blog.content_section_3 ?? '') }}/{{ maxContentWords }}
-      </div>
-      <div *ngIf="formSubmitted && isContentTooShort('content_section_3')" class="error-text">Content must be at least {{ minContentWords }} words</div>
-      <div *ngIf="isContentTooLong('content_section_3')" class="error-text">Content exceeds maximum word limit</div>
-      <div *ngIf="blog.content_section_3 && !areAllWordsValid(blog.content_section_3)" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
-    </div>
-  </div>
-</div>
+        <!-- Edit Content Section 2 -->
+        <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2 || isEditMode">
+          <div class="blog-img" *ngIf="blog.image_2 || isEditMode">
+            <img *ngIf="blog.image_2" [src]="blog.image_2" alt="Blog Image 2">
+          </div>
+          <div *ngIf="isEditMode">
+            <div class="delete-img-button-container">
+              <button class="delete-img-btn" *ngIf="blog.image_2" (click)="deleteImage(2)">Delete Image</button>
+            </div>
+          </div>
+          <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
+            <div>
+              <label for="image_2" class="form-label">Image 2:</label>
+              <label class="optional-label">(optional)</label>
+            </div>
+            <div class="input-file-wrapper">
+              <input type="file" id="image_2" (change)="onFileChange($event, 'image_2')">
+              <div class="file-size-info">Maximum file size: 2 MB</div>
+              <div *ngIf="fileSizeError['image_2']" class="error-text">{{ fileSizeError['image_2'] }}</div>
+              <div *ngIf="fileTypeError['image_2']" class="error-text">{{ fileTypeError['image_2'] }}</div>
+            </div>
+          </div>
+
+          <div class="form-element"
+            [class.error]="formSubmitted && blog.content_section_2 && (!isContentValid('content_section_2') || isContentTooShort('content_section_2'))">
+            <label for="content_section_2" class="form-label">Content Section 2:</label>
+            <div class="input-file-wrapper">
+              <textarea id="content_section_2" [(ngModel)]="blog.content_section_2" name="content_section_2"
+                class="form-input auto-grow" #content_section_2="ngModel"></textarea>
+              <div class="word-count" [class.error-text]="isContentTooLong('content_section_2')">
+                Word count: {{ getContentWordCount(blog.content_section_2 ?? '') }}/{{ maxContentWords }}
+              </div>
+              <div *ngIf="formSubmitted && isContentTooShort('content_section_2')" class="error-text">Content must be at
+                least {{ minContentWords }} words</div>
+              <div *ngIf="isContentTooLong('content_section_2')" class="error-text">Content exceeds maximum word limit
+              </div>
+              <div *ngIf="blog.content_section_2 && !areAllWordsValid(blog.content_section_2)" class="error-text">One or
+                more words exceed the maximum length of {{ maxWordLength }} characters</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Content Section 3 -->
+        <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3 || isEditMode">
+          <div class="blog-img" *ngIf="blog.image_3 || isEditMode">
+            <img *ngIf="blog.image_3" [src]="blog.image_3" alt="Blog Image 3">
+          </div>
+          <div *ngIf="isEditMode">
+            <div class="delete-img-button-container">
+              <button class="delete-img-btn" *ngIf="blog.image_3" (click)="deleteImage(3)">Delete Image</button>
+            </div>
+          </div>
+          <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
+            <div>
+              <label for="image_3" class="form-label">Image 3:</label>
+              <label class="optional-label">(optional)</label>
+            </div>
+            <div class="input-file-wrapper">
+              <input type="file" id="image_3" (change)="onFileChange($event, 'image_3')">
+              <div class="file-size-info">Maximum file size: 2 MB</div>
+              <div *ngIf="fileSizeError['image_3']" class="error-text">{{ fileSizeError['image_3'] }}</div>
+              <div *ngIf="fileTypeError['image_3']" class="error-text">{{ fileTypeError['image_3'] }}</div>
+            </div>
+          </div>
+          <div class="form-element"
+            [class.error]="formSubmitted && blog.content_section_3 && (!isContentValid('content_section_3') || isContentTooShort('content_section_3'))">
+            <label for="content_section_3" class="form-label">Content Section 3:</label>
+            <div class="input-file-wrapper">
+              <textarea id="content_section_3" [(ngModel)]="blog.content_section_3" name="content_section_3"
+                class="form-input auto-grow" #content_section_3="ngModel"></textarea>
+              <div class="word-count" [class.error-text]="isContentTooLong('content_section_3')">
+                Word count: {{ getContentWordCount(blog.content_section_3 ?? '') }}/{{ maxContentWords }}
+              </div>
+              <div *ngIf="formSubmitted && isContentTooShort('content_section_3')" class="error-text">Content must be at
+                least {{ minContentWords }} words</div>
+              <div *ngIf="isContentTooLong('content_section_3')" class="error-text">Content exceeds maximum word limit
+              </div>
+              <div *ngIf="blog.content_section_3 && !areAllWordsValid(blog.content_section_3)" class="error-text">One or
+                more words exceed the maximum length of {{ maxWordLength }} characters</div>
+            </div>
+          </div>
+        </div>
         <!-- Categories -->
         <div class="form-element">
           <label for="categories" class="form-label">Categories:</label>
           <div class="categories-container">
             <div class="category-item" *ngFor="let category of categories">
               <label>
-                <input type="checkbox" (change)="toggleCategory(category.name)" [checked]="blog.categories.includes(category.name)"> {{ category.name }}
+                <input type="checkbox" (change)="toggleCategory(category.name)"
+                  [checked]="blog.categories.includes(category.name)"> {{ category.name }}
               </label>
             </div>
           </div>
         </div>
 
         <!-- Error message displayed if form submission fails -->
-        <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors() || !isContentValid('content_section_1'))" class="error-text">
+        <div *ngIf="formSubmitted && (!blogForm.valid || hasImageErrors() || !isContentValid('content_section_1'))"
+          class="error-text">
           Please fix any errors before submitting.
         </div>
         <div class="blog-btn-bar-container">
@@ -183,6 +198,7 @@
         </div>
       </form>
 
+      <!-- Content Section 1 -->
       <div *ngIf="!isEditMode">
         <div class="blog-section" *ngIf="blog.image_1 || blog.content_section_1">
           <div class="blog-img" *ngIf="blog.image_1">
@@ -193,6 +209,7 @@
           </div>
         </div>
 
+        <!-- Content Section 2 -->
         <div class="blog-section" *ngIf="blog.image_2">
           <div class="blog-img" *ngIf="blog.image_2">
             <img [src]="blog.image_2" alt="Blog Image 2">
@@ -202,6 +219,7 @@
           </div>
         </div>
 
+        <!-- Content Section 3 -->
         <div class="blog-section" *ngIf="blog.image_3">
           <div class="blog-img" *ngIf="blog.image_3">
             <img [src]="blog.image_3" alt="Blog Image 3">
@@ -210,6 +228,7 @@
             <p>{{ blog.content_section_3 }}</p>
           </div>
         </div>
+        <!-- Categories -->
         <div class="forum-categories" *ngIf="blog.categories && blog.categories.length > 0">
           <div class="forum-categories-container">
             <h4>Categories:</h4>
@@ -231,25 +250,25 @@
   <div class="profile-content-container">
     <hr class="styled-hr">
   </div>
+  <!-- Comment Section -->
   <div class="comment-content">
     <h2 class="content-subheading">Comments</h2>
     <div class="comment-section">
       <div *ngFor="let comment of comments" class="comment">
+        <!-- Comment Author -->
         <div class="comment-left">
           <img [src]="comment.user.imageFile || 'assets/garden-nexus-logo.webp'" alt="User Image" class="profile-image">
           <div class="user-info">
-            <a [routerLink]="['/profile', comment.user.username]" class="comment-author">{{ comment.user.username | titlecase }}</a>
+            <a [routerLink]="['/profile', comment.user.username]"
+              class="comment-author">{{ comment.user.username | titlecase }}</a>
           </div>
         </div>
         <div class="comment-right">
+          <!-- Edit Comment Text input -->
           <div *ngIf="commentBeingEdited && commentBeingEdited._id === comment._id">
-            <textarea 
-            [(ngModel)]="editCommentText" 
-            (ngModelChange)="checkCommentLength('edit')" 
-            [ngClass]="{'error-border': isEditCommentTooLong}"
-            class="edit-comment-textarea"
-            (click)="$event.stopPropagation()"
-            (focus)="$event.stopPropagation()">
+            <textarea [(ngModel)]="editCommentText" (ngModelChange)="checkCommentLength('edit')"
+              [ngClass]="{'error-border': isEditCommentTooLong}" class="edit-comment-textarea"
+              (click)="$event.stopPropagation()" (focus)="$event.stopPropagation()">
           </textarea>
             <div class="word-count-container">
               <div class="word-count" [class.error-text]="editCommentText.length > maxCommentLength">
@@ -262,6 +281,7 @@
               <button class="edit-comment-btn save-btn" (click)="saveEditedComment()">Save</button>
             </div>
           </div>
+          <!-- Comment Content -->
           <div class="comment-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
             <div class="comment-header">
               <div class="comment-header-left">
@@ -269,7 +289,8 @@
               </div>
               <div class="comment-header-right">
                 <div class="icon-container">
-                  <button class="quote-icon-container" *ngIf="currentUser && currentUser.isVerified" (click)="quoteComment(comment)">
+                  <button class="quote-icon-container" *ngIf="currentUser && currentUser.isVerified"
+                    (click)="quoteComment(comment)">
                     <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
                   </button>
                   <div class="dropdown" *ngIf="currentUser && comment.user._id === currentUser._id">
@@ -284,22 +305,27 @@
                 </div>
               </div>
             </div>
+            <!-- If replied to a comment -->
             <div *ngIf="comment.replyingTo" class="comment-reply-text">
               <p><strong>Replying to {{ (comment.user.username | titlecase) || 'a comment' }}:</strong></p>
               <p>"{{ comment.replyingTo.comment }}"</p>
             </div>
+            <!-- Comment text -->
             <p class="comment-text">{{ comment.comment }} <span *ngIf="comment.isEdited">(edited)</span></p>
           </div>
         </div>
       </div>
     </div>
+    <!-- If replying to a comment -->
     <div *ngIf="currentUser && currentUser.isVerified" class="add-comment-section">
       <div *ngIf="replyingToComment" class="quoted-comment">
         <p>Replying to {{ replyingToComment.user.username || 'a comment' }}:</p>
         <p>"{{ replyText }}"</p>
         <button class="cancel-reply-btn" (click)="cancelReply()">Cancel Reply</button>
       </div>
-      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}" maxlength="600"></textarea>
+      <!-- New comment text input -->
+      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')"
+        [ngClass]="{'error-border': isNewCommentTooLong}" maxlength="600"></textarea>
       <div class="word-count-container">
         <div class="word-count" [class.error-text]="newComment.length > maxCommentLength">
           Character count: {{ newComment.length }}/{{ maxCommentLength }}
@@ -315,6 +341,7 @@
   <hr class="styled-hr">
 </div>
 
+<!-- Back button -->
 <div class="profile-content-container">
   <div class="comment-content">
     <button class="back-btn" (click)="goBack()">Back</button>

@@ -10,6 +10,7 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
   templateUrl: './blog.component.html',
 })
 export class BlogComponent implements OnInit, OnDestroy {
+  // Component properties
   blogs: Blog[] = [];
   displayedBlogs: Blog[] = [];
   categories: Category[] = CATEGORIES.map(category => ({ ...category, selected: false }));
@@ -22,6 +23,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   noResults: boolean = false;
   isSearchActive: boolean = false;
 
+  // ViewChild references
   @ViewChild('categoryDropdown') categoryDropdown!: ElementRef;
   @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
 
@@ -35,6 +37,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchBlogs();
+    // Close dropdown when clicking outside
     this.renderer.listen('document', 'click', (event: Event) => {
       if (!this.categoryDropdown.nativeElement.contains(event.target) &&
           !this.dropdownToggle.nativeElement.contains(event.target)) {
@@ -44,17 +47,20 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe to avoid memory leaks
     if (this.blogSubscription) {
       this.blogSubscription.unsubscribe();
     }
   }
 
+  // Getter for search button disabled state
   get isSearchButtonDisabled(): boolean {
     const hasSelectedCategories = this.categories.some(category => category.selected);
     const hasValidSearchQuery = this.searchQuery.trim().length > 0;
     return !(hasSelectedCategories || hasValidSearchQuery);
   }
 
+// Fetch all blogs
   fetchBlogs(): void {
     this.blogSubscription = this.blogService.getAllBlogs().subscribe(
       (blogs: Blog[]) => {
@@ -70,12 +76,14 @@ export class BlogComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Navigate to individual blog view
   viewBlog(blogId: string | undefined): void {
     if (blogId) {
       this.router.navigate(['/blog', blogId], { queryParams: { source: 'blog' } });
     }
   }
 
+  // Search blogs based on query and categories
   searchBlogs(): void {
     const selectedCategories = this.categories
       .filter(category => category.selected)
@@ -96,21 +104,25 @@ export class BlogComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Toggle category dropdown
   toggleDropdown(event: Event): void {
     event.stopPropagation();
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  // Navigate to blog creation page
   createBlogPost(): void {
     this.router.navigate(['/blogs/create'], { relativeTo: this.route });
   }
 
+  // Load more blogs
   loadMoreBlogs(): void {
     const currentLength = this.displayedBlogs.length;
     const nextLength = currentLength + this.blogsIncrement;
     this.displayedBlogs = this.blogs.slice(0, nextLength);
   }
 
+  // Sort blogs by newest or oldest
   sortBlogs(order: 'newest' | 'oldest'): void {
     if (order === 'newest') {
       this.blogHeader = this.isSearchActive ? 'Newest Query Results' : 'Newest Blog Posts';
@@ -122,6 +134,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.displayedBlogs = this.blogs.slice(0, this.initialBlogsToShow);
   }
 
+  // Reset search and categories
   resetSearch(): void {
     this.categories.forEach(category => category.selected = false);
     this.searchQuery = '';

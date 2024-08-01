@@ -9,7 +9,10 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  // Property to store error messages
   errorMessage: string | null = null;
+
+  // Reactive form definition
   form = this.fb.nonNullable.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -21,23 +24,25 @@ export class LoginComponent {
     private router: Router
   ) {}
 
+  // Method called on form submission
   onSubmit(): void {
     this.authService.login(this.form.getRawValue()).subscribe({
       next: (response) => {
         if ('error' in response) {
-          // This is our custom error
+          // Handle custom error from the server
           this.errorMessage = response.error;
         } else {
-          // This is a successful login
+          // Handle successful login
           console.log('currentUser', response);
           this.authService.setToken(response);
           this.authService.setCurrentUser(response);
           this.errorMessage = null;
+          // Navigate to user's profile page
           this.router.navigateByUrl('/profile/' + response.username);
         }
       },
       error: (err: HttpErrorResponse) => {
-        // This will catch any other unexpected errors
+        // Handle unexpected errors
         console.log('err', err);
         this.errorMessage = 'An unexpected error occurred. Please try again.';
       },

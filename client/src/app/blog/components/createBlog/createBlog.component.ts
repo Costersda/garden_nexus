@@ -16,10 +16,10 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   fileTypeError: { [key: string]: string | null } = {};
   formSubmitted = false;
   imageErrors: { [key: string]: boolean } = {};
-  maxTitleLength = 100; // Maximum character count for title
+  maxTitleLength = 100;
   maxContentWords = 1000;
   minContentWords = 200;
-  maxWordLength = 50; // Maximum allowed length for a single word
+  maxWordLength = 50;
 
   constructor(
     private blogService: BlogService,
@@ -30,6 +30,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // Set user_id for the blog
     this.authService.getCurrentUser().subscribe(currentUser => {
       if (currentUser && currentUser.id) {
         this.blog.user_id = currentUser.id;
@@ -43,6 +44,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     this.addAutoGrow();
   }
 
+  // Initialize a new blog object
   initializeBlog(): Blog {
     return {
       user_id: '',
@@ -60,9 +62,10 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     };
   }
 
+  // Handle file upload and validation
   onFileChange(event: any, imageField: 'image_1' | 'image_2' | 'image_3'): void {
     const file = event.target.files[0];
-    if (file.size > 2 * 1024 * 1024) { // 2 MB file size limit
+    if (file.size > 2 * 1024 * 1024) { // 2 MB limit
       this.fileSizeError[imageField] = 'File size exceeds 2 MB';
       this.fileTypeError[imageField] = null;
       this.imageErrors[imageField] = true;
@@ -82,11 +85,12 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.blog[imageField] = e.target.result;
-      this.formSubmitted = false; // Clear form submission status to remove errors
+      this.formSubmitted = false;
     };
     reader.readAsDataURL(file);
   }
 
+  // Toggle category selection
   toggleCategory(category: string): void {
     const index = this.blog.categories.indexOf(category);
     if (index === -1) {
@@ -96,16 +100,18 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // Create and submit the blog post
   createBlog(): void {
     this.formSubmitted = true;
 
+    // Validate form before submission
     if (!this.blog.title || !this.blog.content_section_1 || !this.blog.image_1 || 
         this.getContentWordCount('content_section_1') < this.minContentWords ||
         this.blog.title.length > this.maxTitleLength ||
         !this.isContentValid('content_section_1') ||
         !this.isContentValid('content_section_2') ||
         !this.isContentValid('content_section_3')) {
-      return; // Prevent form submission if there are any issues
+      return;
     }
 
     this.blogService.createBlog(this.blog).subscribe(() => {
@@ -124,6 +130,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     return content ? this.countWords(content) : 0;
   }
   
+  // Count words, filtering out invalid ones
   countWords(text: string): number {
     return text
       .trim()
@@ -145,9 +152,10 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     return wordCount > 0 && wordCount < this.minContentWords;
   }
 
+  // Validate content for word length
   isContentValid(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
     const content = this.blog[section];
-    if (!content) return true; // Optional sections are always valid if empty
+    if (!content) return true; // Optional sections are valid if empty
 
     const words = content.trim().split(/\s+/);
     const validWords = words.filter(word => word.length > 0 && word.length <= this.maxWordLength);
@@ -155,6 +163,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     return words.length === validWords.length;
   }
 
+  // Add auto-grow functionality to textareas
   addAutoGrow(): void {
     const textareas = document.querySelectorAll('.auto-grow') as NodeListOf<HTMLTextAreaElement>;
     textareas.forEach(textarea => {
@@ -162,11 +171,13 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Auto-grow textarea based on content
   autoGrow(this: HTMLTextAreaElement): void {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
   }
 
+  // Check for any errors in the form
   hasErrors(): boolean {
     return Object.values(this.imageErrors).some(error => error) ||
            !this.isContentValid('content_section_1') ||

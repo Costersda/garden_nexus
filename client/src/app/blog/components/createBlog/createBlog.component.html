@@ -1,10 +1,6 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
-<!-- <div class="img-spacer">
-  <img class="img-spacer-image" src="assets/spacer-img-1.png" alt="Placeholder Image">
-</div> -->
-
 <div class="profile-content-container">
   <div class="profile-content">
     <h2 class="content-subheading">Create a Blog Post</h2>
@@ -18,6 +14,8 @@
   <div class="profile-content">
     <div class="create-blog-container">
       <form (ngSubmit)="createBlog()" #blogForm="ngForm">
+        
+        <!-- Title Field -->
         <div class="form-element" [class.error]="formSubmitted && (!title.valid || isTitleTooLong())">
           <label for="title" class="form-label">Title:</label>
           <div class="input-file-wrapper">
@@ -29,6 +27,8 @@
             <div *ngIf="isTitleTooLong()" class="error-text">Title exceeds maximum length</div>
           </div>
         </div>
+        
+        <!-- Content Section 1 -->
         <div class="form-element" [class.error]="formSubmitted && (!content_section_1.valid || isContentTooShort('content_section_1') || !isContentValid('content_section_1'))">
           <label for="content_section_1" class="form-label">Content Section 1:</label>
           <div class="input-file-wrapper">
@@ -42,6 +42,8 @@
             <div *ngIf="!isContentValid('content_section_1')" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
           </div>
         </div>
+        
+        <!-- Image 1 -->
         <div class="form-element" [class.error]="formSubmitted && (!blog.image_1 || fileSizeError['image_1'] || fileTypeError['image_1'])">
           <label for="image_1" class="form-label">Image 1:</label>
           <div class="input-file-wrapper">
@@ -52,6 +54,8 @@
             <div *ngIf="fileTypeError['image_1']" class="error-text">{{ fileTypeError['image_1'] }}</div>
           </div>
         </div>
+        
+        <!-- Content Section 2 (Optional) -->
         <div class="form-element">
           <div>
             <label for="content_section_2" class="form-label">Content Section 2:</label>
@@ -65,6 +69,8 @@
             <div *ngIf="!isContentValid('content_section_2')" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
           </div>
         </div>
+        
+        <!-- Image 2 (Optional) -->
         <div class="form-element" [class.error]="fileSizeError['image_2'] || fileTypeError['image_2']">
           <div>
             <label for="image_2" class="form-label">Image 2:</label>
@@ -77,6 +83,8 @@
             <div *ngIf="fileTypeError['image_2']" class="error-text">{{ fileTypeError['image_2'] }}</div>
           </div>
         </div>
+        
+        <!-- Content Section 3 (Optional) -->
         <div class="form-element">
           <div>
             <label for="content_section_3" class="form-label">Content Section 3:</label>
@@ -90,6 +98,8 @@
             <div *ngIf="!isContentValid('content_section_3')" class="error-text">One or more words exceed the maximum length of {{ maxWordLength }} characters</div>
           </div>
         </div>
+        
+        <!-- Image 3 (Optional) -->
         <div class="form-element" [class.error]="fileSizeError['image_3'] || fileTypeError['image_3']">
           <div>
             <label for="image_3" class="form-label">Image 3:</label>
@@ -102,6 +112,8 @@
             <div *ngIf="fileTypeError['image_3']" class="error-text">{{ fileTypeError['image_3'] }}</div>
           </div>
         </div>
+        
+        <!-- Categories -->
         <div class="form-element">
           <label for="categories" class="form-label">Categories:</label>
           <div class="categories-container">
@@ -112,10 +124,13 @@
             </div>
           </div>
         </div>
-        <!-- Error message displayed if form submission fails -->
+        
+        <!-- Error Message -->
         <div *ngIf="formSubmitted && (!blogForm.valid || hasErrors())" class="error-text">
           Please fix any errors before submitting.
         </div>
+        
+        <!-- Submit Button -->
         <div class="blog-submitBtn-container">
           <button class="blog-submitBtn" type="submit">Create Blog Post</button>
         </div>

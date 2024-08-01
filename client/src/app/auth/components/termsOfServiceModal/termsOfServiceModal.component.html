@@ -1,9 +1,12 @@
+<!-- Modal container with click event for background -->
 <div class="modal" (click)="onModalBackgroundClick($event)" #modalBackground>
   <div class="modal-content">
+    <!-- Modal header -->
     <div class="modal-header">
       <h2 class="modal-title">Terms of Service</h2>
       <img src="assets/close_icon.png" class="close-btn" (click)="closeModal()" alt="Close">
     </div>
+    <!-- Modal body for Terms of Service sections -->
     <div class="modal-body">
       <div class="tos-section">
         <h3 class="tos-section-title">Acceptance of Terms</h3>
@@ -93,6 +96,7 @@
         </ul>
       </div>
     </div>
+    <!-- Modal action buttons -->
     <div class="button-group">
       <button type="button" class="tos-close-btn" (click)="closeModal()">Cancel</button>
       <button type="button" class="tos-agree-btn" (click)="agreeToTerms()">Agree</button>

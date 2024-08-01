@@ -15,38 +15,53 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
   templateUrl: './viewBlog.component.html',
 })
 export class ViewBlogComponent implements OnInit, OnDestroy {
+  // Main data objects
   blog: Blog | null = null;
   user: User | null = null;
+  currentUser: User | null = null;
+  originalBlog: Blog | null = null;
+
+  // Arrays
   comments: Comment[] = [];
-  newComment: string = '';
-  source: string | null = null;
-  username: string | null = null;
+  categories: Category[] = CATEGORIES;
+  imageUrls: string[] = [];
+
+  // Subscriptions
   private routeSubscription!: Subscription;
   private blogSubscription!: Subscription;
   private userSubscription!: Subscription;
   private commentSubscription!: Subscription;
-  public currentUser: User | null = null;
+
+  // Comment-related
+  newComment: string = '';
   commentBeingEdited: Comment | null = null;
   editCommentText: string = '';
-  isNewCommentTooLong: boolean = false;
-  isEditCommentTooLong: boolean = false;
-  maxCommentLength: number = 600;
-  private imageUrls: string[] = [];
-  private imageUrlCache: { [key: string]: string } = {};
-  showBlogDropdown: boolean = false;
-  isEditMode: boolean = false;
-  originalBlog: Blog | null = null;
-  fileSizeError: { [key: string]: string } = {};
-  fileTypeError: { [key: string]: string } = {};
-  formSubmitted: boolean = false;
-  maxTitleLength: number = 100; // This remains as character count
-  minContentWords: number = 200;
-  maxContentWords: number = 1000;
-  maxWordLength: number = 50; // Maximum allowed length for a single word
-  categories: Category[] = CATEGORIES;
-  titleError: string | null = null;
   replyingToComment: Comment | null = null;
   replyText: string = '';
+
+  // String properties
+  source: string | null = null;
+  username: string | null = null;
+  titleError: string | null = null;
+
+  // Boolean flags
+  isNewCommentTooLong: boolean = false;
+  isEditCommentTooLong: boolean = false;
+  showBlogDropdown: boolean = false;
+  isEditMode: boolean = false;
+  formSubmitted: boolean = false;
+
+  // Numeric constants
+  maxCommentLength: number = 600;
+  maxTitleLength: number = 100;
+  minContentWords: number = 200;
+  maxContentWords: number = 1000;
+  maxWordLength: number = 50;
+
+  // Objects
+  private imageUrlCache: { [key: string]: string } = {};
+  fileSizeError: { [key: string]: string } = {};
+  fileTypeError: { [key: string]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -56,9 +71,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     private router: Router,
     private cd: ChangeDetectorRef,
     private confirmationDialogService: ConfirmationDialogService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    // Subscribe to route params and query params
     this.routeSubscription = this.route.paramMap.subscribe(params => {
       const blogId = params.get('id');
       this.route.queryParams.subscribe(queryParams => {
@@ -70,8 +86,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         this.fetchBlog(blogId);
       }
     });
-  
-    // Add the MutationObserver here
+
+    // Set up MutationObserver for dynamic content
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
@@ -79,25 +95,18 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         }
       });
     });
-  
+
     observer.observe(document.body, { childList: true, subtree: true });
   }
-  
+
   ngOnDestroy(): void {
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
-    }
-    if (this.blogSubscription) {
-      this.blogSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.commentSubscription) {
-      this.commentSubscription.unsubscribe();
-    }
+    // Unsubscribe from all subscriptions
+    [this.routeSubscription, this.blogSubscription, this.userSubscription, this.commentSubscription].forEach(sub => sub?.unsubscribe());
+
+    // Clean up image URLs
     this.imageUrls.forEach(url => URL.revokeObjectURL(url));
-  
+
+    // Clean up image URL cache
     for (const key in this.imageUrlCache) {
       if (this.imageUrlCache[key].startsWith('blob:')) {
         URL.revokeObjectURL(this.imageUrlCache[key]);
@@ -105,18 +114,17 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     }
     this.imageUrlCache = {};
   }
-  
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
-    this.comments = this.comments.map(c => ({
-      ...c,
-      showDropdown: false
-    }));
+    // Close all dropdowns on outside click
+    this.comments = this.comments.map(c => ({ ...c, showDropdown: false }));
     this.showBlogDropdown = false;
   }
 
   toggleDropdown(comment: Comment, event: MouseEvent): void {
     event.stopPropagation();
+    // Toggle dropdown for specific comment
     this.comments = this.comments.map(c => ({
       ...c,
       showDropdown: c._id === comment._id ? !c.showDropdown : false
@@ -132,10 +140,9 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       this.currentUser = JSON.parse(storedUser);
-      // console.log('Fetched current user from local storage:', this.currentUser);
+      // Ensure _id is set
       if (this.currentUser && !this.currentUser._id) {
         this.currentUser._id = (this.currentUser as any).id || this.currentUser._id;
-        // console.log('Updated currentUser with _id:', this.currentUser._id);
       }
     } else {
       console.error('Current user not found in local storage');
@@ -154,13 +161,11 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           this.fetchComments(blogId);
         } else {
           // Blog not found, redirect to blogs list
-          // console.log('Blog not found, redirecting to blogs list');
           this.router.navigate(['/blogs']);
         }
       },
       (error) => {
         console.error('Error fetching blog:', error);
-        // In case of error, also redirect to blogs list
         this.router.navigate(['/blogs']);
       }
     );
@@ -171,17 +176,17 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       console.error('Blog ID is undefined');
       return;
     }
-  
+
+    // Confirm deletion with user
     const confirmed = await this.confirmationDialogService.confirm(
       'Confirm Deletion',
       'Are you sure you want to delete this blog?'
     );
-  
+
     if (confirmed) {
       this.blogService.deleteBlog(blogId).subscribe(
         () => {
-          // console.log('Successfully deleted blog with ID:', blogId);
-          // Replace the current history entry
+          // Replace current history entry and navigate
           history.replaceState(null, '', '/blogs');
           this.router.navigate(['/blogs']);
         },
@@ -201,38 +206,39 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   saveBlogChanges(): void {
     this.formSubmitted = true;
-    this.titleError = null; // Reset the error
-  
+    this.titleError = null;
+
     if (!this.blog || !this.blog._id) return;
-    
+
+    // Validate title
     if (!this.blog.title || this.blog.title.trim().length === 0) {
       this.titleError = 'Title is required';
       return;
     }
-    
+
     if (this.blog.title.length > this.maxTitleLength) {
       this.titleError = 'Title exceeds maximum length';
       return;
     }
-  
+
+    // Validate image
     if (!this.blog.image_1) {
       this.fileSizeError['image_1'] = 'Image 1 is required';
       return;
     }
-  
+
     if (this.hasFormErrors()) return;
-  
-    // Mark the blog as edited
+
+    // Mark the blog as edited and update
     this.blog.isEdited = true;
-  
+
     this.blogService.updateBlog(this.blog._id, this.blog).subscribe(
       (updatedBlog: Blog) => {
-        // console.log('Blog updated successfully:', updatedBlog);
         this.blog = updatedBlog;
         this.originalBlog = JSON.parse(JSON.stringify(updatedBlog));
         this.isEditMode = false;
         this.formSubmitted = false;
-        this.titleError = null; // Clear the error on successful update
+        this.titleError = null;
       },
       (error) => {
         console.error('Error updating blog:', error);
@@ -242,7 +248,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   checkTitleValidity(): void {
-    if (this.blog){
+    if (this.blog) {
       if (!this.blog.title || this.blog.title.trim().length === 0) {
         this.titleError = 'Title is required';
       } else if (this.blog.title.length > this.maxTitleLength) {
@@ -252,11 +258,12 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   cancelEdit(): void {
+    // Revert changes and exit edit mode
     this.blog = JSON.parse(JSON.stringify(this.originalBlog));
     this.isEditMode = false;
-    this.titleError = null; // Clear the title error
+    this.titleError = null;
   }
 
   deleteImage(section: number): void {
@@ -268,6 +275,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   onFileChange(event: any, fieldName: string): void {
     const file = event.target.files[0];
     if (file) {
+      // Validate file size and type
       if (file.size > 2 * 1024 * 1024) {
         this.fileSizeError[fieldName] = 'File size exceeds 2 MB';
         this.fileTypeError[fieldName] = '';
@@ -275,6 +283,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         this.fileTypeError[fieldName] = 'Invalid file type';
         this.fileSizeError[fieldName] = '';
       } else {
+        // Clear errors and read file
         this.fileSizeError[fieldName] = '';
         this.fileTypeError[fieldName] = '';
         const reader = new FileReader();
@@ -286,9 +295,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         reader.readAsDataURL(file);
       }
     } else if (fieldName === 'image_1') {
-      // If no file is selected for image_1, keep the existing image
-      // You might want to show a message to the user that no new image was selected
-      // console.log('No new image selected for Image 1. Keeping existing image.');
+      // No new image selected for image_1, keep existing image
     }
   }
 
@@ -296,8 +303,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     this.userSubscription = this.userService.getUserById(userId).subscribe(
       (user: User) => {
         this.user = user;
-        // console.log('User:', user);
-        // console.log('User image file:', user.imageFile);
       },
       (error) => {
         console.error('Error fetching user:', error);
@@ -308,6 +313,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   fetchComments(blogId: string): void {
     this.commentSubscription = this.commentService.getCommentsByBlogId(blogId).subscribe(
       (comments: Comment[]) => {
+        // Normalize comment and user IDs
         this.comments = comments.map(comment => {
           const user = comment.user as User;
           const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
@@ -322,11 +328,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           };
         });
         console.log('Comments:', this.comments);
-        if (this.currentUser) {
-          this.comments.forEach(comment => {
-            // console.log(`Comparing: comment.user._id (${comment.user._id}) === currentUser._id (${this.currentUser!._id})`);
-          });
-        }
         this.cd.detectChanges();
       },
       (error) => {
@@ -336,6 +337,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   checkCommentLength(type: string): void {
+    // Check if comment length exceeds maximum allowed length
     if (type === 'new') {
       this.isNewCommentTooLong = this.newComment.length > this.maxCommentLength;
     } else if (type === 'edit') {
@@ -345,8 +347,9 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   addComment(): void {
     if (!this.newComment.trim() || this.isNewCommentTooLong) return;
-  
+
     if (this.currentUser && this.currentUser._id) {
+      // Prepare comment data
       const commentData: Comment = {
         user: {
           _id: this.currentUser._id,
@@ -366,10 +369,11 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         } : undefined,
         replyText: this.replyingToComment ? this.replyText : ''
       };
-  
+
+      // Create comment
       this.commentService.createComment(commentData).subscribe(
         (comment: Comment) => {
-          // Create a new comment object with all the necessary properties
+          // Normalize new comment object
           const newComment: Comment = {
             ...comment,
             _id: comment._id || comment.id,
@@ -388,10 +392,9 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
             } : undefined,
             replyText: this.replyingToComment ? this.replyText : ''
           };
-    
-          // Add the new comment to the end of the array
+
+          // Add new comment and reset form
           this.comments = [...this.comments, newComment];
-          
           this.newComment = '';
           this.isNewCommentTooLong = false;
           this.replyingToComment = null;
@@ -410,21 +413,23 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   async deleteComment(commentId: string | undefined): Promise<void> {
     console.log('Attempting to delete comment with ID:', commentId);
-  
+
     if (!commentId) {
       console.error('Comment ID is undefined');
       return;
     }
-  
+
+    // Confirm deletion with user
     const confirmed = await this.confirmationDialogService.confirm(
       'Confirm Deletion',
       'Are you sure you want to delete this comment?'
     );
-  
+
     if (confirmed) {
       this.commentService.deleteCommentById(commentId).subscribe(
         () => {
           console.log('Successfully deleted comment with ID:', commentId);
+          // Remove deleted comment from list
           this.comments = this.comments.filter(comment => {
             const currentCommentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
             return currentCommentId !== commentId;
@@ -437,12 +442,13 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       );
     }
   }
-  
 
   editComment(comment: Comment): void {
+    // Set up comment for editing
     this.commentBeingEdited = comment;
     this.editCommentText = comment.comment;
     this.isEditCommentTooLong = false;
+    // Focus on textarea after a short delay
     setTimeout(() => {
       const textarea = document.querySelector('.edit-comment-textarea') as HTMLTextAreaElement;
       if (textarea) {
@@ -452,6 +458,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   cancelEditComment(): void {
+    // Reset edit state
     this.commentBeingEdited = null;
     this.editCommentText = '';
     this.isEditCommentTooLong = false;
@@ -459,20 +466,22 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   saveEditedComment(): void {
     if (!this.editCommentText.trim() || !this.commentBeingEdited || this.isEditCommentTooLong) return;
-  
+
     const updatedComment = {
       ...this.commentBeingEdited,
       comment: this.editCommentText,
       isEdited: true
     };
-  
+
+    // Update comment in local array
     this.comments = this.comments.map(c =>
       c._id === updatedComment._id ? { ...updatedComment, comment: `${updatedComment.comment} ` } : c
     );
     this.commentBeingEdited = null;
     this.editCommentText = '';
     this.cd.detectChanges();
-  
+
+    // Update comment on server
     this.commentService.updateCommentById(updatedComment._id!, updatedComment).subscribe(
       (comment: Comment) => {
         console.log('Updated comment:', comment);
@@ -485,6 +494,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
+    // Navigate back based on source
     if (this.source === 'profile' && this.username) {
       this.router.navigate(['/profile', this.username]);
     } else {
@@ -497,6 +507,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       return 'assets/garden-nexus-logo.webp';
     }
 
+    // Check cache first
     const cacheKey = JSON.stringify(imageFile);
     if (this.imageUrlCache[cacheKey]) {
       return this.imageUrlCache[cacheKey];
@@ -504,6 +515,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
     let url: string;
     if (imageFile && imageFile.type === 'Buffer' && Array.isArray(imageFile.data)) {
+      // Convert Buffer to Blob and create URL
       const uint8Array = new Uint8Array(imageFile.data);
       const blob = new Blob([uint8Array], { type: 'image/jpeg' });
       url = URL.createObjectURL(blob);
@@ -514,18 +526,20 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
       url = 'assets/garden-nexus-logo.webp';
     }
 
+    // Cache the URL
     this.imageUrlCache[cacheKey] = url;
     return url;
   }
 
   private hasFormErrors(): boolean {
     if (!this.blog) return true;
+    // Check various form validations
     const titleValid = this.blog?.title?.length <= this.maxTitleLength;
     const contentSection1Valid = this.isContentValid('content_section_1');
     const contentSection2Valid = this.isContentValid('content_section_2');
     const contentSection3Valid = this.isContentValid('content_section_3');
     const image1Valid = !!this.blog?.image_1 && !this.fileSizeError['image_1'] && !this.fileTypeError['image_1'];
-    
+
     return !titleValid || !contentSection1Valid || !image1Valid || this.hasImageErrors();
   }
 
@@ -546,7 +560,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     return words.every(word => word.length <= this.maxWordLength);
   }
 
-  // Add this method to check if content is too short
   isContentTooShort(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
     const content = this.blog![section];
     if (!content) return false; // Optional sections are not considered too short if empty
@@ -554,7 +567,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     return wordCount > 0 && wordCount < this.minContentWords;
   }
 
-  // Add this method to check if content is too long
   isContentTooLong(section: 'content_section_1' | 'content_section_2' | 'content_section_3'): boolean {
     const content = this.blog![section];
     if (!content) return false;
@@ -566,6 +578,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   addAutoGrow(): void {
+    // Add auto-grow functionality to textareas
     const textareas = document.querySelectorAll('.auto-grow') as NodeListOf<HTMLTextAreaElement>;
     textareas.forEach(textarea => {
       this.autoGrow.call(textarea);
@@ -573,13 +586,15 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     });
     this.cd.detectChanges();
   }
-  
+
   autoGrow(this: HTMLTextAreaElement): void {
+    // Adjust textarea height based on content
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
   }
 
   toggleCategory(category: string): void {
+    // Add or remove category from blog
     const index = this.blog!.categories.indexOf(category);
     if (index === -1) {
       this.blog!.categories.push(category);
@@ -589,6 +604,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   quoteComment(comment: Comment) {
+    // Set up reply to comment
     this.replyingToComment = comment;
     this.replyText = `"${comment.comment}"`;
     // Scroll to the comment input area
@@ -600,6 +616,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   cancelReply() {
+    // Cancel reply to comment
     this.replyingToComment = null;
     this.replyText = '';
   }
