@@ -1,5 +1,3 @@
-// src/app/not-found/not-found.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,17 +9,20 @@ import { Router, ActivatedRoute } from '@angular/router';
   `
 })
 export class NotFoundComponent implements OnInit {
+  // Countdown timer in seconds
   countdown: number = 5;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    // Set up interval to countdown and redirect
     const redirectInterval = setInterval(() => {
       this.countdown--;
       if (this.countdown === 0) {
         clearInterval(redirectInterval);
+        // Redirect to the specified route or home page
         this.router.navigate([this.route.snapshot.data['redirectTo'] || '']);
       }
-    }, 1000);
+    }, 1000); // Update every second
   }
 }

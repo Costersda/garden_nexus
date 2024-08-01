@@ -1,33 +1,48 @@
+<!-- Edit Profile Modal -->
 <div class="modal" (click)="onModalBackgroundClick($event)" #modalBackground>
   <div class="modal-content">
+    <!-- Modal Header -->
     <div class="modal-header">
       <h2>Edit Profile</h2>
       <img src="assets/close_icon.png" class="close-btn" (click)="cancel()" alt="Close">
     </div>
+    
+    <!-- Edit Profile Form -->
     <form class="edit-profile-form" (ngSubmit)="saveProfile()">
+      <!-- Country Selection -->
       <div class="form-group">
         <label for="country">Country:</label>
         <select id="country" [(ngModel)]="updatedProfile.country" name="country">
           <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
         </select>
       </div>
+      
+      <!-- Bio Input with Word Count -->
       <div class="form-group">
         <label for="bio">Bio:</label>
-        <textarea id="bio" [(ngModel)]="updatedProfile.bio" name="bio" (ngModelChange)="checkWordCount()" [class.error]="wordCount > 100"></textarea>
+        <textarea id="bio" [(ngModel)]="updatedProfile.bio" name="bio" 
+                  (ngModelChange)="checkWordCount()" [class.error]="wordCount > 100"></textarea>
         <div class="word-count" [class.error-text]="wordCount > 100">
           Word count: {{ wordCount }}/100
         </div>
       </div>
+      
+      <!-- Profile Image Upload -->
       <div class="form-group">
         <label for="imageFile">Profile Image:</label>
-        <input type="file" id="imageFile" (change)="onFileChange($event)" [class.error]="fileSizeError || fileTypeError" />
+        <input type="file" id="imageFile" (change)="onFileChange($event)" 
+               [class.error]="fileSizeError || fileTypeError" />
         <div class="file-size-info">Maximum file size: 2 MB</div>
+        <!-- Error messages for file upload -->
         <div *ngIf="fileSizeError" class="error-text">{{ fileSizeError }}</div>
         <div *ngIf="fileTypeError" class="error-text">{{ fileTypeError }}</div>
       </div>
+      
+      <!-- Form Buttons -->
       <div class="button-group">
         <button type="button" class="edit-profile-cancel-btn" (click)="cancel()">Cancel</button>
-        <button type="submit" class="edit-profile-save-btn" [disabled]="wordCount > 100 || !!fileSizeError || !!fileTypeError">Save</button>
+        <button type="submit" class="edit-profile-save-btn" 
+                [disabled]="wordCount > 100 || !!fileSizeError || !!fileTypeError">Save</button>
       </div>
     </form>
   </div>

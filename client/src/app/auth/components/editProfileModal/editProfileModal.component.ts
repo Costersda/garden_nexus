@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { CountryService } from '../../../shared/services/country.service';
 
+// Define the structure of a user profile
 interface Profile {
   email: string;
   username: string;
@@ -16,11 +17,13 @@ interface Profile {
   templateUrl: './editProfileModal.component.html',
 })
 export class EditProfileModalComponent implements OnChanges {
+  // Input and Output properties for component communication
   @Input() profile: Profile | null = null;
   @Output() profileUpdated = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
   @ViewChild('modalBackground') modalBackground!: ElementRef;
 
+  // Component properties
   updatedProfile: Partial<Profile> = {};
   countries: string[] = [];
   wordCount: number = 0;
@@ -32,6 +35,7 @@ export class EditProfileModalComponent implements OnChanges {
     this.countries = this.countryService.getCountries();
   }
 
+  // Lifecycle hook to update component when input changes
   ngOnChanges(): void {
     if (this.profile) {
       this.updatedProfile = {
@@ -43,10 +47,12 @@ export class EditProfileModalComponent implements OnChanges {
     }
   }
 
+  // Method to count words in bio
   checkWordCount(): void {
     this.wordCount = this.updatedProfile.bio ? this.updatedProfile.bio.split(/\s+/).filter(word => word).length : 0;
   }
 
+  // Method to save updated profile
   saveProfile(): void {
     if (this.profile?.username) {
       const url = `${environment.apiUrl}/profile/${this.profile.username}`;
@@ -62,6 +68,7 @@ export class EditProfileModalComponent implements OnChanges {
     }
   }
 
+  // Method to handle file selection for profile image
   onFileChange(event: any): void {
     const file: File = event.target.files[0];
     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
@@ -85,11 +92,12 @@ export class EditProfileModalComponent implements OnChanges {
     }
   }
 
+  // Method to handle cancel action
   cancel(): void {
     this.close.emit();
   }
 
-  // New method to handle clicks on the modal background
+  // Method to handle clicks on the modal background
   onModalBackgroundClick(event: MouseEvent): void {
     if (event.target === this.modalBackground.nativeElement) {
       this.close.emit();
