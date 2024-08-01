@@ -16,4 +16,4 @@ export interface Blog {
   updatedAt: Date;
 }
 
-export interface BlogDocument extends Blog, Document {}
+export interface BlogDocument extends Blog, Document { }

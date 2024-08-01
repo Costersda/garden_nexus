@@ -3,31 +3,31 @@ import { CommentDocument } from "../types/comment.interface";
 
 const commentSchema = new Schema<CommentDocument>(
   {
-    user: { 
-        type: Schema.Types.ObjectId, 
-        ref: "User", 
-        required: true 
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
     },
-    blogId: { 
-        type: Schema.Types.ObjectId, 
-        ref: "Blog" 
+    blogId: {
+      type: Schema.Types.ObjectId,
+      ref: "Blog"
     },
-    forumId: { 
-        type: Schema.Types.ObjectId, 
-        ref: "Forum" 
+    forumId: {
+      type: Schema.Types.ObjectId,
+      ref: "Forum"
     },
-    comment: { 
-        type: String, 
-        required: [true, "Comment is required"] 
+    comment: {
+      type: String,
+      required: [true, "Comment is required"]
     },
     isEdited: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false
     },
     replyingTo: {
-        type: Schema.Types.ObjectId,
-        ref: "Comment",
-        default: null
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+      default: null
     },
     replyText: {
       type: String,
@@ -35,9 +35,9 @@ const commentSchema = new Schema<CommentDocument>(
     }
   },
   {
-    timestamps: { 
-        createdAt: true, 
-        updatedAt: false 
+    timestamps: {
+      createdAt: true,
+      updatedAt: false
     },
   }
 );

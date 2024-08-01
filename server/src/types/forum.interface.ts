@@ -11,4 +11,4 @@ export interface Forum {
   updatedAt: Date;
 }
 
-export interface ForumDocument extends Forum, Document {}
+export interface ForumDocument extends Forum, Document { }

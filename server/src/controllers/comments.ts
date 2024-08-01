@@ -6,7 +6,7 @@ import { CommentDocument } from "../types/comment.interface";
 const normalizeComment = (comment: CommentDocument) => {
   const user = comment.user as any;
   let userImage = null;
-  
+
   if (user && user.imageFile && Buffer.isBuffer(user.imageFile)) {
     const base64String = user.imageFile.toString('base64');
     userImage = `data:image/jpeg;base64,${base64String}`;
@@ -36,7 +36,7 @@ export const createComment = async (
 ) => {
   try {
     const commentData = req.body;
-    
+
     if (commentData.replyingTo && commentData.replyingTo.id) {
       commentData.replyingTo = commentData.replyingTo.id;
     } else {
@@ -80,7 +80,7 @@ export const getAllCommentsByForumId = async (
       .populate('user', 'username imageFile')
       .populate('replyingTo', 'id user comment')
       .exec();
-    
+
     const normalizedComments = comments.map(comment => {
       try {
         return normalizeComment(comment);
@@ -89,7 +89,7 @@ export const getAllCommentsByForumId = async (
         return null;
       }
     }).filter(comment => comment !== null);
-    
+
     res.status(200).send(normalizedComments);
   } catch (error) {
     next(error);

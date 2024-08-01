@@ -1,4 +1,3 @@
-// server/services/emailService.ts
 import AWS from 'aws-sdk';
 import dotenv from 'dotenv';
 
@@ -13,7 +12,7 @@ AWS.config.update({
 const ses = new AWS.SES({ apiVersion: '2010-12-01' });
 
 export const sendVerificationEmail = async (to: string, verificationToken: string) => {
-  const backendUrl = process.env.NODE_ENV === 'production' 
+  const backendUrl = process.env.NODE_ENV === 'production'
     ? 'https://api.gardennexus.com'  // Use your actual production API URL here
     : 'http://localhost:4001';  // Use your local backend port
 

@@ -18,29 +18,36 @@ interface JwtPayload {
   iat?: number;
 }
 
+// Middleware for authentication
 export default async (
   req: ExpressRequestInterface,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    // Extract the authorization header
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
       return res.sendStatus(401);
     }
 
+    // Extract the token from the header
     const token = authHeader.split(" ")[1];
+
+    // Verify the token
     const decoded = jwt.verify(token, jwtSecret);
-    
+
     if (typeof decoded === 'object' && decoded !== null && 'id' in decoded) {
       const data = decoded as JwtPayload;
 
+      // Find the user in the database
       const user = await UserModel.findOne({ _id: data.id }).select('+email +username +isVerified');
       if (!user) {
         return res.sendStatus(401);
       }
 
+      // Attach the user to the request object
       req.user = user;
       next();
     } else {

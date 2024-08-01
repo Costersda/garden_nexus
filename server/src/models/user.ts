@@ -19,7 +19,7 @@ const userSchema = new Schema<UserDocument>(
     password: {
       type: String,
       required: [true, "Password is required"],
-      select: false,
+      select: false, // Exclude password from query results by default
     },
     country: {
       type: String,
@@ -59,13 +59,14 @@ const userSchema = new Schema<UserDocument>(
     followers: [{
       type: Types.ObjectId,
       ref: 'User'
-    }],  
+    }],
   },
   {
     timestamps: true,
   }
 );
 
+// Middleware to hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
@@ -80,6 +81,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Method to validate password
 userSchema.methods.validatePassword = function (password: string) {
   return bcryptjs.compare(password, this.password);
 };

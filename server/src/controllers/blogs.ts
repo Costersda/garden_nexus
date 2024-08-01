@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
-import { Comment } from "../models/comment"; // Import the Comment model
+import { Comment } from "../models/comment";
 import User from "../models/user";
 
 // Create a new blog post
@@ -19,7 +19,7 @@ export const createBlog = async (
 
     const blogData = {
       ...req.body,
-      user_id: user._id // Ensure user_id is set to the authenticated user's ID
+      user_id: user._id
     };
 
     const blog = new Blog(blogData);

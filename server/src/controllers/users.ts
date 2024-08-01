@@ -1,4 +1,3 @@
-// usersController.ts
 import { NextFunction, Request, Response } from "express";
 import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
@@ -28,10 +27,11 @@ const normalizeUser = (user: UserDocument) => {
     username: user.username,
     id: user.id,
     token: `Bearer ${token}`,
-    isVerified: user.isVerified  // Add this line
+    isVerified: user.isVerified
   };
 };
 
+// Register a new user
 export const register = async (
   req: Request,
   res: Response,
@@ -57,12 +57,12 @@ export const register = async (
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
     // Create and save new user
-    const newUser = new UserModel({ 
-      email, 
-      username, 
-      password, 
+    const newUser = new UserModel({
+      email,
+      username,
+      password,
       verificationToken,
-      isVerified: false 
+      isVerified: false
     });
     const savedUser = await newUser.save();
 
@@ -87,6 +87,7 @@ export const register = async (
   }
 };
 
+// Verify a users email
 export const verifyEmail = async (
   req: Request,
   res: Response,
@@ -112,6 +113,7 @@ export const verifyEmail = async (
   }
 };
 
+// Resend the verification email
 export const resendVerificationEmail = async (
   req: Request,
   res: Response,
@@ -145,6 +147,7 @@ export const resendVerificationEmail = async (
   }
 };
 
+// Forgot password email
 export const forgotPassword = async (
   req: Request,
   res: Response,
@@ -182,6 +185,7 @@ export const forgotPassword = async (
   }
 };
 
+// Reset password
 export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { token } = req.params;
@@ -220,6 +224,7 @@ function isValidationError(error: unknown): error is { errors: Record<string, an
   return typeof error === 'object' && error !== null && 'errors' in error;
 }
 
+// Login a user
 export const login = async (
   req: Request,
   res: Response,
@@ -247,6 +252,7 @@ export const login = async (
   }
 };
 
+// Get current user
 export const currentUser = async (req: ExpressRequestInterface, res: Response) => {
   try {
     if (!req.user) {
@@ -256,14 +262,14 @@ export const currentUser = async (req: ExpressRequestInterface, res: Response) =
     if (!user) {
       return res.sendStatus(404);
     }
-    res.json(normalizeUser(user));  // This will now include isVerified
+    res.json(normalizeUser(user));
   } catch (error) {
     console.error('Error in currentUser:', error);
     res.status(500).json({ message: 'Error fetching user', error });
   }
 };
 
-
+// Get a profile
 export const getProfile = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
@@ -275,7 +281,7 @@ export const getProfile = async (req: Request, res: Response) => {
 
     const { _id, email, country, bio, imageFile, isVerified } = user;
     res.status(200).json({
-      id: _id,  // Include the ID here
+      id: _id,
       email,
       username,
       country,
@@ -288,6 +294,7 @@ export const getProfile = async (req: Request, res: Response) => {
   }
 };
 
+// Update a users profile
 export const updateProfile = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
   try {
     const { username } = req.params;
@@ -362,7 +369,7 @@ export const checkUserCredentialsAvailability = async (
         { email: email ? email : '' }
       ]
     });
-
+    // Check the email and username is unique
     if (user) {
       const message = user.username === username ? 'Username is already taken' : 'Email is already in use';
       return res.json({
@@ -456,7 +463,7 @@ export const getFollowers = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     const user = await UserModel.findById(userId).populate('followers', 'username');
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -472,7 +479,7 @@ export const getFollowing = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     const user = await UserModel.findById(userId).populate('following', 'username imageFile');
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -512,7 +519,7 @@ export const checkIfFollowing = async (req: ExpressRequestInterface, res: Respon
     res.json(isFollowing);
   } catch (error: unknown) {
     console.error("Error checking if following:", error);
-    
+
     if (error instanceof Error) {
       res.status(500).json({ message: "Error checking if following", error: error.message });
     } else {

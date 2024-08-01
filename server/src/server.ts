@@ -13,7 +13,6 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { startScheduledTasks } from "./services/scheduledTasks";
 
-
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
@@ -32,7 +31,7 @@ app.get("/", (req, res) => {
   res.send("API is UP");
 });
 
-// Specific user routes should come before the general /:id route
+// User Routes
 app.get("/api/users/check-credentials", usersController.checkUserCredentialsAvailability);
 app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
 app.post("/api/users/forgot-password", usersController.forgotPassword);
@@ -43,7 +42,7 @@ app.delete('/api/users/profile', authMiddleware, (req, res, next) => {
   usersController.deleteProfile(req, res, next);
 });
 
-// Routes with :id parameter
+// User Routes with :id parameter
 app.get("/api/users/:id/is-following", authMiddleware, usersController.checkIfFollowing);
 app.post("/api/users/:id/follow", authMiddleware, usersController.followUser);
 app.post("/api/users/:id/unfollow", authMiddleware, usersController.unfollowUser);
@@ -51,7 +50,7 @@ app.get("/api/users/:id/followers", authMiddleware, usersController.getFollowers
 app.get("/api/users/:id/following", authMiddleware, usersController.getFollowing);
 app.get('/api/users/:id', usersController.getUserById);
 
-// Other routes
+// Other User Routes
 app.post("/api/users", usersController.register);
 app.get("/api/verify/:token", (req, res) => {
   usersController.verifyEmail(req, res, (err) => {
@@ -65,24 +64,22 @@ app.get('/api/user/current', authMiddleware, usersController.currentUser);
 app.get('/api/profile/:username', authMiddleware, usersController.getProfile);
 app.put("/api/profile/:username", authMiddleware, usersController.updateProfile);
 
-
 // Comment routes
 app.post("/api/comments", authMiddleware, commentsController.createComment);
-app.get("/api/comments/blog/:blogId", commentsController.getAllCommentsByBlogId); // Blog Comments
-app.get("/api/comments/forum/:forumId", commentsController.getAllCommentsByForumId); // Forum Comments
-app.get("/api/comments/:id", commentsController.getCommentById); // Single Comment
-app.patch("/api/comments/:id", authMiddleware, commentsController.updateCommentById); // Update Comment
-app.delete("/api/comments/:id", commentsController.deleteCommentById); // Delete Comment
-
+app.get("/api/comments/blog/:blogId", commentsController.getAllCommentsByBlogId);
+app.get("/api/comments/forum/:forumId", commentsController.getAllCommentsByForumId);
+app.get("/api/comments/:id", commentsController.getCommentById);
+app.patch("/api/comments/:id", authMiddleware, commentsController.updateCommentById);
+app.delete("/api/comments/:id", commentsController.deleteCommentById);
 
 // Blog routes
 app.post("/api/blogs", authMiddleware, blogController.createBlog);
 app.get("/api/blogs", blogController.getAllBlogs);
 app.get("/api/blogs/search", blogController.getBlogsBySearch);
-app.get("/api/blogs/category", blogController.getBlogsByCategory); // New route for getting blogs by category
-app.get("/api/blogs/user/:username", blogController.getBlogsByUser); // New route for getting blogs by username
+app.get("/api/blogs/category", blogController.getBlogsByCategory);
+app.get("/api/blogs/user/:username", blogController.getBlogsByUser);
 app.get("/api/blogs/:id", blogController.getBlogById);
-app.get("/api/blogs/:id", blogController.getBlogWithUserById); // Updated route to include user info
+app.get("/api/blogs/:id", blogController.getBlogWithUserById);
 app.patch("/api/blogs/:id", authMiddleware, blogController.updateBlogById);
 app.delete("/api/blogs/:id", blogController.deleteBlogById);
 
@@ -90,10 +87,10 @@ app.delete("/api/blogs/:id", blogController.deleteBlogById);
 app.post("/api/forums", authMiddleware, forumController.createForum);
 app.get("/api/forums", forumController.getAllForums);
 app.get("/api/forums/search", forumController.getForumsBySearch);
-app.get("/api/forums/category", forumController.getForumsByCategory); // New route for getting forums by category
-app.get("/api/forums/user/:username", forumController.getForumsByUser); // New route for getting forums by username
+app.get("/api/forums/category", forumController.getForumsByCategory);
+app.get("/api/forums/user/:username", forumController.getForumsByUser);
 app.get("/api/forums/:id", forumController.getForumById);
-app.get("/api/forums/:id", forumController.getForumWithUserById); // Updated route to include user info
+app.get("/api/forums/:id", forumController.getForumWithUserById);
 app.patch("/api/forums/:id", authMiddleware, forumController.updateForumById);
 app.delete("/api/forums/:id", forumController.deleteForumById);
 
@@ -104,7 +101,7 @@ io.on("connection", () => {
 mongoose.connect("mongodb://localhost:27017/garden_nexus").then(() => {
   console.log("connected to mongodb");
 
-   // Start the scheduled tasks
+  // Start the scheduled tasks
   startScheduledTasks();
 
   httpServer.listen(4001, () => {

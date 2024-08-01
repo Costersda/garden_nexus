@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Forum } from "../models/forum";
-import { Comment } from "../models/comment"; // Import the Comment model
+import { Comment } from "../models/comment";
 import User from "../models/user";
 
 // Create a new forum post
@@ -19,7 +19,7 @@ export const createForum = async (
 
     const forumData = {
       ...req.body,
-      user_id: user._id // Ensure user_id is set to the authenticated user's ID
+      user_id: user._id
     };
 
     const forum = new Forum(forumData);
@@ -138,7 +138,7 @@ export const deleteForumById = async (
   }
 };
 
-// Get a single forum post by ID including user information
+// Get a single forum post by ID
 export const getForumWithUserById = async (
   req: Request,
   res: Response,

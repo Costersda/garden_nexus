@@ -3,13 +3,14 @@ import { BlogDocument } from "../types/blog.interface";
 
 const blogSchema = new Schema<BlogDocument>(
   {
-    user_id: { 
-        type: Schema.Types.ObjectId, 
-        ref: "User", 
-        required: true },
-    title: { 
-        type: String, 
-        required: true 
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
     },
     content_section_1: { type: String, required: true },
     content_section_2: { type: String },
@@ -20,8 +21,8 @@ const blogSchema = new Schema<BlogDocument>(
     categories: [{ type: String }],
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     isEdited: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false
     }
   },
   {
