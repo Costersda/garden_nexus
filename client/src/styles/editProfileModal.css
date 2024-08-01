@@ -6,14 +6,13 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 select {
-  /* Your existing styles */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -31,10 +30,10 @@ select {
   max-width: 600px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
-  max-height: 90vh; /* Adjust as needed */
+  max-height: 90vh;
   overflow-y: auto;
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: #888 #f1f1f1; /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
 }
 
 .modal-header {
@@ -60,8 +59,8 @@ select {
   position: absolute;
   top: 0px;
   right: 0px;
-  width: 34px; /* Adjust the size as needed */
-  height: 34px; /* Adjust the size as needed */
+  width: 34px;
+  height: 34px;
   cursor: pointer;
 }
 
@@ -93,7 +92,7 @@ textarea {
 
 textarea.error,
 input[type="file"].error {
-  border: 1px solid red; /* Thicker border for error */
+  border: 1px solid red;
 }
 
 .button-group {
@@ -134,12 +133,10 @@ input[type="file"].error {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: all 0.4s ease;
 }
 
@@ -203,7 +200,6 @@ input[type="file"].error {
   margin-top: 5px;
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 767px) {
   .modal-content {
     width: 95%;

@@ -13,8 +13,8 @@
   background-color: #DDE5B6;
   padding: 20px;
   border-radius: 20px;
-  word-wrap: break-word; /* Ensure long words break and wrap within the container */
-  overflow-wrap: break-word; /* Ensure long words break and wrap within the container */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .profile-content {
@@ -56,7 +56,7 @@
   word-break: break-word;
   overflow-wrap: break-word;
   line-height: 1.1 !important;
-  max-width: calc(100% - 35px); /* Subtracting the width of the edit icon plus some margin */
+  max-width: calc(100% - 35px);
 }
 
 .profile-username::after {
@@ -93,17 +93,9 @@
   font-weight: 500 !important;
 }
 
-/* p {
-  font-size: 18px !important;
-  color: #555 !important;
-  margin: 10px 0 !important;
-} */
-
 p strong {
   font-weight: bold;
 }
-
-
 
 .img-banner {
   padding: 0;
@@ -126,7 +118,7 @@ p strong {
 
 .profile-picture-container {
   position: absolute;
-  top: 100px; /* Adjust to position the profile picture */
+  top: 100px;
   left: 25%;
   transform: translateX(0%);
   z-index: 10;
@@ -159,18 +151,17 @@ p strong {
 }
 
 .verify-profile-container {
-  background-color: #fdccd4; /* Soft red background */
-  border: 3px solid #4d3d33; /* Slightly darker red border */
+  background-color: #fdccd4;
+  border: 3px solid #4d3d33;
   border-radius: 8px;
   padding: 20px;
-  margin: 0px auto; /* Changed from margin: 20px 0 */
+  margin: 0px auto;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  
 }
 
 .verify-profile-container p {
-  color: #6C584C; /* Dark red text color */
+  color: #6C584C;
   margin-bottom: 10px;
   font-weight: 420 !important;
   font-size: 1.1em !important;
@@ -182,7 +173,7 @@ p strong {
   padding: 10px 25px;
   border: none;
   border-radius: 5px;
-  background-color: #8d8888; /* Soft red background */
+  background-color: #8d8888;
   color: #ffffff;
   font-size: 1.2em;
   font-weight: 600;
@@ -201,12 +192,10 @@ p strong {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: all 0.4s ease;
 }
 
@@ -226,7 +215,7 @@ p strong {
 
 .resend-verification-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.5); /* Soft red focus ring */
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.5);
 }
 
 .follow-btn {
@@ -250,12 +239,10 @@ p strong {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: all 0.4s ease;
 }
 
@@ -278,7 +265,6 @@ p strong {
   opacity: 0.6;
 }
 
-/* Follow state */
 .follow-btn:not(.following) {
   background-color: #ADC178;
   color: #ffffff;
@@ -288,13 +274,11 @@ p strong {
   background-color: #91A654;
 }
 
-/* Unfollow state */
 .follow-btn.following {
   background-color: #a1a1a1;
   color: #000000;
 }
 
-/* Optional: change color on hover for unfollow */
 .follow-btn.following:hover {
   color: white;
 }
@@ -342,7 +326,7 @@ p strong {
 
 .following-user-picture {
   width: 100%;
-  padding-bottom: 80%; /* This creates a square aspect ratio */
+  padding-bottom: 80%;
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -386,7 +370,6 @@ p strong {
   width: 100%;
 }
 
-
 @media (max-width: 1670px) {
   .profile-picture-container {
     left: 20%;
@@ -398,7 +381,6 @@ p strong {
     left: 10%;
   }
 }
-
 
 @media (max-width: 992px) {
   .profile-container {
@@ -445,7 +427,6 @@ p strong {
   .following-item {
     flex: 0 0 calc(50% - 10px);
   }
-
 
   .profile-content {
     max-width: 100%;

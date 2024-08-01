@@ -1,6 +1,3 @@
-/* blog.component.css */
-
-
 .form-element {
   display: grid;
   grid-template-columns: 150px 1fr;
@@ -91,12 +88,10 @@ input[type="file"] {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: all 0.4s ease;
 }
 
@@ -175,9 +170,7 @@ input[type="file"] {
     width: 100%;
   }
 
-
-
-  .blog-submitBtn {    
+  .blog-submitBtn {
     margin: 10px 0;
     width: 100%;
   }

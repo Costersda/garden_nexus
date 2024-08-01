@@ -1,5 +1,3 @@
-/* forum-preview.component.css */
-
 .forum-preview {
   display: flex;
   flex-direction: column;
@@ -186,12 +184,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: all 0.4s ease;
 }
 
@@ -232,7 +228,7 @@
   margin-top: 30px;
 }
 
-.forum-content-container p{
+.forum-content-container p {
   text-align: left;
 }
 
@@ -256,7 +252,6 @@
   width: 60%;
 }
 
-/* Responsive styles */
 @media (max-width: 1000px) {
   .forum-preview {
     padding: 16px;
