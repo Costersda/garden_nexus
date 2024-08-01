@@ -1,22 +1,29 @@
-<!-- blog-preview.component.html -->
+
 <div class="blog-preview">
   <div class="preview-blog-top">
     <div class="top-left">
+      <!-- Blog title with link to full blog -->
       <div class="blog-preview-title">
         <h2><a [routerLink]="['/blog', blog._id]">{{ blog.title | titlecase }}</a></h2>
       </div>      
     </div>
   </div>
+
+  <!-- Blog image section -->
   <div class="blog-preview-image">
     <img *ngIf="blog.image_1" [src]="blog.image_1" alt="Blog Image 1">
   </div>
+
   <div class="blog-meta">
+    <!-- Author name with link to author's profile -->
     <a [routerLink]="['/profile', blogAuthor]" class="blog-preview-author">
       By: {{ blogAuthor | titlecase }}
     </a>
   </div>
+
   <div class="preview-blog-bottom">
     <div class="bottom-right">
+      <!-- Button to view the full blog -->
       <button class="view-blog-btn" *ngIf="blog._id" (click)="viewBlog(blog._id)">View Blog</button>
     </div>
   </div>

@@ -4,7 +4,7 @@ export interface Comment {
   user: {
     _id: string;
     username: string;
-    imageFile?: string; // assuming the user might have a profile picture
+    imageFile?: string;
   };
   blogId?: string;
   forumId?: string;

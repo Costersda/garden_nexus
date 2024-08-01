@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
       this.authService.setCurrentUser(null);
     }
 
-    // New scroll-to-top logic
+    // Scroll-to-top logic
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {

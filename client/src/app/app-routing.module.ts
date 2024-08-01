@@ -22,44 +22,48 @@ import { ForgotPasswordComponent } from './auth/components/forgot-password/forgo
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 
 const routes: Routes = [
-  { path: 'profile/:username', 
+  {
+    path: 'profile/:username',
     component: ProfileComponent,
-    canActivate: [AuthGuardService] 
+    canActivate: [AuthGuardService]
   },
   { path: '', component: HomeComponent },
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     component: LoginComponent,
     canActivate: [LoggedInAuthGuardService]
   },
-  { 
-    path: 'register', 
+  {
+    path: 'register',
     component: RegisterComponent,
     canActivate: [LoggedInAuthGuardService]
   },
-  { path: 'forgot-password', 
+  {
+    path: 'forgot-password',
     component: ForgotPasswordComponent,
-    canActivate: [LoggedInAuthGuardService] },
-  { path: 'reset-password/:token', 
+    canActivate: [LoggedInAuthGuardService]
+  },
+  {
+    path: 'reset-password/:token',
     component: ResetPasswordComponent,
-    // canActivate: [LoggedInAuthGuardService] 
+    canActivate: [LoggedInAuthGuardService] 
   },
   { path: 'blogs', component: BlogComponent },
   { path: 'blog/:id', component: ViewBlogComponent },
-  { 
-    path: 'blogs/create', 
+  {
+    path: 'blogs/create',
     component: CreateBlogComponent,
     canActivate: [AuthGuardService, VerifiedAuthGuardService]
   },
   { path: 'forum', component: ForumComponent },
-  { 
-    path: 'forum/create', 
+  {
+    path: 'forum/create',
     component: CreateForumComponent,
     canActivate: [AuthGuardService, VerifiedAuthGuardService]
   },
   { path: 'forum/:id', component: ViewForumComponent },
   { path: 'help', component: HelpComponent },
-  { path: 'verify-success', component: VerifySuccessComponent, canActivate: [VerificationPageGuardService]},
+  { path: 'verify-success', component: VerifySuccessComponent, canActivate: [VerificationPageGuardService] },
   { path: 'verify-failed', component: VerifyFailedComponent, canActivate: [VerificationPageGuardService] },
   { path: '**', component: NotFoundComponent, data: { redirectTo: '' } },
 

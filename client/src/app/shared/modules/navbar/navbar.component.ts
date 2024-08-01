@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private eventSubscription: Subscription;
 
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {
+    // Subscribe to router events to track current URL
     this.eventSubscription = this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.urlAfterRedirects;
@@ -25,15 +26,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Subscribe to current user updates
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user || null;
     });
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe from router events to prevent memory leaks
     this.eventSubscription.unsubscribe();
   }
 
+  // Navigate to profile or login page based on user authentication status
   goToProfile(): void {
     if (this.currentUser) {
       const currentUsername = this.route.snapshot.paramMap.get('username');
@@ -45,6 +49,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Check if the given route is currently active
   isActiveRoute(route: string): boolean {
     if (route === '/') {
       return this.currentUrl === route;

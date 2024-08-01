@@ -22,6 +22,7 @@ export class ForumComponent implements OnInit, OnDestroy {
   noResults: boolean = false;
   isSearchActive: boolean = false;
 
+  // ViewChild decorators for accessing DOM elements
   @ViewChild('categoryDropdown') categoryDropdown!: ElementRef;
   @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
 
@@ -35,6 +36,7 @@ export class ForumComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchForums();
+    // Add click listener to close dropdown when clicking outside
     this.renderer.listen('document', 'click', (event: Event) => {
       if (!this.categoryDropdown.nativeElement.contains(event.target) &&
           !this.dropdownToggle.nativeElement.contains(event.target)) {
@@ -44,17 +46,20 @@ export class ForumComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe to prevent memory leaks
     if (this.forumSubscription) {
       this.forumSubscription.unsubscribe();
     }
   }
 
+  // Getter for disabling search button
   get isSearchButtonDisabled(): boolean {
     const hasSelectedCategories = this.categories.some(category => category.selected);
     const hasValidSearchQuery = this.searchQuery.trim().length > 0;
     return !(hasSelectedCategories || hasValidSearchQuery);
   }
 
+  // Fetch all forums
   fetchForums(): void {
     this.forumSubscription = this.forumService.getAllForums().subscribe(
       (forums: Forum[]) => {
@@ -70,12 +75,14 @@ export class ForumComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Navigate to a specific forum
   viewForum(forumId: string | undefined): void {
     if (forumId) {
       this.router.navigate(['/forum', forumId], { queryParams: { source: 'forum' } });
     }
   }
 
+  // Search forums based on query and selected categories
   searchForums(): void {
     const selectedCategories = this.categories
       .filter(category => category.selected)
@@ -96,21 +103,25 @@ export class ForumComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Toggle category dropdown
   toggleDropdown(event: Event): void {
     event.stopPropagation();
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  // Navigate to create forum post page
   createForumPost(): void {
     this.router.navigate(['/forum/create'], { relativeTo: this.route });
   }
 
+  // Load more forums
   loadMoreForums(): void {
     const currentLength = this.displayedForums.length;
     const nextLength = currentLength + this.forumsIncrement;
     this.displayedForums = this.forums.slice(0, nextLength);
   }
 
+  // Sort forums by newest or oldest
   sortForums(order: 'newest' | 'oldest'): void {
     if (order === 'newest') {
       this.forumHeader = this.isSearchActive ? 'Newest Search Results' : 'Newest Forum Posts';
@@ -122,6 +133,7 @@ export class ForumComponent implements OnInit, OnDestroy {
     this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
   }
 
+  // Reset search and fetch all forums
   resetSearch(): void {
     this.categories.forEach(category => category.selected = false);
     this.searchQuery = '';

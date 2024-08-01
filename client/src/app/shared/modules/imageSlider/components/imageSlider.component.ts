@@ -22,9 +22,13 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.resetTimer();
   }
+
   ngOnDestroy() {
+    // Clear the timeout when component is destroyed
     window.clearTimeout(this.timeoutId);
   }
+
+  // Reset the timer for auto-sliding
   resetTimer() {
     if (this.timeoutId) {
       window.clearTimeout(this.timeoutId);
@@ -32,6 +36,7 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
     this.timeoutId = window.setTimeout(() => this.goToNext(), 8000);
   }
 
+  // Navigate to the previous slide
   goToPrevious(): void {
     const isFirstSlide = this.currentIndex === 0;
     const newIndex = isFirstSlide
@@ -42,6 +47,7 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
     this.currentIndex = newIndex;
   }
 
+  // Navigate to the next slide
   goToNext(): void {
     const isLastSlide = this.currentIndex === this.slides.length - 1;
     const newIndex = isLastSlide ? 0 : this.currentIndex + 1;
@@ -50,11 +56,13 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
     this.currentIndex = newIndex;
   }
 
+  // Go to a specific slide
   goToSlide(slideIndex: number): void {
     this.resetTimer();
     this.currentIndex = slideIndex;
   }
 
+  // Get the URL of the current slide
   getCurrentSlideUrl() {
     return `url('${this.slides[this.currentIndex].url}')`;
   }

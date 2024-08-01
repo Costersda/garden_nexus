@@ -16,22 +16,23 @@ export class ForumPreviewComponent implements OnInit {
   @Input() source: string = 'forum';
   @Input() username?: string;
   forumAuthor: string = '';
-  commentCount: number = 0; // Variable to hold the number of comments
+  commentCount: number = 0;
 
   constructor(
     private router: Router, 
     private userService: UserService,
-    private commentService: CommentService // Inject CommentService
+    private commentService: CommentService
   ) {}
 
   ngOnInit(): void {
+    // Fetch forum author's username
     if (this.forum.user_id) {
       this.userService.getUserById(this.forum.user_id).subscribe(user => {
         this.forumAuthor = user.username;
       });
     }
 
-    // Fetch comments for the forum and count them
+    // Fetch and count comments for the forum
     if (this.forum._id) {
       this.commentService.getCommentsByForumId(this.forum._id).subscribe(comments => {
         this.commentCount = comments.length;
@@ -39,10 +40,12 @@ export class ForumPreviewComponent implements OnInit {
     }
   }
 
+  // Generate preview content (first 30 words)
   get previewContent(): string {
     return this.forum.content.split(' ').slice(0, 30).join(' ') + '...';
   }
 
+  // Navigate to forum with appropriate query parameters
   viewForum(id: string): void {
     const queryParams: any = this.source === 'profile' && this.username ? { source: 'profile', username: this.username } : { source: 'forum' };
     this.router.navigate(['/forum', id], { queryParams });

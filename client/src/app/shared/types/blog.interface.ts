@@ -1,5 +1,3 @@
-// models/blog.interface.ts
-
 export interface Blog {
     _id?: string;
     user_id: string;

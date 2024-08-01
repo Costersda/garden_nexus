@@ -1,9 +1,11 @@
 <div class="forum-preview">
   <div class="preview-forum-top">
     <div class="top-left">
+      <!-- Forum title -->
       <div class="forum-preview-title">
         <h2><a [routerLink]="['/forum', forum._id]" class="forum-title">{{ forum.title | titlecase }}</a></h2>
       </div>
+      <!-- Forum metadata -->
       <div class="forum-meta">
         <a [routerLink]="['/profile', forumAuthor]" class="forum-author">
           By: {{ forumAuthor | titlecase }}
@@ -12,13 +14,16 @@
       </div>
     </div>
   </div>
+  
   <div class="preview-forum-bottom">
     <div class="bottom-left">
+      <!-- Forum categories -->
       <div class="forum-preview-categories">
         <span *ngFor="let category of forum.categories" class="forum-preview-category">{{ category }}</span>
       </div>
     </div>
     <div class="bottom-right">
+      <!-- View forum button -->
       <button class="view-forum-btn" *ngIf="forum._id" (click)="viewForum(forum._id)">View Post</button>
     </div>
   </div>

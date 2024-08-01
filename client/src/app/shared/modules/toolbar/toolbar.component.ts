@@ -30,10 +30,12 @@ export class ToolbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Update auth button label based on login status
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       this.authButtonLabel = isLoggedIn ? 'Logout' : 'Login';
     });
 
+    // Fetch current user profile if token exists
     const token = localStorage.getItem('token');
     if (token) {
       this.authService.getCurrentUser().subscribe((currentUser) => {
@@ -44,6 +46,7 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
+  // Fetch user profile data
   fetchProfile(username: string): void {
     const url = `${environment.apiUrl}/profile/${username}`;
     this.http.get<User>(url).subscribe({
@@ -56,6 +59,7 @@ export class ToolbarComponent implements OnInit {
     });
   }
 
+  // Handle login/logout action
   onAuthAction(): void {
     if (this.authButtonLabel === 'Login') {
       this.router.navigate(['/login']);

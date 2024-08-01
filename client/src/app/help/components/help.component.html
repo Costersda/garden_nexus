@@ -2,312 +2,327 @@
 <app-navbar></app-navbar>
 
 <div class="img-banner">
-    <img class="img-banner-image" src="assets/spacer-img-9.webp" alt="User banner image">
+  <img class="img-banner-image" src="assets/spacer-img-9.webp" alt="User banner image">
 </div>
 
 <div class="help-content-container">
-    <div class="help-content">
-        <h1 class="help-page-heading">Help</h1>
-        
-        <nav class="help-tabs">
-            <span (click)="scrollTo('profile')" class="tab-link">Profile</span>
-            <span (click)="scrollTo('blog')" class="tab-link">Blog</span>
-            <span (click)="scrollTo('forum')" class="tab-link">Forum</span>
-        </nav>
-    </div>
-    <div class="help-content-container">
-        <hr class="styled-hr">
-    </div>
-    <div class="help-section">
-        <!-- Profile Section -->
-        <section id="profile">
-            <h2 class="help-section-title">Profile</h2>
-            <div class="help-section-container">
-                <div class="help-content-container-heading">
-                    <h4 class="help-content-subtitle">Update Your Profile</h4>
-                </div>
-                <div class="help-section-container-content">
-                    <div class="help-section-container-content-image">
-                        <img class="help-content-image" src="assets/help-page/profileUpdate.webp" alt="Profile Page Example" loading="lazy">
-                    </div>
-                    <div class="help-section-container-content-text">
-                        <div class="help-content-text-wrapper">
-                            <ul class="help-content-text">
-                                <li>Click on the ellipsis icon on your profile page.</li>
-                                <li>Click on "Edit Profile".</li>
-                                <li>Select your current country from the dropdown.</li>
-                                <li>Write or update your bio in the text box provided.</li>
-                                <li>Upload a new profile picture by selecting an image from your computer.</li>
-                                <li>Click "Save" to apply your updates.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="help-section-container">
-                <div class="help-content-container-heading">
-                    <h4 class="help-content-subtitle">View Your Activity</h4>
-                </div>
-                <div class="help-section-container-content">
-                    <div class="help-section-container-content-image">
-                        <img class="help-content-image" src="assets/help-page/profileActivity.webp" alt="Profile Page Example" loading="lazy">
-                    </div>
-                    <div class="help-section-container-content-text">
-                        <div class="help-content-text-wrapper">
-                            <p class="help-content-text">
-                                Your recent blog posts, comments, and forum threads will appear in your activity feed.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="help-section-container">
-                <div class="help-content-container-heading">
-                    <h4 class="help-content-subtitle">Delete Your Profile</h4>
-                </div>
-                <div class="help-section-container-content">
-                    <div class="help-section-container-content-image">
-                        <img class="help-content-image" src="assets/help-page/profileDelete.webp" alt="Profile Page Example" loading="lazy">
-                    </div>
-                    <div class="help-section-container-content-text">
-                        <div class="help-content-text-wrapper">
-                            <ul class="help-content-text">
-                                <li>Click on the ellipsis icon on your profile page.</li>
-                                <li>Click on "Delete Profile".</li>
-                                <li>Wait for the confirmation timer to count down</li>
-                                <li>Click "Confirm"</li>
-                            </ul>
-                            <br>
-                            <p class="help-content-text"> This deletes your profile as well as any blogs, posts, and comments that you have made. This cannot be undone!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-    <div class="help-content-container">
-        <hr class="styled-hr">
-    </div>
-        <!-- Blog Section -->
-        <div class="help-section">
-            <section id="blog">
-                <h2 class="help-section-title">Blog</h2>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Create a New Blog Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/blogCreate.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On the Blog page click the "Create a Post" button</li>
-                                    <li>Add a catchy title and write your content in the editor.</li>
-                                    <li>Click the "Upload” button to add images from your device</li>
-                                    <li>Select categories to classify your post.</li>
-                                    <li>Click "Create Blog Post" to share your post .</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Comment on a Blog Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/blogComment.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>Open any blog post and scroll to the bottom to find the comments section</li>
-                                    <li>Type your comment in the text input</li>
-                                    <li>Click the "Post Comment" button</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Search and Filter Blogs</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/blogSearch.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On the Blog page use the search bar to find Blogs by keywords or categories.</li>
-                                    <li>Click the category dropdown and select categories from the menu.</li>
-                                    <li>Enter keywords into the search box.</li>
-                                    <li>Click the "Search" button and the results will be displayed below.</li>
-                                    <li>Clicking the "Reset" button will clear the search and any selected categories.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Edit a Blog Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/blogEdit.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On a Blog post page you created click on the ellipsis icon</li>
-                                    <li>Click "Edit" from the menu.</li>
-                                    <li>Make your changes to the Title, Content, Images, and Categories.</li>
-                                    <li>Click the "Save" button to confirm the changes</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Delete a Blog Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/blogDelete.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On a Blog post page you created click on the ellipsis icon</li>
-                                    <li>Click "Delete" from the menu.</li>
-                                    <li>Wait for the confirmation timer to count down</li>
-                                    <li>Click "Confirm"</li>
-                                </ul>
-                                <p class="help-content-text"> This deletes your blog post and cannot be undone!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  <div class="help-content">
+    <h1 class="help-page-heading">Help</h1>
+
+    <!-- Navigation Tabs -->
+    <nav class="help-tabs">
+      <span (click)="scrollTo('profile')" class="tab-link">Profile</span>
+      <span (click)="scrollTo('blog')" class="tab-link">Blog</span>
+      <span (click)="scrollTo('forum')" class="tab-link">Forum</span>
+    </nav>
+  </div>
+  <div class="help-content-container">
+    <hr class="styled-hr">
+  </div>
+  <div class="help-section">
+    <!-- Profile Help Section -->
+    <section id="profile">
+      <h2 class="help-section-title">Profile</h2>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Update Your Profile</h4>
         </div>
-        <div class="help-content-container">
-            <hr class="styled-hr">
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/profileUpdate.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>Click on the ellipsis icon on your profile page.</li>
+                <li>Click on "Edit Profile".</li>
+                <li>Select your current country from the dropdown.</li>
+                <li>Write or update your bio in the text box provided.</li>
+                <li>Upload a new profile picture by selecting an image from your computer.</li>
+                <li>Click "Save" to apply your updates.</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <!-- Forum Section -->
-        <div class="help-section">
-            <section id="forum">
-                <h2 class="help-section-title">Forum</h2>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Create a New Forum Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/forumCreate.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On the Forum page click the "Create a Post" button</li>
-                                    <li>Add a catchy title and write your content in the editor.</li>
-                                    <li>Select categories to classify your post.</li>
-                                    <li>Click "Create Post" to share your post .</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Reply to a Forum Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/forumReply.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>Open any Forum post and scroll to the bottom to find the replies section</li>
-                                    <li>Type your message in the text input</li>
-                                    <li>Click the "Post Comment" button</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Search and Filter Forum Posts</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/forumSearch.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On the Forum page use the search bar to find posts by keywords or categories.</li>
-                                    <li>Click the category dropdown and select categories from the menu.</li>
-                                    <li>Enter keywords into the search box.</li>
-                                    <li>Click the "Search" button and the results will be displayed below.</li>
-                                    <li>Clicking the "Reset" button will clear the search and any selected categories.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Edit a Forum Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/forumEdit.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On a Forum post you created click on the ellipsis icon</li>
-                                    <li>Click "Edit" from the menu.</li>
-                                    <li>Make your changes to the Title, Content, and Categories.</li>
-                                    <li>Click the "Save" button to confirm the changes</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="help-section-container">
-                    <div class="help-content-container-heading">
-                        <h4 class="help-content-subtitle">Delete a Forum Post</h4>
-                    </div>
-                    <div class="help-section-container-content">
-                        <div class="help-section-container-content-image">
-                            <img class="help-content-image" src="assets/help-page/forumDelete.webp" alt="Profile Page Example" loading="lazy">
-                        </div>
-                        <div class="help-section-container-content-text">
-                            <div class="help-content-text-wrapper">
-                                <ul class="help-content-text">
-                                    <li>On a Forum post you created click on the ellipsis icon</li>
-                                    <li>Click "Delete" from the menu.</li>
-                                    <li>Wait for the confirmation timer to count down</li>
-                                    <li>Click "Confirm"</li>
-                                </ul>
-                                <br>
-                                <p class="help-content-text"> This deletes your Forum post and cannot be undone!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">View Your Activity</h4>
         </div>
-    </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/profileActivity.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <p class="help-content-text">
+                Your recent blog posts, comments, and forum threads will appear in your activity feed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Delete Your Profile</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/profileDelete.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>Click on the ellipsis icon on your profile page.</li>
+                <li>Click on "Delete Profile".</li>
+                <li>Wait for the confirmation timer to count down</li>
+                <li>Click "Confirm"</li>
+              </ul>
+              <br>
+              <p class="help-content-text"> This deletes your profile as well as any blogs, posts, and comments that you
+                have made. This cannot be undone!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="help-content-container">
+    <hr class="styled-hr">
+  </div>
+  <!-- Blog Help Section -->
+  <div class="help-section">
+    <section id="blog">
+      <h2 class="help-section-title">Blog</h2>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Create a New Blog Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/blogCreate.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On the Blog page click the "Create a Post" button</li>
+                <li>Add a catchy title and write your content in the editor.</li>
+                <li>Click the "Upload” button to add images from your device</li>
+                <li>Select categories to classify your post.</li>
+                <li>Click "Create Blog Post" to share your post .</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Comment on a Blog Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/blogComment.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>Open any blog post and scroll to the bottom to find the comments section</li>
+                <li>Type your comment in the text input</li>
+                <li>Click the "Post Comment" button</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Search and Filter Blogs</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/blogSearch.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On the Blog page use the search bar to find Blogs by keywords or categories.</li>
+                <li>Click the category dropdown and select categories from the menu.</li>
+                <li>Enter keywords into the search box.</li>
+                <li>Click the "Search" button and the results will be displayed below.</li>
+                <li>Clicking the "Reset" button will clear the search and any selected categories.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Edit a Blog Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/blogEdit.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On a Blog post page you created click on the ellipsis icon</li>
+                <li>Click "Edit" from the menu.</li>
+                <li>Make your changes to the Title, Content, Images, and Categories.</li>
+                <li>Click the "Save" button to confirm the changes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Delete a Blog Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/blogDelete.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On a Blog post page you created click on the ellipsis icon</li>
+                <li>Click "Delete" from the menu.</li>
+                <li>Wait for the confirmation timer to count down</li>
+                <li>Click "Confirm"</li>
+              </ul>
+              <p class="help-content-text"> This deletes your blog post and cannot be undone!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="help-content-container">
+    <hr class="styled-hr">
+  </div>
+  <!-- Forum Help Section -->
+  <div class="help-section">
+    <section id="forum">
+      <h2 class="help-section-title">Forum</h2>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Create a New Forum Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/forumCreate.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On the Forum page click the "Create a Post" button</li>
+                <li>Add a catchy title and write your content in the editor.</li>
+                <li>Select categories to classify your post.</li>
+                <li>Click "Create Post" to share your post .</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Reply to a Forum Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/forumReply.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>Open any Forum post and scroll to the bottom to find the replies section</li>
+                <li>Type your message in the text input</li>
+                <li>Click the "Post Comment" button</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Search and Filter Forum Posts</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/forumSearch.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On the Forum page use the search bar to find posts by keywords or categories.</li>
+                <li>Click the category dropdown and select categories from the menu.</li>
+                <li>Enter keywords into the search box.</li>
+                <li>Click the "Search" button and the results will be displayed below.</li>
+                <li>Clicking the "Reset" button will clear the search and any selected categories.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Edit a Forum Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/forumEdit.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On a Forum post you created click on the ellipsis icon</li>
+                <li>Click "Edit" from the menu.</li>
+                <li>Make your changes to the Title, Content, and Categories.</li>
+                <li>Click the "Save" button to confirm the changes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="help-section-container">
+        <div class="help-content-container-heading">
+          <h4 class="help-content-subtitle">Delete a Forum Post</h4>
+        </div>
+        <div class="help-section-container-content">
+          <div class="help-section-container-content-image">
+            <img class="help-content-image" src="assets/help-page/forumDelete.webp" alt="Profile Page Example"
+              loading="lazy">
+          </div>
+          <div class="help-section-container-content-text">
+            <div class="help-content-text-wrapper">
+              <ul class="help-content-text">
+                <li>On a Forum post you created click on the ellipsis icon</li>
+                <li>Click "Delete" from the menu.</li>
+                <li>Wait for the confirmation timer to count down</li>
+                <li>Click "Confirm"</li>
+              </ul>
+              <br>
+              <p class="help-content-text"> This deletes your Forum post and cannot be undone!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
 
 
 <router-outlet></router-outlet>

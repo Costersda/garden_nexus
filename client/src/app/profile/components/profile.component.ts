@@ -13,38 +13,51 @@ import { Forum } from '../../shared/types/forum.interface';
 import { ForumService } from '../../shared/services/forum.service';
 import { UserService } from '../../shared/services/user.service';
 import { ConfirmationDialogService } from '../../shared/modules/confirmation-dialog/confirmation-dialog.service';
-import { ToastrService } from 'ngx-toastr'; 
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  // User and profile related
   profile: User | null = null;
+  isOwner: boolean = false;
+  isFollowing: boolean = false;
+
+  // Blog
   blogs: Blog[] = [];
   displayedBlogs: Blog[] = [];
+  private initialBlogsToShow = 3;
+  private blogsIncrement = 3;
+  showBlogDropdown: boolean = false;
+
+  // Forum
   forums: Forum[] = [];
   displayedForums: Forum[] = [];
+  private initialForumsToShow = 3;
+  private forumsIncrement = 3;
+
+  // Following
   following: User[] = [];
   displayedFollowing: User[] = [];
+  private initialFollowingToShow = 5;
+  private followingIncrement = 5;
+  // followingPageSize = 10;
+  isLoadingFollowing: boolean = false;
+
+  // UI state
   errorMessage: string | null = null;
-  isOwner: boolean = false;
   isModalOpen: boolean = false;
+
+  // Subscriptions
   routeSubscription: Subscription | undefined;
   blogSubscription: Subscription | undefined;
   private forumSubscription!: Subscription | undefined;
-  private initialForumsToShow = 3;
-  private forumsIncrement = 3;
-  private initialBlogsToShow = 3;
-  private blogsIncrement = 3;
-  private initialFollowingToShow = 3;
-  private followingIncrement = 3;
-  showBlogDropdown: boolean = false;
+
+  // Email cooldown
   private cooldownPeriod = 60000; // 1 minute in milliseconds
   private lastEmailSentTime: number = 0;
-  isFollowing: boolean = false;
-  followingPageSize = 10;
-  isLoadingFollowing: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,9 +70,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private confirmationDialogService: ConfirmationDialogService, // Inject the service
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    // Subscribe to route parameters
     this.routeSubscription = this.route.paramMap.subscribe(params => {
       const username = params.get('username');
       if (username) {
@@ -71,6 +85,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Handle navigation events for smooth scrolling to verification box
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -90,6 +105,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe from subscriptions to prevent memory leaks
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
@@ -98,19 +114,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Close blog dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     this.showBlogDropdown = false;
   }
 
+  // Fetch user profile data
   fetchProfile(username: string): void {
     this.userService.getProfileByUsername(username).subscribe({
       next: (profile) => {
         this.profile = profile;
         this.errorMessage = null;
-        // console.log('Profile fetched:', profile);
         this.checkIfFollowing();
-        this.fetchFollowing(); // Add this line here
+        this.fetchFollowing();
       },
       error: (error) => {
         this.errorMessage = 'Error fetching profile';
@@ -119,12 +136,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Check if the current user is the profile owner
   checkOwnership(username: string): void {
     this.authService.getCurrentUser().subscribe((currentUser) => {
       this.isOwner = currentUser ? currentUser.username === username : false;
     });
   }
 
+  // Fetch blogs for the user
   fetchBlogsByUser(username: string): void {
     this.blogSubscription = this.blogService.getBlogsByUser(username).subscribe(
       (blogs: Blog[]) => {
@@ -137,24 +156,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Load more blogs for pagination
   loadMoreBlogs(): void {
     const currentLength = this.displayedBlogs.length;
     const nextLength = currentLength + this.blogsIncrement;
     this.displayedBlogs = this.blogs.slice(0, nextLength);
   }
 
+  // Navigate to a specific blog
   viewBlog(blogId: string | undefined): void {
     if (blogId && this.profile?.username) {
       this.router.navigate(['/blog', blogId], { queryParams: { source: 'profile', username: this.profile.username } });
     }
   }
 
+  // Fetch forums for the user
   fetchForumsByUser(username: string): void {
     this.forumSubscription = this.forumService.getForumsByUser(username).subscribe(
       (forums: Forum[]) => {
         this.forums = forums.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.displayedForums = this.forums.slice(0, this.initialForumsToShow);
-        // console.log(forums);
       },
       (error) => {
         console.error('Error fetching forums by user:', error);
@@ -162,18 +183,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Load more forums for pagination
   loadMoreForums(): void {
     const currentLength = this.displayedForums.length;
     const nextLength = currentLength + this.forumsIncrement;
     this.displayedForums = this.forums.slice(0, nextLength);
   }
 
+  // Navigate to a specific forum
   viewForum(forumId: string | undefined): void {
     if (forumId && this.profile?.username) {
       this.router.navigate(['/forum', forumId], { queryParams: { source: 'profile', username: this.profile.username } });
     }
   }
 
+  // Open the edit profile modal or redirect to login
   openEditProfileModal(): void {
     if (this.isOwner) {
       this.isModalOpen = true;
@@ -182,22 +206,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Toggle the blog dropdown menu
   toggleBlogDropdown(event: MouseEvent): void {
     event.stopPropagation();
     this.showBlogDropdown = !this.showBlogDropdown;
   }
 
+  // Delete user profile after confirmation
   async deleteProfile(): Promise<void> {
     const confirmed = await this.confirmationDialogService.confirm(
       'Delete Profile',
       '***<strong>WARNING</strong>***<br><br>Are you sure you want to delete your profile?<br><br> This action cannot be undone.'
     );
-    
 
     if (confirmed) {
       this.userService.deleteProfile().subscribe(
         () => {
-          // console.log('Successfully deleted profile');
           this.authService.logout();
           this.router.navigate(['/']);
         },
@@ -209,26 +233,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Resend verification email with cooldown period
   resendVerificationEmail() {
-    // console.log('Resend verification email method called');
     if (!this.profile || !this.profile.email) {
       this.toastr.error('User profile not available');
       return;
     }
-  
+
     const currentTime = Date.now();
     if (currentTime - this.lastEmailSentTime < this.cooldownPeriod) {
       const remainingTime = Math.ceil((this.cooldownPeriod - (currentTime - this.lastEmailSentTime)) / 1000);
       this.toastr.info(`Please wait ${remainingTime} seconds before requesting another email.`);
       return;
     }
-  
+
     this.userService.resendVerificationEmail(this.profile.email).subscribe(
       response => {
         this.toastr.success('Verification email sent successfully. Please check your inbox.');
         this.lastEmailSentTime = Date.now();
-        if (this.profile){
-                  this.fetchProfile(this.profile.username);
+        if (this.profile) {
+          this.fetchProfile(this.profile.username);
         }
       },
       error => {
@@ -238,12 +262,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Load more following users for pagination
   loadMoreFollowing(): void {
     const currentLength = this.displayedFollowing.length;
     const nextLength = currentLength + this.followingIncrement;
     this.displayedFollowing = this.following.slice(0, nextLength);
   }
 
+  // Toggle follow/unfollow user
   toggleFollow() {
     if (this.isFollowing) {
       this.unfollowUser();
@@ -252,6 +278,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Fetch users that the current profile is following
   fetchFollowing() {
     if (this.profile && this.profile.id) {
       this.isLoadingFollowing = true;
@@ -259,7 +286,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         next: (following) => {
           this.following = following;
           this.displayedFollowing = this.following.slice(0, this.initialFollowingToShow);
-          // console.log('Fetched following:', following);
           this.isLoadingFollowing = false;
         },
         error: (error) => {
@@ -271,6 +297,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Check if the current user is following the profile
   checkIfFollowing() {
     if (this.profile && this.profile.id) {
       this.userService.checkIfFollowing(this.profile.id).subscribe(
@@ -284,6 +311,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Follow the current profile
   followUser() {
     if (this.profile && this.profile.id) {
       this.userService.followUser(this.profile.id).subscribe(
@@ -300,7 +328,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       console.error('Profile object:', this.profile);
     }
   }
-  
+
+  // Unfollow the current profile
   unfollowUser() {
     if (this.profile && this.profile.id) {
       this.userService.unfollowUser(this.profile.id).subscribe(

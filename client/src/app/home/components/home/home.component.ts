@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  // Carousel slide data
   slides: SlideInterface[] = [
     { url: 'assets/homepage-carousel-items/carousal-item-1.webp', title: 'lawn' },
     { url: 'assets/homepage-carousel-items/carousal-item-2.webp', title: 'flowers' },
@@ -24,15 +25,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
+    // Subscribe to user authentication state
     this.isLoggedInSubscription = this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user || null; // Ensure null if user is undefined
+      this.currentUser = user || null;
     });
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe to prevent memory leaks
     this.isLoggedInSubscription?.unsubscribe();
   }
 
+  // Navigation methods
   goToProfile(): void {
     if (this.currentUser) {
       this.router.navigate(['/profile', this.currentUser.username]);

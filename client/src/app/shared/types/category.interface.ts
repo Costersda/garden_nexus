@@ -1,6 +1,6 @@
 export interface Category {
   name: string;
-  selected?: boolean; // Add this line
+  selected?: boolean;
 }
 
 export const CATEGORIES: Category[] = [

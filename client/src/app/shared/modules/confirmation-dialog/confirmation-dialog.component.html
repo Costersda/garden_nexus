@@ -4,6 +4,7 @@
   <div class="dialog-content" [innerHTML]="data.message"></div>
   <div class="dialog-actions">
     <button class="dialog-btn dialog-cancel-btn" (click)="onCancel()">Cancel</button>
+    <!-- Confirm button with dynamic text and disabled state -->
     <button class="dialog-btn dialog-confirm-btn" (click)="onConfirm()" [disabled]="isConfirmDisabled">
       {{ isConfirmDisabled ? countdown + '...' : 'Confirm' }}
     </button>

@@ -5,9 +5,11 @@
   <img class="img-banner-image" src="assets/spacer-img-4.webp" alt="Placeholder Image">
 </div>
 
+<!-- Toolbar with category dropdown and search -->
 <div class="toolbar">
   <div class="toolbar-content">
     <div class="left">
+      <!-- Category dropdown -->
       <div class="category-dropdown" #categoryDropdown>
         <button #dropdownToggle class="category-dropdown-toggle" type="button" (click)="toggleDropdown($event)">
           Categories
@@ -17,10 +19,12 @@
             <input type="checkbox" [(ngModel)]="category.selected"> {{ category.name }}
           </label>
         </div>
+        <!-- Reset button to clear selected categories -->
         <button class="reset-btn" (click)="resetSearch()">Reset</button>
       </div>
     </div>
     <div class="right">
+      <!-- Search box -->
       <div class="search-box">
         <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
         <button [disabled]="isSearchButtonDisabled" (click)="searchForums()">Search</button>
@@ -29,11 +33,14 @@
   </div>
 </div>
 
+<!-- Inline toolbar -->
 <div class="inline-toolbar">
   <div class="inline-toolbar-content">
+    <!-- Forum header -->
     <div class="blog-header-container">
       <h2>{{ forumHeader }}</h2>
     </div>
+    <!-- Sort buttons -->
     <div class="sort-btns-container">
       <button class="sort-btn sort-newest-btn" (click)="sortForums('newest')">Newest</button>
       <button class="sort-btn sort-oldest-btn" (click)="sortForums('oldest')">Oldest</button>
@@ -45,11 +52,13 @@
   <hr class="styled-hr">
 </div>
 
+<!-- Create post button -->
 <div class="create-post-btn-container">
   <div class="create-post-btn-content">
     <button class="create-post-btn" (click)="createForumPost()">Create a Post</button>
   </div>
 </div>
+
 <!-- Display no results message if no forums are found -->
 <div class="profile-content-container" *ngIf="noResults">
   <div class="profile-content">
@@ -59,10 +68,12 @@
   </div>
 </div>
 
+<!-- Forum list -->
 <div class="profile-content-container">
   <div class="profile-content">
     <div class="forum-list-container">
       <div class="forum-list-content">
+        <!-- Iterate through displayed forums and render forum preview component for each -->
         <div class="forum-item" *ngFor="let forum of displayedForums">
           <app-forum-preview [forum]="forum"></app-forum-preview>
         </div>
@@ -71,6 +82,7 @@
   </div>
 </div>
 
+<!-- Load more button -->
 <div class="profile-content-container" *ngIf="forums.length > displayedForums.length">
   <div class="profile-content">
     <button class="load-more-btn" (click)="loadMoreForums()">

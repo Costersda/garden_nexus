@@ -13,7 +13,7 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
   forum: Forum;
   categories: Category[] = CATEGORIES;
   formSubmitted = false;
-  maxTitleLength = 100; // Example maximum length for title
+  maxTitleLength = 100;
   maxContentLength = 1000;
   minContentLength = 200;
 
@@ -26,6 +26,7 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // Set user_id when component initializes
     this.authService.getCurrentUser().subscribe(currentUser => {
       if (currentUser && currentUser.id) {
         this.forum.user_id = currentUser.id;
@@ -64,7 +65,7 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
     this.formSubmitted = true;
 
     if (!this.forum.title || !this.forum.content || this.forum.content.length < this.minContentLength) {
-      return; // Prevent form submission if required fields are missing or content is too short
+      return; // Prevent form submission if validation fails
     }
 
     this.forumService.createForum(this.forum).subscribe(() => {
@@ -82,6 +83,7 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
     return this.forum.content ? this.forum.content.trim().split(/\s+/).length : 0;
   }
 
+  // Setup auto-grow functionality for textareas
   addAutoGrow(): void {
     const textareas = document.querySelectorAll('.auto-grow') as NodeListOf<HTMLTextAreaElement>;
     textareas.forEach(textarea => {

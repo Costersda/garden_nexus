@@ -20,11 +20,13 @@ export class FooterComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    // Subscribe to current user updates
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user || null;
     });
   }
 
+  // Navigate to profile or login page based on user authentication status
   goToProfile(): void {
     if (this.currentUser) {
       const currentUsername = this.route.snapshot.paramMap.get('username');
@@ -36,6 +38,7 @@ export class FooterComponent implements OnInit {
     }
   }
 
+  // Check if the given route is currently active
   isActiveRoute(route: string): boolean {
     if (route === '/') {
       return this.currentUrl === route;

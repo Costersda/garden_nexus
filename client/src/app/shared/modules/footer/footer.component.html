@@ -1,18 +1,25 @@
 <footer class="footer">
   <div class="footer-container">
+    <!-- Logo section -->
     <div class="footer-logo-section">
       <img src="assets/garden-nexus-logo.webp" alt="Garden Nexus Logo" class="footer-logo">
     </div>
+    
+    <!-- Navigation links section -->
     <div class="footer-links-section">
+      <!-- Quick Links column -->
       <div class="footer-links-column">
         <h3 class="footer-title">Quick Links</h3>
         <nav class="footer-nav">
+          <!-- Navigation items -->
           <div class="footer-nav-item" routerLink="/" [class.active]="isActiveRoute('/')">Home</div>
           <div class="footer-nav-item" (click)="goToProfile()" [class.active]="isActiveRoute('/profile')">Profile</div>
           <div class="footer-nav-item" routerLink="/blogs" [class.active]="isActiveRoute('/blog')">Blogs</div>
           <div class="footer-nav-item" routerLink="/forum" [class.active]="isActiveRoute('/forum')">Forum</div>
         </nav>
       </div>
+      
+      <!-- Extra Links column -->
       <div class="footer-links-column">
         <h3 class="footer-title">Extra Links</h3>
         <nav class="footer-nav">
@@ -21,6 +28,8 @@
       </div>
     </div>
   </div>
+  
+  <!-- Copyright section -->
   <div class="footer-bottom">
     <p>&copy; 2023 Garden Nexus. All rights reserved.</p>
   </div>

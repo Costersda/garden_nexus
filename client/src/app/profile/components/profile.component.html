@@ -1,6 +1,7 @@
 <app-toolbar></app-toolbar>
 <app-navbar></app-navbar>
 
+<!-- Banner Image -->
 <div class="img-banner">
   <img class="img-banner-image" src="assets/spacer-img-7.webp" alt="User banner image">
   <div class="profile-picture-container">
@@ -8,6 +9,7 @@
   </div>
 </div>
 
+<!-- Profile Content -->
 <div class="profile-content-container">
   <div class="profile-container" *ngIf="profile">
     <div class="profile-container-heading">
@@ -35,6 +37,7 @@
   </div>
 </div>
 
+<!-- Show if the user is unverified -->
 <div id="verification-box" class="profile-content-container" *ngIf="isOwner && profile && profile.isVerified === false">
   <div class="profile-content">
     <div class="verify-profile-container">
@@ -49,6 +52,7 @@
   <hr class="styled-hr">
 </div>
 
+<!-- Most Recent Blog Posts -->
 <div class="profile-content-container">
   <div class="profile-content">
     <h2 class="profile-content-subheading">Recent Blog Posts</h2>
@@ -75,6 +79,7 @@
   <hr class="styled-hr">
 </div>
 
+<!-- Most Recent Forum Posts -->
 <div class="profile-content-container">
   <div class="profile-content">
     <h2 class="profile-content-subheading">Forum Activity</h2>
@@ -101,6 +106,7 @@
   <hr class="styled-hr">
 </div>
 
+<!-- Users they are following -->
 <div class="profile-content-container">
   <div class="profile-content">
     <h2 class="profile-content-subheading">Following</h2>

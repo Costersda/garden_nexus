@@ -18,6 +18,7 @@ export class ConfirmationDialogComponent implements OnInit {
     this.startCountdown();
   }
 
+  // Starts a 3-second countdown to enable the confirm button
   startCountdown(): void {
     const interval = setInterval(() => {
       this.countdown -= 1;
@@ -28,10 +29,12 @@ export class ConfirmationDialogComponent implements OnInit {
     }, 1000);
   }
 
+  // Closes the dialog with true, indicating confirmation
   onConfirm(): void {
     this.dialogRef.close(true);
   }
 
+  // Closes the dialog with false, indicating cancellation
   onCancel(): void {
     this.dialogRef.close(false);
   }

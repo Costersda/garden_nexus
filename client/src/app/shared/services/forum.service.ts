@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 export class ForumService {
   private apiUrl = `${environment.apiUrl}/forums`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllForums(): Observable<Forum[]> {
     return this.http.get<Forum[]>(this.apiUrl);
