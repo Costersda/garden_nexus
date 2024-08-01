@@ -148,7 +148,7 @@
               </div>
               <div class="comment-header-right">
                 <div class="icon-container">
-                  <button class="quote-icon-container" (click)="quoteComment(comment)">
+                  <button class="quote-icon-container" *ngIf="currentUser && currentUser.isVerified" (click)="quoteComment(comment)">
                     <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
                   </button>
                   <div class="dropdown" *ngIf="currentUserMatchesCommentUser(comment.user, currentUser)">
