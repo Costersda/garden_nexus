@@ -111,7 +111,7 @@
 
 
 <div class="profile-content-container" *ngIf="!isEditMode">
-  <div class="profile-content">
+  <div class="comment-content">
     <div class="comment-section">
       <div *ngFor="let comment of comments" class="reply">
         <div class="reply-left">
@@ -142,17 +142,30 @@
             </div>
           </div>
           <div class="reply-toolbar" *ngIf="!commentBeingEdited || commentBeingEdited._id !== comment._id">
-            <div class="reply-header">
-              <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
-              <div class="dropdown" *ngIf="currentUser && comment.user && currentUserMatchesCommentUser(comment.user, currentUser)">
-                <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
-                  <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
-                </button>
-                <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">
-                  <label (click)="editComment(comment)">Edit</label>
-                  <label (click)="deleteComment(comment._id)">Delete</label>
+            <div class="comment-header">
+              <div class="comment-header-left">
+                <p class="reply-date">{{ comment.createdAt | date:'dd/MM/yy, h:mm a' }}</p>
+              </div>
+              <div class="comment-header-right">
+                <div class="icon-container">
+                  <button class="quote-icon-container" (click)="quoteComment(comment)">
+                    <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
+                  </button>
+                  <div class="dropdown" *ngIf="currentUserMatchesCommentUser(comment.user, currentUser)">
+                    <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
+                      <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+                    </button>
+                    <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">
+                      <label (click)="editComment(comment)">Edit</label>
+                      <label (click)="deleteComment(comment._id)">Delete</label>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div *ngIf="comment.replyingTo" class="comment-reply-text">
+              <p><strong>Replying to {{ (comment.user.username | titlecase) || 'a comment' }}:</strong></p>
+              <p>"{{ comment.replyingTo.comment }}"</p>
             </div>
             <p class="reply-text">{{ comment.comment }} <span *ngIf="comment.isEdited">(edited)</span></p>
           </div>
@@ -160,14 +173,19 @@
       </div>
     </div>
     <div *ngIf="currentUser && currentUser.isVerified" class="add-comment-section">
-      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}"></textarea>
+      <div *ngIf="replyingToComment" class="quoted-comment">
+        <p>Replying to {{ replyingToComment.user.username || 'a comment' }}:</p>
+        <p>"{{ replyText }}"</p>
+        <button class="cancel-reply-btn" (click)="cancelReply()">Cancel Reply</button>
+      </div>
+      <textarea [(ngModel)]="newComment" placeholder="Add a comment..." (ngModelChange)="checkCommentLength('new')" [ngClass]="{'error-border': isNewCommentTooLong}" maxlength="600"></textarea>
       <div class="word-count-container">
         <div class="word-count" [class.error-text]="newComment.length > maxCommentLength">
           Character count: {{ newComment.length }}/{{ maxCommentLength }}
         </div>
         <div *ngIf="isNewCommentTooLong" class="error-message">Comment cannot exceed 600 characters.</div>
       </div>
-      <!-- <button (click)="addComment()" [disabled]="isNewCommentTooLong">Post Comment</button> -->
+      <button (click)="addComment()" [disabled]="isNewCommentTooLong">Post Comment</button>
     </div>
   </div>
 </div>

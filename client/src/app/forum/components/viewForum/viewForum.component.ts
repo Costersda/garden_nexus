@@ -41,6 +41,8 @@ export class ViewForumComponent implements OnInit, OnDestroy {
   categories: Category[] = CATEGORIES;
   private imageUrls: string[] = [];
   private imageUrlCache: { [key: string]: string } = {};
+  replyingToComment: Comment | null = null;
+  replyText: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -64,7 +66,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
         this.fetchForum(forumId);
         // Add this line
         this.commentService.getCommentsByForumId(forumId).subscribe(
-          comments => console.log('Initial comments:', JSON.stringify(comments, null, 2))
+          // comments => console.log('Initial comments:', JSON.stringify(comments, null, 2))
         );
       }
     });
@@ -111,13 +113,13 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       this.currentUser = JSON.parse(storedUser);
-      console.log('Current User:', this.currentUser);
+      // console.log('Current User:', this.currentUser);
       if (this.currentUser && !this.currentUser._id) {
         this.currentUser._id = (this.currentUser as any).id || this.currentUser._id;
-        console.log('Updated currentUser with _id:', this.currentUser._id);
+        // console.log('Updated currentUser with _id:', this.currentUser._id);
       }
     } else {
-      console.error('Current user not found in local storage');
+      // console.error('Current user not found in local storage');
     }
   }
 
@@ -131,7 +133,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
             this.fetchUser(forum.user_id);
           }
           this.fetchComments(forumId);
-          console.log("forum:", forum);
+          // console.log("forum:", forum);
         } else {
           // Forum not found, redirect to forums list
           this.router.navigate(['/forum']);
@@ -159,7 +161,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     if (confirmed) {
       this.forumService.deleteForum(forumId).subscribe(
         () => {
-          console.log('Successfully deleted forum with ID:', forumId);
+          // console.log('Successfully deleted forum with ID:', forumId);
           // Replace the current history entry
           history.replaceState(null, '', '/forum');
           this.router.navigate(['/forum']);
@@ -188,7 +190,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
 
     this.forumService.updateForum(this.forum._id, this.forum).subscribe(
       (updatedForum: Forum) => {
-        console.log('Forum updated successfully:', updatedForum);
+        // console.log('Forum updated successfully:', updatedForum);
         this.forum = updatedForum;
         this.originalForum = JSON.parse(JSON.stringify(updatedForum));
         this.isEditMode = false;
@@ -210,7 +212,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     this.userSubscription = this.userService.getUserById(userId).subscribe(
       (user: User) => {
         this.user = user;
-        console.log('User:', user);
+        // console.log('User:', user);
       },
       (error) => {
         console.error('Error fetching user:', error);
@@ -291,48 +293,70 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     }
   }
 
-  // addComment(): void {
-  //   if (!this.newComment.trim() || this.isNewCommentTooLong) return;
-
-  //   if (this.currentUser && this.currentUser._id) {
-  //     const commentData: Comment = {
-  //       user: {
-  //         _id: this.currentUser._id,
-  //         username: this.currentUser.username,
-  //         imageFile: this.currentUser.imageFile || 'assets/garden-nexus-logo.webp'
-  //       },
-  //       forumId: this.forum?._id || '',
-  //       comment: this.newComment,
-  //       createdAt: new Date()
-  //     };
-
-  //     this.commentService.createComment(commentData).subscribe(
-  //       (comment: Comment) => {
-  //         const user = comment.user as User;
-  //         const userId = user._id ? user._id.toString() : (user.id ? user.id.toString() : '');
-  //         const commentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
-  //         const newComment: Comment = {
-  //           ...comment,
-  //           _id: commentId,
-  //           user: {
-  //             ...user,
-  //             _id: userId
-  //           }
-  //         };
-  //         this.comments = [...this.comments, newComment];
-  //         this.newComment = '';
-  //         this.isNewCommentTooLong = false;
-  //         console.log('Added Comment:', newComment);
-  //         this.cd.detectChanges();
-  //       },
-  //       (error) => {
-  //         console.error('Error adding comment:', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error('Current user not found in local storage');
-  //   }
-  // }
+  addComment(): void {
+    if (!this.newComment.trim() || this.isNewCommentTooLong) return;
+  
+    if (this.currentUser && this.currentUser._id) {
+      const commentData: Comment = {
+        user: {
+          _id: this.currentUser.id,
+          username: this.currentUser.username,
+          imageFile: this.currentUser.imageFile || 'assets/garden-nexus-logo.webp'
+        },
+        forumId: this.forum?._id || '',
+        comment: this.newComment,
+        createdAt: new Date(),
+        replyingTo: this.replyingToComment ? {
+          id: this.replyingToComment._id || '',
+          user: {
+            _id: this.replyingToComment.user?._id || '',
+            username: this.replyingToComment.user?.username || ''
+          },
+          comment: this.replyingToComment.comment
+        } : undefined,
+        replyText: this.replyingToComment ? this.replyText : ''
+      };
+  
+      this.commentService.createComment(commentData).subscribe(
+        (comment: Comment) => {
+          // Create a new comment object with all the necessary properties
+          const newComment: Comment = {
+            ...comment,
+            _id: comment._id || comment.id,
+            user: {
+              _id: comment.user._id || (comment.user as any).id,
+              username: comment.user.username,
+              imageFile: comment.user.imageFile
+            },
+            replyingTo: this.replyingToComment ? {
+              id: this.replyingToComment._id || '',
+              user: {
+                _id: this.replyingToComment.user?._id || '',
+                username: this.replyingToComment.user?.username || ''
+              },
+              comment: this.replyingToComment.comment
+            } : undefined,
+            replyText: this.replyingToComment ? this.replyText : ''
+          };
+    
+          // Add the new comment to the end of the array
+          this.comments = [...this.comments, newComment];
+          
+          this.newComment = '';
+          this.isNewCommentTooLong = false;
+          this.replyingToComment = null;
+          this.replyText = '';
+          console.log('Added Comment:', newComment);
+          this.cd.detectChanges();
+        },
+        (error) => {
+          console.error('Error adding comment:', error);
+        }
+      );
+    } else {
+      console.error('Current user not found in local storage');
+    }
+  }
 
   async deleteComment(commentId: string | undefined): Promise<void> {
     console.log('Attempting to delete comment with ID:', commentId);
@@ -435,14 +459,27 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     const commentUserId = (commentUser._id || commentUser.id || '').toString().trim();
     const currentUserId = (currentUser._id || currentUser.id || '').toString().trim();
   
-    console.log('Comment User ID:', commentUserId);
-    console.log('Current User ID:', currentUserId);
-  
     if (!commentUserId) {
       console.warn('Comment user ID is missing');
       return false;
     }
   
     return commentUserId === currentUserId;
+  }
+
+  quoteComment(comment: Comment) {
+    this.replyingToComment = comment;
+    this.replyText = `"${comment.comment}"`;
+    // Scroll to the comment input area
+    const commentInput = document.querySelector('.add-comment-section textarea');
+    if (commentInput) {
+      (commentInput as HTMLElement).focus();
+      commentInput.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  cancelReply() {
+    this.replyingToComment = null;
+    this.replyText = '';
   }
 }
