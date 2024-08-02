@@ -151,7 +151,7 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   fetchBlog(blogId: string): void {
     this.blogSubscription = this.blogService.getBlogById(blogId).subscribe(
-      (blog: Blog) => {
+      (blog: Blog | null) => {
         if (blog) {
           this.blog = blog;
           this.originalBlog = JSON.parse(JSON.stringify(blog));
@@ -245,6 +245,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         this.formSubmitted = false;
       }
     );
+  }
+
+  public get isFormValid(): boolean {
+    return !this.hasFormErrors();
   }
 
   checkTitleValidity(): void {
@@ -532,14 +536,17 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   private hasFormErrors(): boolean {
-    if (!this.blog) return true;
+    if (!this.blog) {
+      console.log('Blog is null');
+      return true;
+    }
     // Check various form validations
     const titleValid = this.blog?.title?.length <= this.maxTitleLength;
     const contentSection1Valid = this.isContentValid('content_section_1');
     const contentSection2Valid = this.isContentValid('content_section_2');
     const contentSection3Valid = this.isContentValid('content_section_3');
     const image1Valid = !!this.blog?.image_1 && !this.fileSizeError['image_1'] && !this.fileTypeError['image_1'];
-
+  
     return !titleValid || !contentSection1Valid || !image1Valid || this.hasImageErrors();
   }
 
@@ -594,14 +601,14 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   toggleCategory(category: string): void {
-    // Add or remove category from blog
-    const index = this.blog!.categories.indexOf(category);
+    if (!this.blog || !this.blog.categories) return;
+    const index = this.blog.categories.indexOf(category);
     if (index === -1) {
-      this.blog!.categories.push(category);
+        this.blog.categories.push(category);
     } else {
-      this.blog!.categories.splice(index, 1);
+        this.blog.categories.splice(index, 1);
     }
-  }
+}
 
   quoteComment(comment: Comment) {
     // Set up reply to comment
@@ -619,5 +626,10 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     // Cancel reply to comment
     this.replyingToComment = null;
     this.replyText = '';
+  }
+
+  public isUrlCached(imageFile: any): boolean {
+    const cacheKey = JSON.stringify(imageFile);
+    return !!this.imageUrlCache[cacheKey];
   }
 }
