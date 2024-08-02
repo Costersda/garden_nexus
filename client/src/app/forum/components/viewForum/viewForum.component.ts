@@ -143,28 +143,31 @@ export class ViewForumComponent implements OnInit, OnDestroy {
   }
 
   fetchForum(forumId: string): void {
-    // Fetch forum details by ID
     this.forumSubscription = this.forumService.getForumById(forumId).subscribe(
-      (forum: Forum) => {
-        if (forum) {
-          this.forum = forum;
-          this.originalForum = JSON.parse(JSON.stringify(forum));
-          if (forum.user_id) {
-            this.fetchUser(forum.user_id);
-          }
-          this.fetchComments(forumId);
-        } else {
-          // Forum not found, redirect to forums list
-          this.router.navigate(['/forum']);
+        (forum: Forum) => {
+            if (forum) {
+                this.forum = {
+                    ...forum,
+                    createdAt: new Date(forum.createdAt),
+                    updatedAt: new Date(forum.updatedAt)
+                };
+                this.originalForum = {
+                    ...this.forum
+                };
+                if (forum.user_id) {
+                    this.fetchUser(forum.user_id);
+                }
+                this.fetchComments(forumId);
+            } else {
+                this.router.navigate(['/forum']);
+            }
+        },
+        (error) => {
+            console.error('Error fetching forum:', error);
+            this.router.navigate(['/forum']);
         }
-      },
-      (error) => {
-        console.error('Error fetching forum:', error);
-        // In case of error, also redirect to forums list
-        this.router.navigate(['/forum']);
-      }
     );
-  }
+}
 
   async deleteForum(forumId: string): Promise<void> {
     if (!forumId) {
@@ -225,10 +228,15 @@ export class ViewForumComponent implements OnInit, OnDestroy {
   }
 
   cancelEdit(): void {
-    // Revert changes and exit edit mode
-    this.forum = JSON.parse(JSON.stringify(this.originalForum));
+    if (this.originalForum) {
+        this.forum = {
+            ...this.originalForum,
+            createdAt: new Date(this.originalForum.createdAt),
+            updatedAt: new Date(this.originalForum.updatedAt)
+        };
+    }
     this.isEditMode = false;
-  }
+}
 
   fetchUser(userId: string): void {
     // Fetch user details by ID
@@ -473,7 +481,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     }
   }
 
-  private hasFormErrors(): boolean {
+  public hasFormErrors(): boolean {
     // Check for form errors in the forum edit mode
     if (!this.forum) return true;
     const titleValid = this.forum?.title?.length <= this.maxTitleLength;
@@ -523,5 +531,9 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     // Cancel the reply to a comment
     this.replyingToComment = null;
     this.replyText = '';
+  }
+
+  public detectChanges(): void {
+    this.cd.detectChanges();
   }
 }
