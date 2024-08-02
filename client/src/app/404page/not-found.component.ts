@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,21 +8,33 @@ import { Router, ActivatedRoute } from '@angular/router';
     <p>The page you're looking for doesn't exist. You'll be redirected to the home page in {{ countdown }} seconds.</p>
   `
 })
-export class NotFoundComponent implements OnInit {
-  // Countdown timer in seconds
+export class NotFoundComponent implements OnInit, OnDestroy {
   countdown: number = 5;
+  private redirectInterval: any;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    // Set up interval to countdown and redirect
-    const redirectInterval = setInterval(() => {
+    this.startCountdown();
+  }
+
+  ngOnDestroy() {
+    this.clearCountdown();
+  }
+
+  startCountdown() {
+    this.redirectInterval = setInterval(() => {
       this.countdown--;
       if (this.countdown === 0) {
-        clearInterval(redirectInterval);
-        // Redirect to the specified route or home page
+        this.clearCountdown();
         this.router.navigate([this.route.snapshot.data['redirectTo'] || '']);
       }
-    }, 1000); // Update every second
+    }, 1000);
+  }
+
+  clearCountdown() {
+    if (this.redirectInterval) {
+      clearInterval(this.redirectInterval);
+    }
   }
 }
