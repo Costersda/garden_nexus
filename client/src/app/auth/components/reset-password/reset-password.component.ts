@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   resetForm: FormGroup;
   token: string = '';
   successMessage: string = '';
@@ -17,6 +17,7 @@ export class ResetPasswordComponent implements OnInit {
   minPasswordLength = 8;
   maxPasswordLength = 64;
   isPasswordReset: boolean = false;
+  private redirectTimeout: number | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +41,13 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     // Get token from URL parameters
     this.token = this.route.snapshot.params['token'];
+  }
+
+  ngOnDestroy(): void {
+    // Clear the timeout if it exists
+    if (this.redirectTimeout !== null) {
+      clearTimeout(this.redirectTimeout);
+    }
   }
 
   // Custom validator for password strength
@@ -72,7 +80,9 @@ export class ResetPasswordComponent implements OnInit {
             this.isLoading = false;
             this.isPasswordReset = true;
             // Redirect to login page after 3 seconds
-            setTimeout(() => this.router.navigate(['/login'], { replaceUrl: true }), 3000);
+            this.redirectTimeout = window.setTimeout(() => {
+              this.router.navigate(['/login'], { replaceUrl: true });
+            }, 3000);
           },
           error: (error) => {
             this.errorMessage = error.error.message || 'An error occurred. Please try again.';

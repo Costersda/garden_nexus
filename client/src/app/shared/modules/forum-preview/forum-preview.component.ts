@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Forum } from '../../../shared/types/forum.interface';
 import { UserService } from '../../../shared/services/user.service';
 import { CommentService } from '../../../shared/services/comment.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-forum-preview',
@@ -11,12 +12,14 @@ import { CommentService } from '../../../shared/services/comment.service';
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class ForumPreviewComponent implements OnInit {
+export class ForumPreviewComponent implements OnInit, OnDestroy {
   @Input() forum!: Forum;
   @Input() source: string = 'forum';
   @Input() username?: string;
   forumAuthor: string = '';
   commentCount: number = 0;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private router: Router, 
@@ -25,18 +28,31 @@ export class ForumPreviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Fetch forum author's username
-    if (this.forum.user_id) {
-      this.userService.getUserById(this.forum.user_id).subscribe(user => {
-        this.forumAuthor = user.username;
-      });
-    }
+    this.fetchForumAuthor();
+    this.fetchCommentCount();
+  }
 
-    // Fetch and count comments for the forum
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private fetchForumAuthor(): void {
+    if (this.forum.user_id) {
+      this.subscriptions.push(
+        this.userService.getUserById(this.forum.user_id).subscribe(user => {
+          this.forumAuthor = user.username;
+        })
+      );
+    }
+  }
+
+  private fetchCommentCount(): void {
     if (this.forum._id) {
-      this.commentService.getCommentsByForumId(this.forum._id).subscribe(comments => {
-        this.commentCount = comments.length;
-      });
+      this.subscriptions.push(
+        this.commentService.getCommentsByForumId(this.forum._id).subscribe(comments => {
+          this.commentCount = comments.length;
+        })
+      );
     }
   }
 

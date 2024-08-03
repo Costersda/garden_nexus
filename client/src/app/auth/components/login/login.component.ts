@@ -33,6 +33,7 @@ export class LoginComponent {
           this.errorMessage = response.error;
         } else {
           // Handle successful login
+          console.log('currentUser', response);
           this.authService.setToken(response);
           this.authService.setCurrentUser(response);
           this.errorMessage = null;
@@ -42,6 +43,7 @@ export class LoginComponent {
       },
       error: (err: HttpErrorResponse) => {
         // Handle unexpected errors
+        console.log('err', err);
         this.errorMessage = 'An unexpected error occurred. Please try again.';
       },
     });

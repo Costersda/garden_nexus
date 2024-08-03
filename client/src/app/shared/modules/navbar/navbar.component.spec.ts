@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavbarComponent } from './navbar.component';
 import { AuthService } from '../../../auth/services/auth.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 
@@ -93,9 +93,18 @@ const authServiceMock = {
         expect(component.isActiveRoute('/test')).toBeFalse();
     });
 
-    it('should unsubscribe from router events on destroy', () => {
-        const unsubscribeSpy = spyOn(component['eventSubscription'], 'unsubscribe');
+    it('should unsubscribe from all subscriptions on destroy', () => {
+        const subscription1 = new Subscription();
+        const subscription2 = new Subscription();
+        
+        const unsubscribeSpy1 = spyOn(subscription1, 'unsubscribe');
+        const unsubscribeSpy2 = spyOn(subscription2, 'unsubscribe');
+        
+        component['subscriptions'] = [subscription1, subscription2];
+        
         component.ngOnDestroy();
-        expect(unsubscribeSpy).toHaveBeenCalled();
+        
+        expect(unsubscribeSpy1).toHaveBeenCalled();
+        expect(unsubscribeSpy2).toHaveBeenCalled();
     });
 });

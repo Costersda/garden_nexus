@@ -4,6 +4,7 @@ import { Router, RouterModule, ActivatedRoute, NavigationEnd, Event } from '@ang
 import { AuthService } from '../../../auth/services/auth.service';
 import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -14,27 +15,31 @@ import { Subscription } from 'rxjs';
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: CurrentUserInterface | null | undefined = null;
   currentUrl: string = '';
-  private eventSubscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {
-    // Subscribe to router events to track current URL
-    this.eventSubscription = this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.currentUrl = event.urlAfterRedirects;
-      }
-    });
-  }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    // Subscribe to router events to track current URL
+    this.subscriptions.push(
+      this.router.events.pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      ).subscribe((event: NavigationEnd) => {
+        this.currentUrl = event.urlAfterRedirects;
+      })
+    );
+
     // Subscribe to current user updates
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user || null;
-    });
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe(user => {
+        this.currentUser = user || null;
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from router events to prevent memory leaks
-    this.eventSubscription.unsubscribe();
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   // Navigate to profile or login page based on user authentication status

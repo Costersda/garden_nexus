@@ -4,6 +4,7 @@ import { ForumService } from '../../../shared/services/forum.service';
 import { Forum } from '../../../shared/types/forum.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Category, CATEGORIES } from '../../../shared/types/category.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-forum',
@@ -17,6 +18,8 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
   maxContentLength = 1000;
   minContentLength = 200;
 
+  private subscriptions: Subscription = new Subscription();
+
   constructor(
     private forumService: ForumService,
     private router: Router,
@@ -27,17 +30,27 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Set user_id when component initializes
-    this.authService.getCurrentUser().subscribe(currentUser => {
-      if (currentUser && currentUser.id) {
-        this.forum.user_id = currentUser.id;
-      }
-    }, error => {
-      console.error('Error fetching current user:', error);
-    });
+    this.subscriptions.add(
+      this.authService.getCurrentUser().subscribe(
+        currentUser => {
+          if (currentUser && currentUser.id) {
+            this.forum.user_id = currentUser.id;
+          }
+        },
+        error => {
+          console.error('Error fetching current user:', error);
+        }
+      )
+    );
   }
 
   ngAfterViewInit(): void {
     this.addAutoGrow();
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.subscriptions.unsubscribe();
   }
 
   initializeForum(): Forum {
@@ -68,11 +81,16 @@ export class CreateForumComponent implements OnInit, AfterViewInit {
       return; // Prevent form submission if validation fails
     }
 
-    this.forumService.createForum(this.forum).subscribe(() => {
-      this.router.navigate(['/forum'], { replaceUrl: true });
-    }, error => {
-      console.error('Error creating forum:', error);
-    });
+    this.subscriptions.add(
+      this.forumService.createForum(this.forum).subscribe(
+        () => {
+          this.router.navigate(['/forum'], { replaceUrl: true });
+        },
+        error => {
+          console.error('Error creating forum:', error);
+        }
+      )
+    );
   }
 
   getTitleWordCount(): number {

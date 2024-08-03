@@ -4,6 +4,7 @@ import { BlogService } from '../../../shared/services/blog.service';
 import { Blog } from '../../../shared/types/blog.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Category, CATEGORIES } from '../../../shared/types/category.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-blog',
@@ -20,6 +21,7 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
   maxContentWords = 1000;
   minContentWords = 200;
   maxWordLength = 50;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private blogService: BlogService,
@@ -31,17 +33,26 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Set user_id for the blog
-    this.authService.getCurrentUser().subscribe(currentUser => {
-      if (currentUser && currentUser.id) {
-        this.blog.user_id = currentUser.id;
+    const userSubscription = this.authService.getCurrentUser().subscribe(
+      currentUser => {
+        if (currentUser && currentUser.id) {
+          this.blog.user_id = currentUser.id;
+        }
+      },
+      error => {
+        console.error('Error fetching current user:', error);
       }
-    }, error => {
-      console.error('Error fetching current user:', error);
-    });
+    );
+    this.subscriptions.push(userSubscription);
   }
 
   ngAfterViewInit(): void {
     this.addAutoGrow();
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   // Initialize a new blog object
@@ -114,11 +125,15 @@ export class CreateBlogComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.blogService.createBlog(this.blog).subscribe(() => {
-      this.router.navigate(['/blogs'], { replaceUrl: true });
-    }, error => {
-      console.error('Error creating blog:', error);
-    });
+    const createBlogSubscription = this.blogService.createBlog(this.blog).subscribe(
+      () => {
+        this.router.navigate(['/blogs'], { replaceUrl: true });
+      },
+      error => {
+        console.error('Error creating blog:', error);
+      }
+    );
+    this.subscriptions.push(createBlogSubscription);
   }
 
   getTitleCharCount(): number {

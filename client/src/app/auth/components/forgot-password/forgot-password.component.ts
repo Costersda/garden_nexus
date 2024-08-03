@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent {
   forgotPasswordForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
@@ -25,8 +25,6 @@ export class ForgotPasswordComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
   }
-
-  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.forgotPasswordForm.valid) {

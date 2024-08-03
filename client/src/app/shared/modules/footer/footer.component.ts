@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-footer',
@@ -17,11 +18,13 @@ export class FooterComponent implements OnInit {
   currentUser: CurrentUserInterface | null | undefined = null;
   currentUrl: string = '';
 
+  authSubscription: Subscription | undefined;
+
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     // Subscribe to current user updates
-    this.authService.currentUser$.subscribe(user => {
+    this.authSubscription = this.authService.currentUser$.subscribe(user => {
       this.currentUser = user || null;
     });
   }
@@ -35,6 +38,13 @@ export class FooterComponent implements OnInit {
       }
     } else {
       this.router.navigate(['/login']);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 

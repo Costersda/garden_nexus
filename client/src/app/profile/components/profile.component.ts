@@ -106,12 +106,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from subscriptions to prevent memory leaks
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
     if (this.blogSubscription) {
       this.blogSubscription.unsubscribe();
+    }
+    if (this.forumSubscription) {
+      this.forumSubscription.unsubscribe();
     }
   }
 

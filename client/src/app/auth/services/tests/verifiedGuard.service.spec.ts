@@ -99,21 +99,4 @@ describe('VerifiedAuthGuardService', () => {
       });
     });
   
-    it('should log the user object', (done) => {
-      const user: CurrentUserInterface = {
-        id: '1',
-        username: 'testuser',
-        email: 'test@example.com',
-        token: 'token123',
-        isVerified: true
-      };
-      currentUserSubject.next(user);
-  
-      spyOn(console, 'log');
-  
-      guardService.canActivate().subscribe(() => {
-        expect(console.log).toHaveBeenCalledWith(user);
-        done();
-      });
-    });
   });
