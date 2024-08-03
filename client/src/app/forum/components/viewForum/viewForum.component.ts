@@ -312,7 +312,6 @@ export class ViewForumComponent implements OnInit, OnDestroy {
             }
           };
         });
-        console.log('Comments:', this.comments);
         this.cd.detectChanges();
       },
       (error) => {
@@ -385,7 +384,6 @@ export class ViewForumComponent implements OnInit, OnDestroy {
           this.isNewCommentTooLong = false;
           this.replyingToComment = null;
           this.replyText = '';
-          console.log('Added Comment:', newComment);
           this.cd.detectChanges();
         },
         (error) => {
@@ -399,7 +397,6 @@ export class ViewForumComponent implements OnInit, OnDestroy {
 
   async deleteComment(commentId: string | undefined): Promise<void> {
     // Delete a comment from the forum
-    console.log('Attempting to delete comment with ID:', commentId);
 
     if (!commentId) {
       console.error('Comment ID is undefined');
@@ -414,7 +411,6 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     if (confirmed) {
       this.commentService.deleteCommentById(commentId).subscribe(
         () => {
-          console.log('Successfully deleted comment with ID:', commentId);
           this.comments = this.comments.filter(comment => {
             const currentCommentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
             return currentCommentId !== commentId;
@@ -463,7 +459,6 @@ export class ViewForumComponent implements OnInit, OnDestroy {
     // Update the comment in the database
     this.commentService.updateCommentById(updatedComment._id!, updatedComment).subscribe(
       (comment: Comment) => {
-        console.log('Updated comment:', comment);
       },
       (error) => {
         console.error('Error editing comment:', error);

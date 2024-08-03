@@ -13,7 +13,6 @@ export class VerifiedAuthGuardService implements CanActivate {
     return this.authService.currentUser$.pipe(
       take(1),
       map((user) => {
-        console.log(user);
         if (user && user.isVerified) {
           return true;
         }

@@ -331,7 +331,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
             }
           };
         });
-        console.log('Comments:', this.comments);
         this.cd.detectChanges();
       },
       (error) => {
@@ -403,7 +402,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           this.isNewCommentTooLong = false;
           this.replyingToComment = null;
           this.replyText = '';
-          console.log('Added Comment:', newComment);
           this.cd.detectChanges();
         },
         (error) => {
@@ -416,7 +414,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
   }
 
   async deleteComment(commentId: string | undefined): Promise<void> {
-    console.log('Attempting to delete comment with ID:', commentId);
 
     if (!commentId) {
       console.error('Comment ID is undefined');
@@ -432,7 +429,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     if (confirmed) {
       this.commentService.deleteCommentById(commentId).subscribe(
         () => {
-          console.log('Successfully deleted comment with ID:', commentId);
           // Remove deleted comment from list
           this.comments = this.comments.filter(comment => {
             const currentCommentId = comment._id ? comment._id.toString() : (comment.id ? comment.id.toString() : '');
@@ -488,7 +484,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
     // Update comment on server
     this.commentService.updateCommentById(updatedComment._id!, updatedComment).subscribe(
       (comment: Comment) => {
-        console.log('Updated comment:', comment);
       },
       (error) => {
         console.error('Error editing comment:', error);
@@ -537,7 +532,6 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   private hasFormErrors(): boolean {
     if (!this.blog) {
-      console.log('Blog is null');
       return true;
     }
     // Check various form validations

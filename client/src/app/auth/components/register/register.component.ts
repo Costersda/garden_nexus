@@ -74,7 +74,6 @@ export class RegisterComponent {
       const { email, username, password } = this.form.getRawValue();
       this.authService.register({ email, username, password }).subscribe({
         next: (currentUser) => {
-          console.log('currentUser', currentUser);
           this.authService.setToken(currentUser);
           this.authService.setCurrentUser(currentUser);
           this.router.navigateByUrl('/profile/' + currentUser.username);
@@ -100,7 +99,6 @@ export class RegisterComponent {
 
   // Handle errors from HTTP requests
   private handleError(err: HttpErrorResponse, displayErrors: boolean): void {
-    console.log('err', err.error);
     if (displayErrors) {
       if (Array.isArray(err.error)) {
         this.errorMessages = err.error;
