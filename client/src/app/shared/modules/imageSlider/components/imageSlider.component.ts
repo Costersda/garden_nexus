@@ -1,12 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  interval,
-  Observable,
-  startWith,
-  Subject,
-  switchMap,
-  timer,
-} from 'rxjs';
 import { SlideInterface } from '../../types/slide.interface';
 
 @Component({
@@ -15,6 +7,7 @@ import { SlideInterface } from '../../types/slide.interface';
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
   @Input() slides: SlideInterface[] = [];
+  @Input() autoSlideInterval: number = 8000;
 
   currentIndex: number = 0;
   timeoutId?: number;
@@ -24,16 +17,19 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Clear the timeout when component is destroyed
-    window.clearTimeout(this.timeoutId);
+    this.clearTimer();
+  }
+
+  clearTimer() {
+    if (this.timeoutId) {
+      window.clearTimeout(this.timeoutId);
+    }
   }
 
   // Reset the timer for auto-sliding
   resetTimer() {
-    if (this.timeoutId) {
-      window.clearTimeout(this.timeoutId);
-    }
-    this.timeoutId = window.setTimeout(() => this.goToNext(), 8000);
+    this.clearTimer();
+    this.timeoutId = window.setTimeout(() => this.goToNext(), this.autoSlideInterval);
   }
 
   // Navigate to the previous slide
@@ -51,9 +47,8 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
   goToNext(): void {
     const isLastSlide = this.currentIndex === this.slides.length - 1;
     const newIndex = isLastSlide ? 0 : this.currentIndex + 1;
-
-    this.resetTimer();
     this.currentIndex = newIndex;
+    this.resetTimer();
   }
 
   // Go to a specific slide
