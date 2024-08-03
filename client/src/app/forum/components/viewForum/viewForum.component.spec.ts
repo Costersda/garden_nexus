@@ -12,6 +12,7 @@ import { CommentService } from '../../../shared/services/comment.service';
 import { ConfirmationDialogService } from '../../../shared/modules/confirmation-dialog/confirmation-dialog.service';
 import { User } from '../../../shared/types/user.interface';
 import { Forum } from '../../../shared/types/forum.interface';
+import { Comment } from '../../../shared/types/comment.interface';
 
 // Mock components
 @Component({ selector: 'app-toolbar', template: '' })
@@ -87,7 +88,6 @@ describe('ViewForumComponent', () => {
         jasmine.clock().uninstall(); // Uninstall fakeAsync clock if used
     });
 
-    // Your test cases will go here
     it('should create', () => {
         expect(component).toBeTruthy();
     });
@@ -631,4 +631,261 @@ describe('ViewForumComponent', () => {
             expect(console.error).toHaveBeenCalledWith('Error deleting comment:', error);
         });
     });
+
+    describe('editComment', () => {
+        it('should set up the comment for editing', () => {
+          const comment: Comment = {
+            _id: '1',
+            comment: 'Test comment',
+            user: { _id: 'user1', username: 'testuser' },
+            createdAt: new Date(),
+            replyText: ''
+          };
+      
+          component.editComment(comment);
+      
+          expect(component.commentBeingEdited).toEqual(comment);
+          expect(component.editCommentText).toBe('Test comment');
+          expect(component.isEditCommentTooLong).toBeFalse();
+        });
+      });
+      
+      describe('cancelEditComment', () => {
+        it('should cancel the comment editing process', () => {
+          component.commentBeingEdited = { _id: '1', comment: 'Test' } as Comment;
+          component.editCommentText = 'Edited text';
+          component.isEditCommentTooLong = true;
+      
+          component.cancelEditComment();
+      
+          expect(component.commentBeingEdited).toBeNull();
+          expect(component.editCommentText).toBe('');
+          expect(component.isEditCommentTooLong).toBeFalse();
+        });
+      });
+      
+      describe('saveEditedComment', () => {
+        it('should not save when editCommentText is empty', () => {
+          component.editCommentText = '  ';
+          component.commentBeingEdited = { _id: '1', comment: 'Original' } as Comment;
+      
+          component.saveEditedComment();
+      
+          expect(mockCommentService.updateCommentById).not.toHaveBeenCalled();
+        });
+      
+        it('should not save when commentBeingEdited is null', () => {
+          component.editCommentText = 'Valid text';
+          component.commentBeingEdited = null;
+      
+          component.saveEditedComment();
+      
+          expect(mockCommentService.updateCommentById).not.toHaveBeenCalled();
+        });
+      
+        it('should not save when isEditCommentTooLong is true', () => {
+          component.editCommentText = 'Valid text';
+          component.commentBeingEdited = { _id: '1', comment: 'Original' } as Comment;
+          component.isEditCommentTooLong = true;
+      
+          component.saveEditedComment();
+      
+          expect(mockCommentService.updateCommentById).not.toHaveBeenCalled();
+        });
+      
+        it('should update comment locally and in database when valid', fakeAsync(() => {
+          const originalComment: Comment = {
+            _id: '1',
+            comment: 'Original comment',
+            user: { _id: 'user1', username: 'testuser' },
+            createdAt: new Date(),
+            replyText: ''
+          };
+          component.comments = [originalComment];
+          component.commentBeingEdited = originalComment;
+          component.editCommentText = 'Edited comment';
+          mockCommentService.updateCommentById.and.returnValue(of({ ...originalComment, comment: 'Edited comment' }));
+      
+          component.saveEditedComment();
+          tick();
+      
+          expect(component.comments[0].comment).toBe('Edited comment ');
+          expect(component.commentBeingEdited).toBeNull();
+          expect(component.editCommentText).toBe('');
+          expect(mockCommentService.updateCommentById).toHaveBeenCalledWith('1', jasmine.objectContaining({
+            comment: 'Edited comment',
+            isEdited: true
+          }));
+        }));
+      
+        it('should handle error when updating comment', fakeAsync(() => {
+            const originalComment: Comment = {
+              _id: '1',
+              comment: 'Original comment',
+              user: { _id: 'user1', username: 'testuser' },
+              createdAt: new Date(),
+              replyText: ''
+            };
+            component.comments = [originalComment];
+            component.commentBeingEdited = originalComment;
+            component.editCommentText = 'Edited comment';
+            const error = new Error('Update failed');
+            mockCommentService.updateCommentById.and.returnValue(throwError(() => error));
+            spyOn(console, 'error');
+            spyOn(component, 'fetchComments');
+          
+            component.forum = { _id: 'forum1' } as Forum;
+          
+            component.saveEditedComment();
+            tick();
+          
+            expect(console.error).toHaveBeenCalledWith('Error editing comment:', error);
+            expect(component.fetchComments).toHaveBeenCalledWith('forum1');
+          }));
+      });
+
+      describe('goBack', () => {
+        it('should navigate to profile when source is profile and username is available', () => {
+          component.source = 'profile';
+          component.username = 'testuser';
+          component.goBack();
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/profile', 'testuser']);
+        });
+      
+        it('should navigate to forum when source is not profile', () => {
+          component.source = 'other';
+          component.goBack();
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/forum']);
+        });
+      
+        it('should navigate to forum when username is null', () => {
+          component.source = 'profile';
+          component.username = null;
+          component.goBack();
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/forum']);
+        });
+      });
+      
+      describe('hasFormErrors', () => {
+        beforeEach(() => {
+          component.maxTitleLength = 100;
+          component.minContentLength = 10;
+          component.maxContentLength = 1000;
+        });
+      
+        it('should return true when forum is null', () => {
+          component.forum = null;
+          expect(component.hasFormErrors()).toBeTrue();
+        });
+      
+        it('should return true when title is too long', () => {
+          component.forum = { title: 'a'.repeat(101), content: 'Valid content' } as Forum;
+          expect(component.hasFormErrors()).toBeTrue();
+        });
+      
+        it('should return true when content is too short', () => {
+          component.forum = { title: 'Valid title', content: 'Short' } as Forum;
+          expect(component.hasFormErrors()).toBeTrue();
+        });
+      
+        it('should return true when content is too long', () => {
+          component.forum = { title: 'Valid title', content: 'a'.repeat(1001) } as Forum;
+          expect(component.hasFormErrors()).toBeTrue();
+        });
+      
+        it('should return false when title and content are valid', () => {
+          component.forum = { title: 'Valid title', content: 'Valid content'.repeat(5) } as Forum;
+          expect(component.hasFormErrors()).toBeFalse();
+        });
+      });
+      
+      describe('toggleCategory', () => {
+        beforeEach(() => {
+          component.forum = { categories: ['Category1', 'Category2'] } as Forum;
+        });
+      
+        it('should add category when it does not exist', () => {
+          component.toggleCategory('Category3');
+          expect(component.forum?.categories).toContain('Category3');
+        });
+      
+        it('should remove category when it exists', () => {
+          component.toggleCategory('Category1');
+          expect(component.forum?.categories).not.toContain('Category1');
+        });
+      
+        it('should do nothing when forum is null', () => {
+          component.forum = null;
+          component.toggleCategory('Category1');
+          expect(component.forum).toBeNull();
+        });
+      });
+      
+      describe('currentUserMatchesCommentUser', () => {
+        it('should return false when commentUser is null', () => {
+          expect(component.currentUserMatchesCommentUser(null, { _id: '1' })).toBeFalse();
+        });
+      
+        it('should return false when currentUser is null', () => {
+          expect(component.currentUserMatchesCommentUser({ _id: '1' }, null)).toBeFalse();
+        });
+      
+        it('should return true when IDs match', () => {
+          expect(component.currentUserMatchesCommentUser({ _id: '1' }, { _id: '1' })).toBeTrue();
+        });
+      
+        it('should return false when IDs do not match', () => {
+          expect(component.currentUserMatchesCommentUser({ _id: '1' }, { _id: '2' })).toBeFalse();
+        });
+      
+        it('should handle id property', () => {
+          expect(component.currentUserMatchesCommentUser({ id: '1' }, { id: '1' })).toBeTrue();
+        });
+      
+        it('should trim IDs', () => {
+          expect(component.currentUserMatchesCommentUser({ _id: ' 1 ' }, { _id: '1' })).toBeTrue();
+        });
+      
+        it('should handle missing comment user ID', () => {
+          spyOn(console, 'warn');
+          expect(component.currentUserMatchesCommentUser({}, { _id: '1' })).toBeFalse();
+          expect(console.warn).toHaveBeenCalledWith('Comment user ID is missing');
+        });
+      });
+      
+      describe('quoteComment', () => {
+        it('should set up reply with quoted comment', () => {
+          const comment: Comment = { comment: 'Test comment' } as Comment;
+          component.quoteComment(comment);
+          expect(component.replyingToComment).toEqual(comment);
+          expect(component.replyText).toBe('"Test comment"');
+        });
+      
+        it('should focus and scroll to comment input', () => {
+          const mockTextarea = {
+            focus: jasmine.createSpy('focus'),
+            scrollIntoView: jasmine.createSpy('scrollIntoView')
+          };
+          spyOn(document, 'querySelector').and.returnValue(mockTextarea as any);
+      
+          const comment: Comment = { comment: 'Test comment' } as Comment;
+          component.quoteComment(comment);
+      
+          expect(document.querySelector).toHaveBeenCalledWith('.add-comment-section textarea');
+          expect(mockTextarea.focus).toHaveBeenCalled();
+          expect(mockTextarea.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        });
+      });
+      
+      describe('cancelReply', () => {
+        it('should reset reply state', () => {
+          component.replyingToComment = { comment: 'Test comment' } as Comment;
+          component.replyText = 'Reply text';
+      
+          component.cancelReply();
+      
+          expect(component.replyingToComment).toBeNull();
+          expect(component.replyText).toBe('');
+        });
+      });  
 });

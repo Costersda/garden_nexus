@@ -494,7 +494,7 @@ describe('ViewBlogComponent', () => {
                     comment: 'Test comment',
                     createdAt: new Date(),
                     replyText: '',
-                    showDropdown: false // Add any other required properties here
+                    showDropdown: false
                 },
                 {
                     id: '2',
@@ -502,7 +502,7 @@ describe('ViewBlogComponent', () => {
                     comment: 'Another comment',
                     createdAt: new Date(),
                     replyText: '',
-                    showDropdown: false // Add any other required properties here
+                    showDropdown: false
                 }
             ];
             mockCommentService.getCommentsByBlogId.and.returnValue(of(mockComments));
