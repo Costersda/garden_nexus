@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { catchError, filter, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { BlogService } from '../../shared/services/blog.service';
 import { Blog } from '../../shared/types/blog.interface';
 import { User } from '../../shared/types/user.interface';
@@ -14,6 +14,7 @@ import { ForumService } from '../../shared/services/forum.service';
 import { UserService } from '../../shared/services/user.service';
 import { ConfirmationDialogService } from '../../shared/modules/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
+import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
 
 @Component({
   selector: 'app-profile',
@@ -138,7 +139,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   // Check if the current user is the profile owner
   checkOwnership(username: string): void {
-    this.authService.getCurrentUser().subscribe((currentUser) => {
+    this.authService.getCurrentUser().pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error fetching current user:', error);
+        return of(null);
+      })
+    ).subscribe((currentUser: CurrentUserInterface | null) => {
       this.isOwner = currentUser ? currentUser.username === username : false;
     });
   }
@@ -214,6 +221,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   // Delete user profile after confirmation
   async deleteProfile(): Promise<void> {
+    if (!this.profile) {
+      this.toastr.error('User profile not available');
+      return;
+  }
     const confirmed = await this.confirmationDialogService.confirm(
       'Delete Profile',
       '***<strong>WARNING</strong>***<br><br>Are you sure you want to delete your profile?<br><br> This action cannot be undone.'
@@ -345,5 +356,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.errorMessage = 'Unable to unfollow user. Profile ID is missing.';
       console.error('Profile object:', this.profile);
     }
+  }
+
+  public getInitialBlogsToShow(): number {
+    return this.initialBlogsToShow;
   }
 }
