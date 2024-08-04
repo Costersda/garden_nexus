@@ -20,6 +20,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+
+    // Handle the initial URL
+    this.currentUrl = this.router.url;
+
     // Subscribe to router events to track current URL
     this.subscriptions.push(
       this.router.events.pipe(
@@ -45,10 +49,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   // Navigate to profile or login page based on user authentication status
   goToProfile(): void {
     if (this.currentUser) {
-      const currentUsername = this.route.snapshot.paramMap.get('username');
-      if (currentUsername !== this.currentUser.username) {
-        this.router.navigate(['/profile', this.currentUser.username]);
-      }
+      this.router.navigate(['/profile', this.currentUser.username]);
     } else {
       this.router.navigate(['/login']);
     }
@@ -56,10 +57,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   // Check if the given route is currently active
   isActiveRoute(route: string): boolean {
+
     if (route === '/') {
-      return this.currentUrl === route;
+      const isActive = this.currentUrl === route;
+      return isActive;
+    } else if (route === '/profile') {
+      const isActive = this.currentUrl.startsWith('/profile');
+      return isActive;
     } else {
-      return this.currentUrl.includes(route);
+      const isActive = this.currentUrl.includes(route);
+      return isActive;
     }
   }
 }
