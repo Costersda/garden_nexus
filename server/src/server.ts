@@ -98,7 +98,14 @@ io.on("connection", () => {
   console.log("connect");
 });
 
-mongoose.connect("mongodb://localhost:27017/garden_nexus").then(() => {
+const mongoURI = process.env.MONGODB_URI;
+
+if (!mongoURI) {
+  console.error('MONGODB_URI is not defined in the environment variables');
+  process.exit(1);
+}
+
+mongoose.connect(mongoURI).then(() => {
   console.log("connected to mongodb");
 
   // Start the scheduled tasks
@@ -107,4 +114,7 @@ mongoose.connect("mongodb://localhost:27017/garden_nexus").then(() => {
   httpServer.listen(4001, () => {
     console.log(`API is listening on port 4001`);
   });
+}).catch(err => {
+  console.error('Error connecting to MongoDB:', err);
+  process.exit(1);
 });
