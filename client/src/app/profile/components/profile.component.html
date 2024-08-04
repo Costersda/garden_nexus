@@ -3,9 +3,23 @@
 
 <!-- Banner Image -->
 <div class="img-banner">
-  <img class="img-banner-image" src="assets/spacer-img-7.webp" alt="User banner image">
+  <img 
+    class="img-banner-image" 
+    src="assets/spacer-img-7.webp" 
+    alt="User banner image"
+    width="1200"
+    height="400"
+    loading="eager"
+  >
   <div class="profile-picture-container">
-    <img class="profile-picture" [src]="profile?.imageFile ? 'data:image/jpeg;base64,' + profile!.imageFile : 'assets/garden-nexus-logo.webp'" alt="Profile Picture">
+    <img 
+      class="profile-picture" 
+      [src]="profile?.imageFile ? 'data:image/jpeg;base64,' + profile?.imageFile : 'assets/garden-nexus-logo.webp'" 
+      [alt]="profile?.username ? profile?.username + '\'s profile picture' : 'Default profile picture'"
+      width="150"
+      height="150"
+      loading="eager"
+    >
   </div>
 </div>
 

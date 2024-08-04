@@ -22,12 +22,12 @@ import { ForgotPasswordComponent } from './auth/components/forgot-password/forgo
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   {
     path: 'profile/:username',
     component: ProfileComponent,
     canActivate: [AuthGuardService]
   },
-  { path: '', component: HomeComponent },
   {
     path: 'login',
     component: LoginComponent,
@@ -66,7 +66,6 @@ const routes: Routes = [
   { path: 'verify-success', component: VerifySuccessComponent, canActivate: [VerificationPageGuardService] },
   { path: 'verify-failed', component: VerifyFailedComponent, canActivate: [VerificationPageGuardService] },
   { path: '**', component: NotFoundComponent, data: { redirectTo: '' } },
-
 ];
 
 @NgModule({

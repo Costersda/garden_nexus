@@ -26,7 +26,7 @@ import { ToastrModule } from 'ngx-toastr';
   declarations: [
     AppComponent,
     ConfirmationDialogComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
