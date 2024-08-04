@@ -3,7 +3,7 @@ import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { catchError, filter, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { AuthService } from '../../auth/services/auth.service';
 import { of, Subscription } from 'rxjs';
 import { BlogService } from '../../shared/services/blog.service';
