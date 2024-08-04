@@ -1,8 +1,8 @@
 import { Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from "jsonwebtoken";
 import UserModel from '../models/user';
 import { ExpressRequestInterface } from '../types/expressRequest.interface';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();

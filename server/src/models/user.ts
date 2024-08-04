@@ -1,7 +1,7 @@
 import { Schema, model, Types } from "mongoose";
 import { UserDocument } from "../types/user.interface";
 import validator from "validator";
-import bcryptjs from "bcryptjs";
+import * as bcryptjs from "bcryptjs";
 
 const userSchema = new Schema<UserDocument>(
   {

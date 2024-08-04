@@ -2,14 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
 import mongoose, { Error, Types } from "mongoose";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { Blog } from "../models/blog";
 import { Comment } from "../models/comment";
 import { Forum } from "../models/forum";
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { sendPasswordResetEmail, sendVerificationEmail } from "../services/emailService";
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 

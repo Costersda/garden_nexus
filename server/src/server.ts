@@ -10,7 +10,7 @@ import bodyParser from "body-parser";
 import authMiddleware from "./middlewares/auth";
 import cors from "cors";
 import path from 'path';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import { startScheduledTasks } from "./services/scheduledTasks";
 
 const app = express();
