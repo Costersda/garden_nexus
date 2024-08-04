@@ -34,7 +34,7 @@ for (let i = 0; i < tsFiles.length; i += chunkSize) {
   
   const startTime = Date.now();
   try {
-    execSync(`npx tsc ${chunk.join(' ')} --noEmit`, { stdio: 'inherit' });
+    execSync(`node --max-old-space-size=1536 ./node_modules/.bin/tsc ${chunk.join(' ')} --noEmit`, { stdio: 'inherit' });
     const endTime = Date.now();
     console.log(`Chunk ${chunkNumber} compiled successfully in ${(endTime - startTime) / 1000} seconds`);
   } catch (error) {
