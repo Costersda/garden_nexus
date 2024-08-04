@@ -4,7 +4,7 @@
   "main": "index.js",
 "scripts": {
   "start": "node dist/server.js",
-  "build": "tsc",
+  "build": "node --max-old-space-size=4096 build-in-stages.js",
   "dev": "nodemon src/server.ts"
 },
   "author": "",
