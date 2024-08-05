@@ -49,14 +49,20 @@ console.log(`FRONTEND_URL: ${process.env.FRONTEND_URL}`);
 app.use(cors({
   origin: function(origin, callback){
     const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000'];
+    console.log('Request origin:', origin);
+    console.log('Allowed origins:', allowedOrigins);
     if(!origin || allowedOrigins.indexOf(origin) !== -1){
       callback(null, true);
     } else {
+      console.log('Origin not allowed by CORS');
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
 }));
+
+
+
 app.use(body_parser_1.default.json({ limit: '10mb' }));
 app.use(body_parser_1.default.urlencoded({ limit: '10mb', extended: true }));
 app.use('/assets', express_1.default.static(path_1.default.join(__dirname, 'assets')));
@@ -64,7 +70,6 @@ app.get("/", (req, res) => {
     res.send("API is UP");
 });
 
-app.options('*', cors());
 
 console.log(`CORS origin: ${process.env.FRONTEND_URL}`);
 app.set('trust proxy', true);

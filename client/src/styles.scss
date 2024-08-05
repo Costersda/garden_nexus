@@ -1,3 +1,8 @@
+// Preload fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 @import '@angular/material/prebuilt-themes/azure-blue.css';
 @import './styles/reset.css';
 @import './styles/global.css';
