@@ -19,28 +19,21 @@ function getTsFiles(dir) {
 
 getTsFiles(srcDir);
 
-const chunkSize = 5; // Reduced chunk size for more granular progress
-const totalChunks = Math.ceil(tsFiles.length / chunkSize);
-
 console.log(`Total TypeScript files found: ${tsFiles.length}`);
-console.log(`Compiling in ${totalChunks} chunks`);
+console.log('Compiling files one by one');
 
-for (let i = 0; i < tsFiles.length; i += chunkSize) {
-  const chunk = tsFiles.slice(i, i + chunkSize);
-  const chunkNumber = Math.floor(i / chunkSize) + 1;
-  console.log(`\nCompiling chunk ${chunkNumber}/${totalChunks}`);
-  console.log(`Files in this chunk: ${chunk.length}`);
-  chunk.forEach(file => console.log(`  - ${file}`));
+tsFiles.forEach((file, index) => {
+  console.log(`\nCompiling file ${index + 1}/${tsFiles.length}: ${file}`);
   
   const startTime = Date.now();
   try {
-    execSync(`node --max-old-space-size=1536 ./node_modules/.bin/tsc ${chunk.join(' ')} --noEmit`, { stdio: 'inherit' });
+    execSync(`node --max-old-space-size=1536 ./node_modules/.bin/tsc ${file} --outDir ./dist`, { stdio: 'inherit' });
     const endTime = Date.now();
-    console.log(`Chunk ${chunkNumber} compiled successfully in ${(endTime - startTime) / 1000} seconds`);
+    console.log(`File compiled successfully in ${(endTime - startTime) / 1000} seconds`);
   } catch (error) {
-    console.error(`Error compiling chunk ${chunkNumber}:`, error);
+    console.error(`Error compiling file ${file}:`, error);
     process.exit(1);
   }
-}
+});
 
-console.log('\nAll chunks compiled successfully');
+console.log('\nAll files compiled successfully');
