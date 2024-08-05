@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.gardennexus.com'
+  apiUrl: 'https://api.gardennexus.com/api'
 };
