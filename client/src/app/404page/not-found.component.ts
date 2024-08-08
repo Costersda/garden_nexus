@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-not-found',
@@ -12,7 +13,7 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   countdown: number = 5;
   private redirectInterval: any;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit() {
     this.startCountdown();
@@ -27,7 +28,10 @@ export class NotFoundComponent implements OnInit, OnDestroy {
       this.countdown--;
       if (this.countdown === 0) {
         this.clearCountdown();
-        this.router.navigateByUrl(this.route.snapshot.data['redirectTo'] || '', { replaceUrl: true });
+        const redirectTo = this.route.snapshot.data['redirectTo'] || '';
+        this.router.navigateByUrl(redirectTo, { replaceUrl: true }).then(() => {
+          this.location.replaceState(redirectTo);
+        });
       }
     }, 1000);
   }
