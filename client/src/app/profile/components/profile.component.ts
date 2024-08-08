@@ -78,10 +78,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const username = params.get('username');
       if (username) {
         this.fetchProfile(username);
-        this.checkOwnership(username);
-        this.fetchBlogsByUser(username);
-        this.fetchForumsByUser(username);
-        this.fetchFollowing();
       }
     });
 
@@ -134,11 +130,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         if (profile) {
           this.profile = profile;
           this.errorMessage = null;
-          this.checkOwnership(username);
+          this.checkOwnership(profile.username);
           this.checkIfFollowing();
           this.fetchFollowing();
-          this.fetchBlogsByUser(username);
-          this.fetchForumsByUser(username);
+          this.fetchBlogsByUser(profile.username);
+          this.fetchForumsByUser(profile.username);
         } else {
           this.redirectTo404();
         }
@@ -157,18 +153,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Check if the current user is the profile owner
-  checkOwnership(username: string): void {
-    this.authService.getCurrentUser().pipe(
-      take(1),
-      catchError(error => {
-        console.error('Error fetching current user:', error);
-        return of(null);
-      })
-    ).subscribe((currentUser: CurrentUserInterface | null) => {
-      this.isOwner = currentUser ? currentUser.username === username : false;
-    });
-  }
+ // Check if the current user is the profile owner
+ checkOwnership(username: string): void {
+  this.authService.getCurrentUser().pipe(
+    take(1),
+    catchError(error => {
+      console.error('Error fetching current user:', error);
+      return of(null);
+    })
+  ).subscribe((currentUser: CurrentUserInterface | null) => {
+    this.isOwner = currentUser ? currentUser.username.toLowerCase() === username.toLowerCase() : false;
+  });
+}
 
   // Fetch blogs for the user
   fetchBlogsByUser(username: string): void {
