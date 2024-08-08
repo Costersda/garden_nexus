@@ -28,7 +28,7 @@ export class NotFoundComponent implements OnInit, OnDestroy {
       if (this.countdown === 0) {
         this.clearCountdown();
         const redirectTo = history.state.redirectTo || '/';
-        this.router.navigate([redirectTo]);
+        this.router.navigate([redirectTo], { replaceUrl: true });
       }
     }, 1000);
   }
