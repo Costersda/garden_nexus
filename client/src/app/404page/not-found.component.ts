@@ -12,7 +12,7 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   countdown: number = 5;
   private redirectInterval: any;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.startCountdown();
@@ -27,7 +27,8 @@ export class NotFoundComponent implements OnInit, OnDestroy {
       this.countdown--;
       if (this.countdown === 0) {
         this.clearCountdown();
-        this.router.navigate([this.route.snapshot.data['redirectTo'] || '']);
+        const redirectTo = history.state.redirectTo || '/';
+        this.router.navigate([redirectTo]);
       }
     }, 1000);
   }

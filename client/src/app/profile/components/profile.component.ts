@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { catchError, filter, take } from 'rxjs/operators';
+import { catchError, filter, map, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment.prod';
 import { AuthService } from '../../auth/services/auth.service';
 import { of, Subscription } from 'rxjs';
 import { BlogService } from '../../shared/services/blog.service';
@@ -123,19 +122,38 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.showBlogDropdown = false;
   }
 
-  // Fetch user profile data
   fetchProfile(username: string): void {
-    this.userService.getProfileByUsername(username).subscribe({
+    this.userService.getAllProfiles().pipe(
+      map(profiles => profiles.find(profile => profile.username.toLowerCase() === username.toLowerCase())),
+      catchError(error => {
+        console.error('Error fetching profiles:', error);
+        return of(null);
+      })
+    ).subscribe({
       next: (profile) => {
-        this.profile = profile;
-        this.errorMessage = null;
-        this.checkIfFollowing();
-        this.fetchFollowing();
+        if (profile) {
+          this.profile = profile;
+          this.errorMessage = null;
+          this.checkOwnership(username);
+          this.checkIfFollowing();
+          this.fetchFollowing();
+          this.fetchBlogsByUser(username);
+          this.fetchForumsByUser(username);
+        } else {
+          this.redirectTo404();
+        }
       },
       error: (error) => {
-        this.errorMessage = 'Error fetching profile';
-        console.error('Error fetching profile:', error);
+        console.error('Error in profile subscription:', error);
+        this.redirectTo404();
       }
+    });
+  }
+
+  redirectTo404(): void {
+    this.router.navigate(['/404'], { 
+      skipLocationChange: true,
+      state: { redirectTo: '/' } 
     });
   }
 

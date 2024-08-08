@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { User } from '../types/user.interface';
 import { environment } from '../../../environments/environment.prod';
 
@@ -23,6 +23,12 @@ export class UserService {
         console.error('Error fetching profile:', error);
         return throwError(() => new Error('Error fetching profile'));
       })
+    );
+  }
+
+  getAllProfiles(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/profiles`).pipe(
+      catchError(this.handleError<User[]>('getAllProfiles', []))
     );
   }
 
@@ -69,6 +75,13 @@ export class UserService {
 
   getFollowing(userId: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/${userId}/following`);
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    };
   }
   
 }

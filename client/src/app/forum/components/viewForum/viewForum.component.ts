@@ -79,10 +79,6 @@ export class ViewForumComponent implements OnInit, OnDestroy {
         // Fetch current user, forum details, and comments
         this.fetchCurrentUser();
         this.fetchForum(forumId);
-        // // Fetch initial comments (commented out console.log for production)
-        // this.commentService.getCommentsByForumId(forumId).subscribe(
-        //   // comments => console.log('Initial comments:', JSON.stringify(comments, null, 2))
-        // );
       }
     });
   }
@@ -144,30 +140,30 @@ export class ViewForumComponent implements OnInit, OnDestroy {
 
   fetchForum(forumId: string): void {
     this.forumSubscription = this.forumService.getForumById(forumId).subscribe(
-        (forum: Forum) => {
-            if (forum) {
-                this.forum = {
-                    ...forum,
-                    createdAt: new Date(forum.createdAt),
-                    updatedAt: new Date(forum.updatedAt)
-                };
-                this.originalForum = {
-                    ...this.forum
-                };
-                if (forum.user_id) {
-                    this.fetchUser(forum.user_id);
-                }
-                this.fetchComments(forumId);
-            } else {
-                this.router.navigate(['/forum']);
-            }
-        },
-        (error) => {
-            console.error('Error fetching forum:', error);
-            this.router.navigate(['/forum']);
+      (forum: Forum) => {
+        if (forum) {
+          this.forum = {
+            ...forum,
+            createdAt: new Date(forum.createdAt),
+            updatedAt: new Date(forum.updatedAt)
+          };
+          this.originalForum = {
+            ...this.forum
+          };
+          if (forum.user_id) {
+            this.fetchUser(forum.user_id);
+          }
+          this.fetchComments(forumId);
+        } else {
+          this.router.navigate(['/404']);
         }
+      },
+      (error) => {
+        console.error('Error fetching forum:', error);
+        this.router.navigate(['/404']);
+      }
     );
-}
+  }
 
   async deleteForum(forumId: string): Promise<void> {
     if (!forumId) {
@@ -229,14 +225,14 @@ export class ViewForumComponent implements OnInit, OnDestroy {
 
   cancelEdit(): void {
     if (this.originalForum) {
-        this.forum = {
-            ...this.originalForum,
-            createdAt: new Date(this.originalForum.createdAt),
-            updatedAt: new Date(this.originalForum.updatedAt)
-        };
+      this.forum = {
+        ...this.originalForum,
+        createdAt: new Date(this.originalForum.createdAt),
+        updatedAt: new Date(this.originalForum.updatedAt)
+      };
     }
     this.isEditMode = false;
-}
+  }
 
   fetchUser(userId: string): void {
     // Fetch user details by ID

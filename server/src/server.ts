@@ -41,6 +41,7 @@ app.delete('/api/users/profile', authMiddleware, (req, res, next) => {
   console.log("Delete profile route hit");
   usersController.deleteProfile(req, res, next);
 });
+app.get("/api/users/profiles", authMiddleware, usersController.getAllProfiles);
 
 // User Routes with :id parameter
 app.get("/api/users/:id/is-following", authMiddleware, usersController.checkIfFollowing);

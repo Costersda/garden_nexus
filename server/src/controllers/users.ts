@@ -294,6 +294,28 @@ export const getProfile = async (req: Request, res: Response) => {
   }
 };
 
+// Get all user profiles
+export const getAllProfiles = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await UserModel.find({}, 'username email country bio imageFile isVerified');
+
+    const profiles = users.map(user => ({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      country: user.country,
+      bio: user.bio,
+      imageFile: user.imageFile ? user.imageFile.toString('base64') : null,
+      isVerified: user.isVerified
+    }));
+
+    res.status(200).json(profiles);
+  } catch (error) {
+    console.error('Error fetching all profiles:', error);
+    res.status(500).json({ message: 'Error fetching all profiles', error });
+  }
+};
+
 // Update a users profile
 export const updateProfile = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
   try {

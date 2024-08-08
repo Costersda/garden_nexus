@@ -160,13 +160,14 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
           }
           this.fetchComments(blogId);
         } else {
-          // Blog not found, redirect to blogs list
-          this.router.navigate(['/blogs']);
+          // Blog not found, redirect to 404 page
+          this.router.navigate(['/404']);
         }
       },
       (error) => {
         console.error('Error fetching blog:', error);
-        this.router.navigate(['/blogs']);
+        // Error occurred, redirect to 404 page
+        this.router.navigate(['/404']);
       }
     );
   }

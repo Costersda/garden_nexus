@@ -65,6 +65,7 @@ const routes: Routes = [
   { path: 'help', component: HelpComponent },
   { path: 'verify-success', component: VerifySuccessComponent, canActivate: [VerificationPageGuardService] },
   { path: 'verify-failed', component: VerifyFailedComponent, canActivate: [VerificationPageGuardService] },
+  { path: '404', component: NotFoundComponent },
   { path: '**', component: NotFoundComponent, data: { redirectTo: '' } },
 ];
 
