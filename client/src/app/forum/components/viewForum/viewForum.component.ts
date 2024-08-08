@@ -155,12 +155,12 @@ export class ViewForumComponent implements OnInit, OnDestroy {
           }
           this.fetchComments(forumId);
         } else {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/404'], { replaceUrl: true });
         }
       },
       (error) => {
         console.error('Error fetching forum:', error);
-        this.router.navigate(['/404']);
+        this.router.navigate(['/404'], { replaceUrl: true });
       }
     );
   }
