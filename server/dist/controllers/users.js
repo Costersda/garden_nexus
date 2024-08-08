@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProfile = exports.checkIfFollowing = exports.getFollowing = exports.getFollowers = exports.unfollowUser = exports.followUser = exports.checkUserCredentialsAvailability = exports.getUserById = exports.updateProfile = exports.getProfile = exports.currentUser = exports.login = exports.resetPassword = exports.forgotPassword = exports.resendVerificationEmail = exports.verifyEmail = exports.register = void 0;
+exports.deleteProfile = exports.checkIfFollowing = exports.getFollowing = exports.getFollowers = exports.unfollowUser = exports.followUser = exports.checkUserCredentialsAvailability = exports.getUserById = exports.updateProfile = exports.getAllProfiles = exports.getProfile = exports.currentUser = exports.login = exports.resetPassword = exports.forgotPassword = exports.resendVerificationEmail = exports.verifyEmail = exports.register = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const mongoose_1 = __importStar(require("mongoose"));
 const jwt = __importStar(require("jsonwebtoken"));
@@ -272,6 +272,27 @@ const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getProfile = getProfile;
+// Get all user profiles
+const getAllProfiles = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield user_1.default.find({}, 'username email country bio imageFile isVerified');
+        const profiles = users.map(user => ({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            country: user.country,
+            bio: user.bio,
+            imageFile: user.imageFile ? user.imageFile.toString('base64') : null,
+            isVerified: user.isVerified
+        }));
+        res.status(200).json(profiles);
+    }
+    catch (error) {
+        console.error('Error fetching all profiles:', error);
+        res.status(500).json({ message: 'Error fetching all profiles', error });
+    }
+});
+exports.getAllProfiles = getAllProfiles;
 // Update a users profile
 const updateProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;

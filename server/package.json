@@ -2,11 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "start": "node dist/server.js",
-    "build": "node build-one-by-one.js",
-    "dev": "nodemon src/server.ts"
-  },
+"scripts": {
+  "build": "tsc",
+  "start": "node dist/server.js",
+  "dev": "nodemon src/server.ts"
+},
   "author": "",
   "license": "ISC",
   "description": "",

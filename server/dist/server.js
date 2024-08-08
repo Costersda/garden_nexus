@@ -36,7 +36,7 @@ const blogController = __importStar(require("./controllers/blogs"));
 const forumController = __importStar(require("./controllers/forums"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const auth_1 = __importDefault(require("./middlewares/auth"));
-const cors = require('cors');
+const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
 const scheduledTasks_1 = require("./services/scheduledTasks");
@@ -44,35 +44,16 @@ const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer);
 dotenv.config();
-
-console.log(`FRONTEND_URL: ${process.env.FRONTEND_URL}`);
-app.use(cors({
-  origin: function(origin, callback){
-    const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000'];
-    console.log('Request origin:', origin);
-    console.log('Allowed origins:', allowedOrigins);
-    if(!origin || allowedOrigins.indexOf(origin) !== -1){
-      callback(null, true);
-    } else {
-      console.log('Origin not allowed by CORS');
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
+app.use((0, cors_1.default)({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
 }));
-
-
-
 app.use(body_parser_1.default.json({ limit: '10mb' }));
 app.use(body_parser_1.default.urlencoded({ limit: '10mb', extended: true }));
 app.use('/assets', express_1.default.static(path_1.default.join(__dirname, 'assets')));
 app.get("/", (req, res) => {
     res.send("API is UP");
 });
-
-
-console.log(`CORS origin: ${process.env.FRONTEND_URL}`);
-app.set('trust proxy', true);
 // User Routes
 app.get("/api/users/check-credentials", usersController.checkUserCredentialsAvailability);
 app.post("/api/users/resend-verification", usersController.resendVerificationEmail);
@@ -83,6 +64,7 @@ app.delete('/api/users/profile', auth_1.default, (req, res, next) => {
     console.log("Delete profile route hit");
     usersController.deleteProfile(req, res, next);
 });
+app.get("/api/users/profiles", auth_1.default, usersController.getAllProfiles);
 // User Routes with :id parameter
 app.get("/api/users/:id/is-following", auth_1.default, usersController.checkIfFollowing);
 app.post("/api/users/:id/follow", auth_1.default, usersController.followUser);
