@@ -40,17 +40,18 @@ export const register = async (
   try {
     const { email, username, password } = req.body;
 
-    // Check for existing user
-    const existingUser = await UserModel.findOne({
-      $or: [{ email }, { username }],
-    });
+    // Check for existing email
+    const existingEmail = await UserModel.findOne({ email: email.toLowerCase() });
+    if (existingEmail) {
+      return res.status(409).json({ message: 'Email is already in use' });
+    }
 
-    if (existingUser) {
-      const message =
-        existingUser.username === username
-          ? 'Username is already taken'
-          : 'Email is already in use';
-      return res.status(409).json({ message });
+    // Check for existing username (case-insensitive)
+    const existingUsername = await UserModel.findOne({
+      username: { $regex: new RegExp(`^${username}$`, 'i') }
+    });
+    if (existingUsername) {
+      return res.status(409).json({ message: 'Username is already taken' });
     }
 
     // Generate verification token
@@ -58,7 +59,7 @@ export const register = async (
 
     // Create and save new user
     const newUser = new UserModel({
-      email,
+      email: email.toLowerCase(),
       username,
       password,
       verificationToken,
