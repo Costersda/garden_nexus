@@ -11,14 +11,12 @@ const userSchema = new Schema<UserDocument>(
       validate: [validator.isEmail, "Invalid email"],
       unique: true,
       lowercase: true,
-      set: (v: string) => v.toLowerCase(), // Ensure email is always stored in lowercase
     },
     username: {
       type: String,
       required: [true, "Username is required"],
       unique: true,
-      lowercase: true,
-      collation: { locale: 'en', strength: 2 } 
+      lowercase: true, 
     },
     password: {
       type: String,
@@ -69,6 +67,9 @@ const userSchema = new Schema<UserDocument>(
     timestamps: true,
   }
 );
+
+// Case-insensitive index on the username field
+userSchema.index({ username: 1 }, { unique: true, collation: { locale: 'en', strength: 2 } });
 
 // Middleware to hash password before saving
 userSchema.pre("save", async function (next) {

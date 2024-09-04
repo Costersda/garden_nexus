@@ -45,14 +45,12 @@ const userSchema = new mongoose_1.Schema({
         validate: [validator_1.default.isEmail, "Invalid email"],
         unique: true,
         lowercase: true,
-        set: (v) => v.toLowerCase(), // Ensure email is always stored in lowercase
     },
     username: {
         type: String,
         required: [true, "Username is required"],
         unique: true,
         lowercase: true,
-        collation: { locale: 'en', strength: 2 }
     },
     password: {
         type: String,
@@ -101,6 +99,8 @@ const userSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
+// Case-insensitive index on the username field
+userSchema.index({ username: 1 }, { unique: true, collation: { locale: 'en', strength: 2 } });
 // Middleware to hash password before saving
 userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
