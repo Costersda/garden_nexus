@@ -63,21 +63,23 @@ const normalizeUser = (user) => {
 const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, username, password } = req.body;
-        // Check for existing user
-        const existingUser = yield user_1.default.findOne({
-            $or: [{ email }, { username }],
+        // Check for existing email
+        const existingEmail = yield user_1.default.findOne({ email: email.toLowerCase() });
+        if (existingEmail) {
+            return res.status(409).json({ message: 'Email is already in use' });
+        }
+        // Check for existing username (case-insensitive)
+        const existingUsername = yield user_1.default.findOne({
+            username: { $regex: new RegExp(`^${username}$`, 'i') }
         });
-        if (existingUser) {
-            const message = existingUser.username === username
-                ? 'Username is already taken'
-                : 'Email is already in use';
-            return res.status(409).json({ message });
+        if (existingUsername) {
+            return res.status(409).json({ message: 'Username is already taken' });
         }
         // Generate verification token
         const verificationToken = crypto.randomBytes(32).toString('hex');
         // Create and save new user
         const newUser = new user_1.default({
-            email,
+            email: email.toLowerCase(),
             username,
             password,
             verificationToken,
