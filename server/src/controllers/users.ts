@@ -40,16 +40,18 @@ export const register = async (
   try {
     const { email, username, password } = req.body;
 
+    // Convert email and username to lowercase
+    const lowerEmail = email.toLowerCase();
+    const lowerUsername = username.toLowerCase();
+
     // Check for existing email
-    const existingEmail = await UserModel.findOne({ email: email.toLowerCase() });
+    const existingEmail = await UserModel.findOne({ email: lowerEmail });
     if (existingEmail) {
       return res.status(409).json({ message: 'Email is already in use' });
     }
 
-    // Check for existing username (case-insensitive)
-    const existingUsername = await UserModel.findOne({
-      username: { $regex: new RegExp(`^${username}$`, 'i') }
-    });
+    // Check for existing username
+    const existingUsername = await UserModel.findOne({ username: lowerUsername });
     if (existingUsername) {
       return res.status(409).json({ message: 'Username is already taken' });
     }
@@ -59,8 +61,8 @@ export const register = async (
 
     // Create and save new user
     const newUser = new UserModel({
-      email: email.toLowerCase(),
-      username,
+      email: lowerEmail,
+      username: lowerUsername,
       password,
       verificationToken,
       isVerified: false
@@ -68,7 +70,7 @@ export const register = async (
     const savedUser = await newUser.save();
 
     // Send verification email
-    await sendVerificationEmail(email, verificationToken);
+    await sendVerificationEmail(lowerEmail, verificationToken);
 
     // Generate token and return user info
     const normalizedUser = normalizeUser(savedUser);

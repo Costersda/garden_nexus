@@ -63,15 +63,16 @@ const normalizeUser = (user) => {
 const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, username, password } = req.body;
+        // Convert email and username to lowercase
+        const lowerEmail = email.toLowerCase();
+        const lowerUsername = username.toLowerCase();
         // Check for existing email
-        const existingEmail = yield user_1.default.findOne({ email: email.toLowerCase() });
+        const existingEmail = yield user_1.default.findOne({ email: lowerEmail });
         if (existingEmail) {
             return res.status(409).json({ message: 'Email is already in use' });
         }
-        // Check for existing username (case-insensitive)
-        const existingUsername = yield user_1.default.findOne({
-            username: { $regex: new RegExp(`^${username}$`, 'i') }
-        });
+        // Check for existing username
+        const existingUsername = yield user_1.default.findOne({ username: lowerUsername });
         if (existingUsername) {
             return res.status(409).json({ message: 'Username is already taken' });
         }
@@ -79,15 +80,15 @@ const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         const verificationToken = crypto.randomBytes(32).toString('hex');
         // Create and save new user
         const newUser = new user_1.default({
-            email: email.toLowerCase(),
-            username,
+            email: lowerEmail,
+            username: lowerUsername,
             password,
             verificationToken,
             isVerified: false
         });
         const savedUser = yield newUser.save();
         // Send verification email
-        yield (0, emailService_1.sendVerificationEmail)(email, verificationToken);
+        yield (0, emailService_1.sendVerificationEmail)(lowerEmail, verificationToken);
         // Generate token and return user info
         const normalizedUser = normalizeUser(savedUser);
         // Return only the normalized user data

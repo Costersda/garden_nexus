@@ -44,11 +44,15 @@ const userSchema = new mongoose_1.Schema({
         required: [true, "Email is required"],
         validate: [validator_1.default.isEmail, "Invalid email"],
         unique: true,
+        lowercase: true,
+        set: (v) => v.toLowerCase(), // Ensure email is always stored in lowercase
     },
     username: {
         type: String,
         required: [true, "Username is required"],
         unique: true,
+        lowercase: true,
+        collation: { locale: 'en', strength: 2 }
     },
     password: {
         type: String,
