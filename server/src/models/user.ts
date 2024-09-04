@@ -10,11 +10,13 @@ const userSchema = new Schema<UserDocument>(
       required: [true, "Email is required"],
       validate: [validator.isEmail, "Invalid email"],
       unique: true,
+      set: (v: string) => v.toLowerCase(), // Ensure email is always stored in lowercase
     },
     username: {
       type: String,
       required: [true, "Username is required"],
       unique: true,
+      collation: { locale: 'en', strength: 2 } 
     },
     password: {
       type: String,
