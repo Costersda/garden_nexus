@@ -29,7 +29,14 @@ export class CommentService {
   }
 
   updateCommentById(id: string, comment: Partial<Comment>): Observable<Comment> {
-    return this.http.patch<Comment>(`${this.apiUrl}/${id}`, comment);
+    const updatePayload = {
+      comment: comment.comment,
+      isEdited: comment.isEdited,
+      user: comment.user && comment.user._id ? { _id: comment.user._id } : undefined,
+      replyingTo: comment.replyingTo
+    };
+
+    return this.http.patch<Comment>(`${this.apiUrl}/${id}`, updatePayload);
   }
 
   deleteCommentById(id: string): Observable<void> {

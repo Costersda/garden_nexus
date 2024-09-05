@@ -351,9 +351,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   addComment(): void {
     if (!this.newComment.trim() || this.isNewCommentTooLong) return;
-
+  
     if (this.currentUser && this.currentUser._id) {
-      // Prepare comment data
       const commentData: Comment = {
         user: {
           _id: this.currentUser._id,
@@ -373,10 +372,11 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
         } : undefined,
         replyText: this.replyingToComment ? this.replyText : ''
       };
-
-      // Create comment
+  
+  
       this.commentService.createComment(commentData).subscribe(
         (comment: Comment) => {
+         
           // Normalize new comment object
           const newComment: Comment = {
             ...comment,
@@ -396,7 +396,8 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
             } : undefined,
             replyText: this.replyingToComment ? this.replyText : ''
           };
-
+  
+  
           // Add new comment and reset form
           this.comments = [...this.comments, newComment];
           this.newComment = '';
@@ -467,28 +468,72 @@ export class ViewBlogComponent implements OnInit, OnDestroy {
 
   saveEditedComment(): void {
     if (!this.editCommentText.trim() || !this.commentBeingEdited || this.isEditCommentTooLong) return;
-
-    const updatedComment = {
-      ...this.commentBeingEdited,
+  
+    const originalComment = { ...this.commentBeingEdited };
+    const commentId = originalComment._id || originalComment.id;
+  
+    if (!commentId) {
+      console.error('Comment ID is missing or invalid:', originalComment);
+      alert('Unable to update comment due to missing ID. Please refresh the page and try again.');
+      return;
+    }
+  
+    // Prepare a minimal update payload for the server
+    const serverUpdatePayload: Partial<Comment> = {
       comment: this.editCommentText,
       isEdited: true
     };
-
-    // Update comment in local array
+     
+    // Prepare a full update for the local state
+    const localUpdatePayload = {
+      ...originalComment,
+      ...serverUpdatePayload,
+      user: originalComment.user,
+      showDropdown: originalComment.showDropdown 
+    };
+  
+    // Optimistic update
     this.comments = this.comments.map(c =>
-      c._id === updatedComment._id ? { ...updatedComment, comment: `${updatedComment.comment} ` } : c
+      (c._id === commentId || c.id === commentId) ? localUpdatePayload : c
     );
     this.commentBeingEdited = null;
     this.editCommentText = '';
     this.cd.detectChanges();
-
+  
     // Update comment on server
-    this.commentService.updateCommentById(updatedComment._id!, updatedComment).subscribe(
-      (comment: Comment) => {
+    this.commentService.updateCommentById(commentId, serverUpdatePayload).subscribe(
+      (updatedComment: Comment) => {
+        // Update the local state with the server response, preserving local-only properties
+        this.comments = this.comments.map(c =>
+          (c._id === commentId || c.id === commentId) ? { ...c, ...updatedComment, user: c.user, showDropdown: c.showDropdown } : c
+        );
+        this.cd.detectChanges();
       },
       (error) => {
-        console.error('Error editing comment:', error);
-        this.fetchComments(this.blog!._id!);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message,
+          error: error.error
+        });
+  
+        // Revert the optimistic update
+        this.comments = this.comments.map(c =>
+          (c._id === originalComment._id || c.id === originalComment.id) ? originalComment : c
+        );
+        this.cd.detectChanges();
+        
+        let errorMessage = 'Failed to update comment. ';
+        if (error.status === 0) {
+          errorMessage += 'Network error. Please check your internet connection.';
+        } else if (error.status === 404) {
+          errorMessage += 'Comment not found. It may have been deleted.';
+        } else if (error.status === 500) {
+          errorMessage += 'Server error. Please try again later.';
+        } else {
+          errorMessage += 'Please try again.';
+        }
+        alert(errorMessage);
       }
     );
   }

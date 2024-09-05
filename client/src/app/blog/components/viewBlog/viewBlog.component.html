@@ -210,7 +210,7 @@
         </div>
 
         <!-- Content Section 2 -->
-        <div class="blog-section" *ngIf="blog.image_2">
+        <div class="blog-section" *ngIf="blog.image_2 || blog.content_section_2">
           <div class="blog-img" *ngIf="blog.image_2">
             <img [src]="blog.image_2" alt="Blog Image 2">
           </div>
@@ -220,7 +220,7 @@
         </div>
 
         <!-- Content Section 3 -->
-        <div class="blog-section" *ngIf="blog.image_3">
+        <div class="blog-section" *ngIf="blog.image_3 || blog.content_section_3">
           <div class="blog-img" *ngIf="blog.image_3">
             <img [src]="blog.image_3" alt="Blog Image 3">
           </div>
