@@ -26,7 +26,7 @@
           </div>
           <div class="dropdown" *ngIf="currentUser && forum && currentUser._id === forum.user_id && !isEditMode">
             <button class="dropdown-toggle" (click)="toggleForumDropdown($event)">
-              <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+              <img src="assets/ellipsis.png" alt="More options icon" class="ellipsis-icon">
             </button>
             <div class="dropdown-menu" [ngClass]="{'show': showForumDropdown}">
               <label class="forum-options-label" (click)="toggleEditMode()">Edit</label>
@@ -158,11 +158,11 @@
                 <div class="icon-container">
                   <button class="quote-icon-container" *ngIf="currentUser && currentUser.isVerified"
                     (click)="quoteComment(comment)">
-                    <img src="assets/quote.png" alt="Quote comment" class="quote-icon">
+                    <img src="assets/quote.png" alt="Quote comment icon" class="quote-icon">
                   </button>
                   <div class="dropdown" *ngIf="currentUserMatchesCommentUser(comment.user, currentUser)">
                     <button class="dropdown-toggle" (click)="toggleDropdown(comment, $event)">
-                      <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+                      <img src="assets/ellipsis.png" alt="More options icon" class="ellipsis-icon">
                     </button>
                     <div class="dropdown-menu" [ngClass]="{'show': comment.showDropdown}">
                       <label (click)="editComment(comment)">Edit</label>

@@ -6,7 +6,7 @@
   <img 
     class="img-banner-image" 
     src="assets/spacer-img-7.webp" 
-    alt="User banner image"
+    alt="Pot plants on a second story balcony"
     width="1200"
     height="400"
     loading="eager"
@@ -34,7 +34,7 @@
         </button>
         <div class="dropdown">
           <button *ngIf="isOwner" class="dropdown-toggle" (click)="toggleBlogDropdown($event)">
-            <img src="assets/ellipsis.png" alt="More options" class="ellipsis-icon">
+            <img src="assets/ellipsis.png" alt="More options icon" class="ellipsis-icon">
           </button>
           <div class="dropdown-menu" [ngClass]="{'show': showBlogDropdown}">
             <label class="forum-options-label" (click)="openEditProfileModal()">Edit Profile</label>
@@ -82,7 +82,7 @@
     <div class="load-more-btn-container" *ngIf="blogs.length > displayedBlogs.length">
       <div class="profile-content">
         <button class="load-more-btn" (click)="loadMoreBlogs()">
-          <img src="assets/arrow_down.png" alt="Load More">
+          <img src="assets/arrow_down.png" alt="Load More icon">
         </button>
       </div>
     </div>
@@ -109,7 +109,7 @@
     <div class="load-more-btn-container" *ngIf="forums.length > displayedForums.length">
       <div class="profile-content">
         <button class="load-more-btn" (click)="loadMoreForums()">
-          <img src="assets/arrow_down.png" alt="Load More">
+          <img src="assets/arrow_down.png" alt="Load More icon">
         </button>
       </div>
     </div>
@@ -144,7 +144,7 @@
     <div class="load-more-btn-container" *ngIf="following.length > displayedFollowing.length">
       <div class="profile-content">
         <button class="load-more-btn" (click)="loadMoreFollowing()">
-          <img src="assets/arrow_down.png" alt="Load More">
+          <img src="assets/arrow_down.png" alt="Load More icon">
         </button>
       </div>
     </div>
