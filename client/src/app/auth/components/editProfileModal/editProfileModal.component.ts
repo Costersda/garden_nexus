@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.prod';
+import { environment } from '../../../../environments/environment';
 import { CountryService } from '../../../shared/services/country.service';
 
 // Define the structure of a user profile
