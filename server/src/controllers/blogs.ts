@@ -69,7 +69,7 @@ export const getBlogsByCategory = async (
 ) => {
   try {
     const categories = req.query.categories?.toString().split(",");
-    const blogs = await Blog.find({ category: { $in: categories } });
+    const blogs = await Blog.find({ categories: { $in: categories } });
     res.status(200).send(blogs);
   } catch (error) {
     next(error);

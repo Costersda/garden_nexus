@@ -21,15 +21,7 @@ dotenv.config();
 const allowedOrigins = [process.env.FRONTEND_URL, 'https://gardennexus.com'];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -109,23 +101,13 @@ io.on("connection", () => {
   console.log("connect");
 });
 
-const mongoURI = process.env.MONGODB_URI;
-
-if (!mongoURI) {
-  console.error('MONGODB_URI is not defined in the environment variables');
-  process.exit(1);
-}
-
-mongoose.connect(mongoURI).then(() => {
+mongoose.connect("mongodb://localhost:27017/garden_nexus").then(() => {
   console.log("connected to mongodb");
 
-  // Start the scheduled tasks
+   // Start the scheduled tasks
   startScheduledTasks();
 
   httpServer.listen(4001, () => {
     console.log(`API is listening on port 4001`);
   });
-}).catch(err => {
-  console.error('Error connecting to MongoDB:', err);
-  process.exit(1);
 });
