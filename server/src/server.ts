@@ -18,7 +18,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 dotenv.config();
 
-const allowedOrigins = [process.env.FRONTEND_URL, 'https://gardennexus.com'];
+
 
 app.use(cors({
   origin: process.env.FRONTEND_URL,

@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth.service';
 import { User } from '../../types/user.interface';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.prod';
+import { environment } from '../../../../environments/environment';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
