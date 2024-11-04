@@ -31,7 +31,7 @@
         file:
           path: /home/ec2-user/garden_nexus/server
           owner: ec2-user
-          group: nginx
+          group: ec2-user  # Changed to ec2-user for PM2
           mode: '0755'
           recurse: yes
   
@@ -43,12 +43,23 @@
           mode: '0755'
           recurse: yes
   
-      - name: Ensure correct file permissions
+      - name: Set PM2-specific permissions for server/dist
+        file:
+          path: /home/ec2-user/garden_nexus/server/dist
+          owner: ec2-user
+          group: ec2-user
+          mode: '0755'
+          recurse: yes
+  
+      - name: Ensure executable permissions for server files
+        shell: |
+          find /home/ec2-user/garden_nexus/server/dist -type f -exec chmod 755 {} \;
+          find /home/ec2-user/garden_nexus/server/dist -type d -exec chmod 755 {} \;
+  
+      - name: Ensure correct client file permissions
         shell: |
           find /home/ec2-user/garden_nexus/client/dist -type f -exec chmod 644 {} \;
-          find /home/ec2-user/garden_nexus/server/dist -type f -exec chmod 644 {} \;
           find /home/ec2-user/garden_nexus/client/dist -type d -exec chmod 755 {} \;
-          find /home/ec2-user/garden_nexus/server/dist -type d -exec chmod 755 {} \;
   
       - name: Restart PM2 processes
         command: pm2 restart all
