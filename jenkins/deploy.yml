@@ -19,13 +19,11 @@
         synchronize:
           src: "{{ playbook_dir }}/../client/dist/"
           dest: /home/ec2-user/garden_nexus/client/dist/
-          delete: yes
   
       - name: Copy server dist files
         synchronize:
           src: "{{ playbook_dir }}/../server/dist/"
           dest: /home/ec2-user/garden_nexus/server/dist/
-          delete: yes
   
       - name: Fix ownership and permissions for server directory
         file:
