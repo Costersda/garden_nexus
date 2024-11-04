@@ -1,44 +1,44 @@
 ---
-- name: Deploy Garden Nexus application
-  hosts: webserver
-  become: yes
+  - name: Deploy Garden Nexus application
+    hosts: webserver
+    become: yes
+    
+    tasks:
+      - name: Ensure deployment directories exist
+        file:
+          path: "{{ item }}"
+          state: directory
+          owner: ec2-user
+          group: ec2-user
+        loop:
+          - /home/ec2-user/garden_nexus/client/dist
+          - /home/ec2-user/garden_nexus/server/dist
   
-  tasks:
-    - name: Ensure deployment directories exist
-      file:
-        path: "{{ item }}"
-        state: directory
-        owner: ec2-user
-        group: ec2-user
-      loop:
-        - /home/ec2-user/garden_nexus/client/dist
-        - /home/ec2-user/garden_nexus/server/dist
-
-    - name: Copy client dist files
-      synchronize:
-        src: client/dist/
-        dest: /home/ec2-user/garden_nexus/client/dist/
-        delete: yes
-
-    - name: Copy server dist files
-      synchronize:
-        src: server/dist/
-        dest: /home/ec2-user/garden_nexus/server/dist/
-        delete: yes
-
-    - name: Restart PM2 processes
-      command: pm2 restart all
-      become: yes
-      become_user: ec2-user
-
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
-      become: yes
-
-    - name: Verify Nginx is running
-      service:
-        name: nginx
-        state: started
-      become: yes
+      - name: Copy client dist files
+        synchronize:
+          src: "{{ playbook_dir }}/../client/dist/"
+          dest: /home/ec2-user/garden_nexus/client/dist/
+          delete: yes
+          
+      - name: Copy server dist files
+        synchronize:
+          src: "{{ playbook_dir }}/../server/dist/"
+          dest: /home/ec2-user/garden_nexus/server/dist/
+          delete: yes
+  
+      - name: Restart PM2 processes
+        command: pm2 restart all
+        become: yes
+        become_user: ec2-user
+  
+      - name: Restart Nginx
+        service:
+          name: nginx
+          state: restarted
+        become: yes
+  
+      - name: Verify Nginx is running
+        service:
+          name: nginx
+          state: started
+        become: yes
