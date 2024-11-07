@@ -1,77 +1,87 @@
 ---
-  - name: Deploy Garden Nexus application
-    hosts: webserver
-    become: yes
-    
-    tasks:
-      - name: Ensure deployment directories exist
-        file:
-          path: "{{ item }}"
-          state: directory
-          owner: ec2-user
-          group: nginx
-          mode: '0755'
-        loop:
-          - /home/ec2-user/garden_nexus/client/dist
-          - /home/ec2-user/garden_nexus/server/dist
+- name: Deploy Garden Nexus application
+  hosts: webserver
+  become: yes
   
-      - name: Copy client dist files
-        synchronize:
-          src: "{{ playbook_dir }}/../client/dist/"
-          dest: /home/ec2-user/garden_nexus/client/dist/
-  
-      - name: Copy server dist files
-        synchronize:
-          src: "{{ playbook_dir }}/../server/dist/"
-          dest: /home/ec2-user/garden_nexus/server/dist/
-  
-      - name: Fix ownership and permissions for server directory
-        file:
-          path: /home/ec2-user/garden_nexus/server
-          owner: ec2-user
-          group: ec2-user  # Changed to ec2-user for PM2
-          mode: '0755'
-          recurse: yes
-  
-      - name: Fix ownership and permissions for client directory
-        file:
-          path: /home/ec2-user/garden_nexus/client
-          owner: ec2-user
-          group: nginx
-          mode: '0755'
-          recurse: yes
-  
-      - name: Set PM2-specific permissions for server/dist
-        file:
-          path: /home/ec2-user/garden_nexus/server/dist
-          owner: ec2-user
-          group: ec2-user
-          mode: '0755'
-          recurse: yes
-  
-      - name: Ensure executable permissions for server files
-        shell: |
-          find /home/ec2-user/garden_nexus/server/dist -type f -exec chmod 755 {} \;
-          find /home/ec2-user/garden_nexus/server/dist -type d -exec chmod 755 {} \;
-  
-      - name: Ensure correct client file permissions
-        shell: |
-          find /home/ec2-user/garden_nexus/client/dist -type f -exec chmod 644 {} \;
-          find /home/ec2-user/garden_nexus/client/dist -type d -exec chmod 755 {} \;
-  
-      - name: Restart PM2 processes
-        command: pm2 restart all
-        become: yes
-        become_user: ec2-user
-  
-      - name: Restart Nginx
-        service:
-          name: nginx
-          state: restarted
-        become: yes
-  
-      - name: Verify Nginx is running
-        service:
-          name: nginx
-          state: started
-        become: yes
+  tasks:
+    - name: Ensure deployment directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: ec2-user
+        group: nginx
+        mode: '0755'
+      loop:
+        - /home/ec2-user/garden_nexus/client/dist
+        - /home/ec2-user/garden_nexus/server/dist
+
+    - name: Copy client dist files
+      synchronize:
+        src: "{{ playbook_dir }}/../client/dist/"
+        dest: /home/ec2-user/garden_nexus/client/dist/
+        archive: no
+        delete: no
+        recursive: yes
+        links: yes
+        times: yes
+
+    - name: Copy server dist files
+      synchronize:
+        src: "{{ playbook_dir }}/../server/dist/"
+        dest: /home/ec2-user/garden_nexus/server/dist/
+        archive: no
+        delete: no
+        recursive: yes
+        links: yes
+        times: yes
+
+    - name: Fix ownership and permissions for server directory
+      file:
+        path: /home/ec2-user/garden_nexus/server
+        owner: ec2-user
+        group: ec2-user
+        mode: '0755'
+        recurse: yes
+
+    - name: Fix ownership and permissions for client directory
+      file:
+        path: /home/ec2-user/garden_nexus/client
+        owner: ec2-user
+        group: nginx
+        mode: '0755'
+        recurse: yes
+
+    - name: Set PM2-specific permissions for server/dist
+      file:
+        path: /home/ec2-user/garden_nexus/server/dist
+        owner: ec2-user
+        group: ec2-user
+        mode: '0755'
+        recurse: yes
+
+    - name: Ensure executable permissions for server files
+      shell: |
+        find /home/ec2-user/garden_nexus/server/dist -type f -exec chmod 755 {} \;
+        find /home/ec2-user/garden_nexus/server/dist -type d -exec chmod 755 {} \;
+
+    - name: Ensure correct client file permissions
+      shell: |
+        find /home/ec2-user/garden_nexus/client/dist -type f -exec chmod 644 {} \;
+        find /home/ec2-user/garden_nexus/client/dist -type d -exec chmod 755 {} \;
+
+    - name: Restart PM2 processes
+      command: pm2 restart all
+      become: yes
+      become_user: ec2-user
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+      become: yes
+
+    - name: Verify Nginx is running
+      service:
+        name: nginx
+        state: started
+      become: yes
