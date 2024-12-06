@@ -4,8 +4,9 @@ import { UserService } from '../../../shared/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
+    selector: 'app-forgot-password',
+    templateUrl: './forgot-password.component.html',
+    standalone: false
 })
 export class ForgotPasswordComponent {
   forgotPasswordForm: FormGroup;

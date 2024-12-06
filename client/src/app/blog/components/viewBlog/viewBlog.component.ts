@@ -11,8 +11,9 @@ import { ConfirmationDialogService } from '../../../shared/modules/confirmation-
 import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
-  selector: 'app-view-blog',
-  templateUrl: './viewBlog.component.html',
+    selector: 'app-view-blog',
+    templateUrl: './viewBlog.component.html',
+    standalone: false
 })
 export class ViewBlogComponent implements OnInit, OnDestroy {
   // Main data objects

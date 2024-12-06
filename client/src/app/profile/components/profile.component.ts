@@ -16,8 +16,9 @@ import { ToastrService } from 'ngx-toastr';
 import { CurrentUserInterface } from '../../auth/types/currentUser.interface';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    standalone: false
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   // User and profile related

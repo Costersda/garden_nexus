@@ -11,8 +11,9 @@ import { ConfirmationDialogService } from '../../../shared/modules/confirmation-
 import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
-  selector: 'app-view-forum',
-  templateUrl: './viewForum.component.html',
+    selector: 'app-view-forum',
+    templateUrl: './viewForum.component.html',
+    standalone: false
 })
 export class ViewForumComponent implements OnInit, OnDestroy {
   // Main Data Objects

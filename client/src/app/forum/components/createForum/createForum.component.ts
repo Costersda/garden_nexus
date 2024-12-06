@@ -7,8 +7,9 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-create-forum',
-  templateUrl: './createForum.component.html',
+    selector: 'app-create-forum',
+    templateUrl: './createForum.component.html',
+    standalone: false
 })
 export class CreateForumComponent implements OnInit, AfterViewInit {
   forum: Forum;

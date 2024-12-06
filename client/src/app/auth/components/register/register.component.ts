@@ -6,8 +6,9 @@ import { AuthService } from '../../services/auth.service';
 import { TermsOfServiceModalComponent } from '../termsOfServiceModal/termsOfServiceModal.component';
 
 @Component({
-  selector: 'auth-register',
-  templateUrl: './register.component.html',
+    selector: 'auth-register',
+    templateUrl: './register.component.html',
+    standalone: false
 })
 export class RegisterComponent {
   // Array to store error messages

@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'auth-login',
-  templateUrl: './login.component.html',
+    selector: 'auth-login',
+    templateUrl: './login.component.html',
+    standalone: false
 })
 export class LoginComponent {
   // Property to store error messages

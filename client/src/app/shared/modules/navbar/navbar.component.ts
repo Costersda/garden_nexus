@@ -7,10 +7,9 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  standalone: true,
-  imports: [CommonModule, RouterModule]
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    imports: [CommonModule, RouterModule]
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: CurrentUserInterface | null | undefined = null;

@@ -6,8 +6,9 @@ import { Forum } from '../../../shared/types/forum.interface';
 import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
-  selector: 'app-forum',
-  templateUrl: './forum.component.html',
+    selector: 'app-forum',
+    templateUrl: './forum.component.html',
+    standalone: false
 })
 export class ForumComponent implements OnInit, OnDestroy {
   forums: Forum[] = [];

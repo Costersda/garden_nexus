@@ -15,11 +15,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/garden_nexus",
+            "outputPath": {
+              "base": "dist/garden_nexus"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
 	"assets": [
   "src/favicon.ico",
   "src/assets",
@@ -43,7 +44,8 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            ],
+            "browser": "src/main.ts"
           },
 "configurations": {
   "production": {
@@ -69,14 +71,10 @@
     "optimization": true,
     "sourceMap": false,
     "namedChunks": false,
-    "extractLicenses": true,
-    "vendorChunk": false,
-    "buildOptimizer": true
+    "extractLicenses": true
   },
   "development": {
-    "buildOptimizer": false,
     "optimization": false,
-    "vendorChunk": true,
     "extractLicenses": false,
     "sourceMap": true,
     "namedChunks": true

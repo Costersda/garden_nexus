@@ -7,10 +7,9 @@ import { CommentService } from '../../../shared/services/comment.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-forum-preview',
-  templateUrl: './forum-preview.component.html',
-  standalone: true,
-  imports: [CommonModule, RouterModule]
+    selector: 'app-forum-preview',
+    templateUrl: './forum-preview.component.html',
+    imports: [CommonModule, RouterModule]
 })
 export class ForumPreviewComponent implements OnInit, OnDestroy {
   @Input() forum!: Forum;

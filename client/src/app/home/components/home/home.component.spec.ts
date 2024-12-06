@@ -9,18 +9,28 @@ import { Component, Input } from '@angular/core';
 import { SlideInterface } from '../../../shared/modules/types/slide.interface';
 
 // Mock components
-@Component({ selector: 'app-toolbar', template: '' })
+@Component({
+    selector: 'app-toolbar', template: '',
+    standalone: false
+})
 class MockToolbarComponent { }
 
-@Component({ selector: 'app-navbar', template: '' })
+@Component({
+    selector: 'app-navbar', template: '',
+    standalone: false
+})
 class MockNavbarComponent { }
 
-@Component({ selector: 'app-footer', template: '' })
+@Component({
+    selector: 'app-footer', template: '',
+    standalone: false
+})
 class MockFooterComponent { }
 
 @Component({
     selector: 'image-slider',
-    template: '<div>Mock Image Slider</div>'
+    template: '<div>Mock Image Slider</div>',
+    standalone: false
 })
 class MockImageSliderComponent {
     @Input() slides: SlideInterface[] = [];

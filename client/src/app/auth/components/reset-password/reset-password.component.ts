@@ -5,8 +5,9 @@ import { UserService } from '../../../shared/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.component.html',
+    standalone: false
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
   resetForm: FormGroup;

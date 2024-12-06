@@ -18,21 +18,36 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 // Mock components
-@Component({ selector: 'app-toolbar', template: '' })
+@Component({
+    selector: 'app-toolbar', template: '',
+    standalone: false
+})
 class MockToolbarComponent { }
 
-@Component({ selector: 'app-navbar', template: '' })
+@Component({
+    selector: 'app-navbar', template: '',
+    standalone: false
+})
 class MockNavbarComponent { }
 
-@Component({ selector: 'app-footer', template: '' })
+@Component({
+    selector: 'app-footer', template: '',
+    standalone: false
+})
 class MockFooterComponent { }
 
-@Component({ selector: 'app-forum-preview', template: '' })
+@Component({
+    selector: 'app-forum-preview', template: '',
+    standalone: false
+})
 class MockForumPreviewComponent {
     @Input() forum!: Forum;
 }
 
-@Component({ selector: 'app-blog-preview', template: '' })
+@Component({
+    selector: 'app-blog-preview', template: '',
+    standalone: false
+})
 class MockBlogPreviewComponent {
     @Input() blog!: Blog;
 }

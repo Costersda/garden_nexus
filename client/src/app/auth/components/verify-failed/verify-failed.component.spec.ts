@@ -8,13 +8,22 @@ import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 
 // Mock components
-@Component({ selector: 'app-toolbar', template: '' })
+@Component({
+    selector: 'app-toolbar', template: '',
+    standalone: false
+})
 class MockToolbarComponent { }
 
-@Component({ selector: 'app-navbar', template: '' })
+@Component({
+    selector: 'app-navbar', template: '',
+    standalone: false
+})
 class MockNavbarComponent { }
 
-@Component({ selector: 'app-footer', template: '' })
+@Component({
+    selector: 'app-footer', template: '',
+    standalone: false
+})
 class MockFooterComponent { }
 
 describe('VerifyFailedComponent', () => {

@@ -6,8 +6,9 @@ import { SlideInterface } from '../../../shared/modules/types/slide.interface';
 import { CurrentUserInterface } from '../../../auth/types/currentUser.interface';
 
 @Component({
-  selector: 'home',
-  templateUrl: './home.component.html',
+    selector: 'home',
+    templateUrl: './home.component.html',
+    standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
   isLoggedInSubscription: Subscription | undefined;

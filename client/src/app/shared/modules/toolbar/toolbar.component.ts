@@ -11,15 +11,14 @@ import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatToolbarModule,
-    MatButtonModule
-  ]
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatToolbarModule,
+        MatButtonModule
+    ]
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
   authButtonLabel: string = 'Login';

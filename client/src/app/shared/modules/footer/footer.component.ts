@@ -6,13 +6,12 @@ import { CurrentUserInterface } from '../../../auth/types/currentUser.interface'
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ]
+    selector: 'app-footer',
+    templateUrl: './footer.component.html',
+    imports: [
+        CommonModule,
+        RouterModule
+    ]
 })
 export class FooterComponent implements OnInit {
   currentUser: CurrentUserInterface | null | undefined = null;

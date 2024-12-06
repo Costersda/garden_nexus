@@ -1,8 +1,9 @@
 import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
-  selector: 'app-terms-of-service-modal',
-  templateUrl: './termsOfServiceModal.component.html',
+    selector: 'app-terms-of-service-modal',
+    templateUrl: './termsOfServiceModal.component.html',
+    standalone: false
 })
 export class TermsOfServiceModalComponent {
   // Event emitters for modal actions

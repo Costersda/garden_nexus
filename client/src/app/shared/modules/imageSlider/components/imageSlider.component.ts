@@ -2,8 +2,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SlideInterface } from '../../types/slide.interface';
 
 @Component({
-  selector: 'image-slider',
-  templateUrl: './imageSlider.component.html',
+    selector: 'image-slider',
+    templateUrl: './imageSlider.component.html',
+    standalone: false
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
   @Input() slides: SlideInterface[] = [];

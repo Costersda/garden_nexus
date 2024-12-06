@@ -5,10 +5,9 @@ import { Blog } from '../../../shared/types/blog.interface';
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-blog-preview',
-  templateUrl: './blog-preview.component.html',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
+    selector: 'app-blog-preview',
+    templateUrl: './blog-preview.component.html',
+    imports: [CommonModule, RouterModule]
 })
 export class BlogPreviewComponent {
   // Input properties

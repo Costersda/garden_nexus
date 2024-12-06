@@ -7,8 +7,9 @@ import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-create-blog',
-  templateUrl: './createBlog.component.html',
+    selector: 'app-create-blog',
+    templateUrl: './createBlog.component.html',
+    standalone: false
 })
 export class CreateBlogComponent implements OnInit, AfterViewInit {
   blog: Blog;

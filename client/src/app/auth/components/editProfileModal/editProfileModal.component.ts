@@ -13,8 +13,9 @@ interface Profile {
 }
 
 @Component({
-  selector: 'app-edit-profile-modal',
-  templateUrl: './editProfileModal.component.html',
+    selector: 'app-edit-profile-modal',
+    templateUrl: './editProfileModal.component.html',
+    standalone: false
 })
 export class EditProfileModalComponent implements OnChanges {
   // Input and Output properties for component communication

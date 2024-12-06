@@ -6,8 +6,9 @@ import { Blog } from '../../../shared/types/blog.interface';
 import { Category, CATEGORIES } from '../../../shared/types/category.interface';
 
 @Component({
-  selector: 'app-blog',
-  templateUrl: './blog.component.html',
+    selector: 'app-blog',
+    templateUrl: './blog.component.html',
+    standalone: false
 })
 export class BlogComponent implements OnInit, OnDestroy {
   // Component properties

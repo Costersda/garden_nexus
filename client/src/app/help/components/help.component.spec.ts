@@ -4,13 +4,22 @@ import { Component } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Mock components
-@Component({ selector: 'app-toolbar', template: '' })
+@Component({
+    selector: 'app-toolbar', template: '',
+    standalone: false
+})
 class MockToolbarComponent { }
 
-@Component({ selector: 'app-navbar', template: '' })
+@Component({
+    selector: 'app-navbar', template: '',
+    standalone: false
+})
 class MockNavbarComponent { }
 
-@Component({ selector: 'app-footer', template: '' })
+@Component({
+    selector: 'app-footer', template: '',
+    standalone: false
+})
 class MockFooterComponent { }
 
 describe('HelpComponent', () => {
